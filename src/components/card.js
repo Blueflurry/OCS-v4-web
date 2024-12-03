@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ReactImageGallery from "react-image-gallery";
 
 import { formatToIndianRupee, parseThousands } from "../helpers/numbers";
 
@@ -6,13 +7,13 @@ import imagesIcon from "../assets/images/images.svg";
 import starIcon from "../assets/images/star.svg";
 import whatsappIcon from "../assets/images/whatsapp.svg";
 import doubleCheckIcon from "../assets/images/double-check.svg";
-import ReactImageGallery from "react-image-gallery";
+import { createCTALink } from "../helpers/cta";
 
-const Card = ({ villa }) => {
+const Card = ({ villa, form }) => {
     const [name, setName] = useState(villa.name);
     const [amenities, setAmenities] = useState([]);
     const [isJiggling, setIsJiggling] = useState(false);
-    const [showGallery, setShowGallery] = useState(true);
+    const [showGallery, setShowGallery] = useState(false);
     const [galleryImages, setGalleryImages] = useState([]);
 
     useEffect(() => {
@@ -39,9 +40,18 @@ const Card = ({ villa }) => {
     useEffect(() => {
         if (Array.isArray(villa.images) && villa.images.length > 0) {
             let newImages = [];
+
             villa.images.forEach((img) => {
-                newImages.push({ original: img, thumbnail: img });
+                let newImg = img;
+                let imgComponents = img.split("/");
+
+                if (img.includes("https://www.rftpm.in")) {
+                    newImg = `https://www.rftpm.in/assets/${imgComponents[imgComponents.length - 1]}/villa/300/200`;
+                }
+
+                newImages.push({ original: newImg, thumbnail: newImg });
             });
+
             setGalleryImages(newImages);
         }
     }, [villa.images]);
@@ -62,6 +72,10 @@ const Card = ({ villa }) => {
 
         startJiggleAnimation();
     }, []); // Empty dependency array ensures this runs only once after the initial render
+
+    const openWhatsapp = () => {
+        window.open(createCTALink(villa, form), "_blank").focus();
+    };
 
     return (
         <div className="villa-card">
@@ -123,7 +137,7 @@ const Card = ({ villa }) => {
                         </h3>
                     </div>
                     <div className="villa-card__cta">
-                        <a href="/" className={`villa-card__cta--whatsapp ${isJiggling ? "jiggle-animation" : ""}`}>
+                        <a onClick={openWhatsapp} className={`villa-card__cta--whatsapp ${isJiggling ? "jiggle-animation" : ""}`}>
                             <img src={whatsappIcon} alt="Whatsapp Us" className={`${isJiggling ? "jiggle-animation" : ""}`} />
                             Enquire Now
                         </a>

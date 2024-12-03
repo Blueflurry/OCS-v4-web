@@ -80,6 +80,10 @@ a {
         font-size: 1rem;
         font-family: "Inter", sans-serif;
         margin-bottom: 12px;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     button {
@@ -88,12 +92,17 @@ a {
         font-weight: 600;
         color: black;
         margin-top: 20px;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 }
 
 .results {
     padding: 0;
     margin: 0;
+    color: black;
 }
 
 .card-grid {
@@ -328,6 +337,10 @@ a {
             font-weight: 600;
             font-size: 1rem;
 
+            &:hover {
+                cursor: pointer;
+            }
+
             img {
                 width: 36px;
                 height: 36px;
@@ -379,6 +392,10 @@ a {
         display: flex;
         justify-content: center;
         align-items: center;
+
+        &:hover {
+            cursor: pointer;
+        }
 
         &.disabled {
             color: #ccc;
@@ -698,6 +715,387 @@ a {
                 bottom: 20px;
                 right: 16px;
                 border: 1px solid #333;
+
+                img {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+
+            &--whatsapp {
+                background-color: #38bb47;
+                // padding: 12px !important;
+                color: white;
+                font-weight: 600;
+                font-size: 0.86rem;
+
+                img {
+                    width: 32px;
+                    height: 32px;
+                    margin-right: -8px;
+                    transform: rotate(0deg) scale(1);
+                }
+            }
+        }
+    }
+
+    .pagination {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        margin-top: 16px;
+        margin-bottom: 48px;
+        font-size: 0.8rem;
+
+        li {
+            min-width: 30px;
+            padding: 12px;
+            border: 1px solid #eee;
+            background-color: white;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &.disabled {
+                color: #ccc;
+            }
+
+            &.selected {
+                background-color: black;
+                color: white;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    body {
+        font-family: "Inter", sans-serif;
+        font-optical-sizing: auto;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        background-color: #fafafa;
+        scroll-behavior: smooth;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .hero {
+        padding: 20px 20px 80px;
+        background-color: black;
+        color: white;
+        text-align: center;
+        position: relative;
+
+        &__image {
+            &--logo {
+                display: inline-block;
+                height: 32px;
+                margin: 12px 0 0;
+            }
+        }
+
+        &__title {
+            font-weight: 530;
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 16px 0;
+            padding: 0;
+        }
+    }
+
+    .form {
+        padding: 30px 40px;
+        background-color: white;
+        border: 1px solid #eee;
+        border-top: 2px solid #ffb401;
+        box-shadow: 0 4px 24px rgba(black, 0.1);
+        border-radius: 8px;
+        text-align: left;
+        position: absolute;
+        top: 75%;
+        z-index: 100;
+        max-width: 1200px;
+        margin: 0 auto;
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select,
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-family: "Inter", sans-serif;
+            margin-bottom: 12px;
+        }
+
+        button {
+            border: none;
+            background-color: #ffb401;
+            font-weight: 600;
+            color: black;
+            margin-top: 16px;
+            padding: 12px 8px;
+        }
+    }
+
+    .results {
+        padding: 0;
+        margin: 0;
+    }
+
+    .card-grid {
+        margin-top: 160px;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1300px;
+        overflow: hidden;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    .villa-card {
+        width: 100%;
+        max-width: 400px;
+        background-color: white;
+        box-shadow: 0 4px 24px rgba(black, 0.1);
+        border-radius: 6px;
+        overflow: hidden;
+
+        &__image {
+            position: relative;
+
+            &--primary {
+                width: 100%;
+                height: 240px;
+                object-fit: cover;
+            }
+        }
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            &--right {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 3px;
+            }
+        }
+
+        &__rating {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 3px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 12px 12px;
+            border-radius: 6px;
+            background-color: #f7f7f7;
+        }
+
+        &__review {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: #777;
+        }
+
+        &__content {
+            padding: 16px 20px;
+
+            &--title {
+                padding: 0;
+                margin: 0;
+                font-weight: 600;
+                line-height: 1.3;
+                font-size: 1.1rem;
+            }
+
+            &--subtitle {
+                padding: 0;
+                margin: 4px 0 0 0;
+                font-weight: 350;
+                line-height: 1.3;
+                font-size: 0.86rem;
+                color: #555;
+            }
+
+            &--vendor {
+                padding: 0;
+                margin: 6px 0 0 0;
+                font-weight: 350;
+                line-height: 1.3;
+                font-size: 0.6rem;
+
+                a {
+                    font-weight: 400 !important;
+                    position: relative;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        width: 100%;
+                        height: 1px;
+                        left: 0;
+                        bottom: -1px;
+                        background-color: #ddd;
+                    }
+                }
+            }
+        }
+
+        &__capacity {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 6px;
+            margin-top: 20px;
+
+            span {
+                color: #ddd;
+            }
+
+            &--item {
+                font-size: 1rem;
+                color: #555;
+
+                span {
+                    font-weight: 600;
+                    color: black;
+                }
+            }
+        }
+
+        &__amenities {
+            margin-top: 16px;
+            margin-bottom: 0px;
+            display: flex;
+            width: 100%;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 8px 10px;
+            border-top: 1px solid #eee;
+            padding: 14px 0 0;
+
+            &--item {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 0.8rem;
+
+                img {
+                    height: 16px;
+                    margin-right: 3px;
+                }
+
+                &:last-of-type {
+                    font-weight: 600;
+                }
+            }
+        }
+
+        &__cockpit {
+            margin-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 16px;
+        }
+
+        &__price {
+            &--cut {
+                font-weight: 300;
+                color: #555;
+                margin: 0;
+                padding: 0;
+                font-size: 0.9rem;
+                text-decoration: line-through;
+                text-decoration-thickness: 1.2px;
+            }
+
+            &--final {
+                font-weight: 600;
+                margin: 4px 0 0 0;
+                padding: 0;
+                font-size: 1.1rem;
+
+                span {
+                    font-size: 1rem;
+                    font-weight: 400;
+                    color: #555;
+                }
+            }
+        }
+
+        &__cta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+
+            * {
+                // width: 54px;
+                // height: 54px;
+                padding: 4px 12px 4px 6px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 8px;
+            }
+
+            &--view {
+                background-color: black;
+                padding: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 8px;
+                width: 54px;
+                height: 54px;
+                position: absolute;
+                bottom: 20px;
+                right: 16px;
+                border: 1px solid #333;
+
+                &:hover {
+                    cursor: pointer;
+                }
 
                 img {
                     width: 30px;

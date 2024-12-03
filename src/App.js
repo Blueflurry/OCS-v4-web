@@ -6,9 +6,11 @@ import villas from "./data/villas";
 import cities from "./data/cities";
 
 import logoImage from "./assets/images/oneclickstays.svg";
+import Skeleton from "react-loading-skeleton";
 
 function App() {
-    const itemsPerPage = 10;
+    const itemsPerPage = 9;
+    const [loading, setLoading] = useState(false);
     const [itemOffset, setItemOffset] = useState(0);
     const [currentItems, setCurrentItems] = useState([]);
     const [filteredVillas, setFilteredVillas] = useState(villas); // To store filtered data
@@ -24,6 +26,7 @@ function App() {
     const pageCount = Math.ceil(filteredVillas.length / itemsPerPage);
 
     const handlePageClick = (event) => {
+        setLoading(true);
         const newOffset = event.selected * itemsPerPage;
         setItemOffset(newOffset);
     };
@@ -39,6 +42,7 @@ function App() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
 
         // Filter villas based on formData
         const newFilteredVillas = villas.filter(
@@ -60,6 +64,7 @@ function App() {
     // Update current items whenever filteredVillas or itemOffset changes
     useEffect(() => {
         setCurrentItems(filteredVillas.slice(itemOffset, endOffset));
+        setTimeout(() => setLoading(false), 2000);
     }, [filteredVillas, itemOffset, endOffset]);
 
     return (
@@ -107,13 +112,34 @@ function App() {
                         <div>
                             <button type="submit">Search</button>
                         </div>
+
+                        <p className="results">Showing {filteredVillas.length} results</p>
                     </form>
                 </div>
             </div>
-
             <div className="card-grid">
-                <p className="results">Showing {filteredVillas.length} results</p>
-                {currentItems.length > 0 ? currentItems.map((villa, i) => <Card villa={villa} key={i} />) : <p>No villas found.</p>}
+                {!loading && (
+                    <>
+                        {currentItems.length > 0 ? (
+                            currentItems.map((villa, i) => <Card villa={villa} form={formData} key={i} />)
+                        ) : (
+                            <p>No villas found.</p>
+                        )}
+                    </>
+                )}
+
+                {loading && (
+                    <>
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => (
+                            <>
+                                <Skeleton height={300} />
+                                <Skeleton width={300} />
+                                <Skeleton width={200} />
+                                <Skeleton count={3} />
+                            </>
+                        ))}
+                    </>
+                )}
             </div>
 
             <ReactPaginate
