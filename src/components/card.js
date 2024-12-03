@@ -73,7 +73,8 @@ const Card = ({ villa, form }) => {
         startJiggleAnimation();
     }, []); // Empty dependency array ensures this runs only once after the initial render
 
-    const openWhatsapp = () => {
+    const openWhatsapp = (e) => {
+        e.preventDefault();
         window.open(createCTALink(villa, form), "_blank").focus();
     };
 
@@ -137,7 +138,7 @@ const Card = ({ villa, form }) => {
                         </h3>
                     </div>
                     <div className="villa-card__cta">
-                        <a onClick={openWhatsapp} className={`villa-card__cta--whatsapp ${isJiggling ? "jiggle-animation" : ""}`}>
+                        <a href="/" onClick={openWhatsapp} className={`villa-card__cta--whatsapp ${isJiggling ? "jiggle-animation" : ""}`}>
                             <img src={whatsappIcon} alt="Whatsapp Us" className={`${isJiggling ? "jiggle-animation" : ""}`} />
                             Enquire Now
                         </a>
