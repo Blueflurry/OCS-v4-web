@@ -75,7 +75,7 @@ const Card = ({ villa, form }) => {
 
     const openWhatsapp = (e) => {
         e.preventDefault();
-        window.open(createCTALink(villa, form), "_blank").focus();
+        window.open(createCTALink({ ...villa, name }, form), "_blank").focus();
     };
 
     return (
