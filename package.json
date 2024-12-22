@@ -12,6 +12,7 @@
     "react-loading-skeleton": "^3.5.0",
     "react-lottie": "^1.2.10",
     "react-paginate": "^8.2.0",
+    "react-router-dom": "^7.1.0",
     "react-scripts": "5.0.1",
     "sass": "^1.81.1",
     "web-vitals": "^2.1.0"

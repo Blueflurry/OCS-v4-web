@@ -40,23 +40,43 @@ a {
 
     &__title {
         font-weight: 530;
-        font-size: 1.85rem;
+        font-size: 2.7rem;
         text-align: center;
-        margin: 20px 0;
+        margin: 48px 0 20px;
         padding: 0;
+
+        span {
+            color: #ffb401;
+
+            sup {
+                font-weight: 400;
+                font-size: 2rem;
+            }
+        }
+    }
+
+    &__desc {
+        text-align: center;
+        font-size: 1rem;
+        color: rgba(white, 0.65);
+        max-width: 75ch;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 50px;
+        line-height: 1.35;
     }
 }
 
 .form {
     padding: 30px 20px 30px;
     background-color: white;
-    border: 1px solid #eee;
+    // border: 1px solid #eee;
     border-top: 2px solid #ffb401;
-    box-shadow: 0 4px 24px rgba(black, 0.1);
+    box-shadow: 0 4px 24px rgba(black, 0.03);
     border-radius: 8px;
     text-align: left;
     position: absolute;
-    top: 80%;
+    top: 93%;
     left: 20px;
     right: 20px;
     z-index: 100;
@@ -98,15 +118,104 @@ a {
         }
     }
 }
+.pills {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    .pill {
+        display: inline-flex;
+        padding: 8px 16px;
+        border-radius: 200px;
+        background: rgba(white, 0.2);
+        color: white;
+        font-size: 0.8rem;
+
+        &.disabled {
+            background: rgba(white, 0.08);
+            color: rgba(white, 0.75);
+            border: 1px solid transparent;
+        }
+
+        img {
+            height: 16px;
+            display: block;
+            margin-right: 4px;
+        }
+    }
+}
+
+.signature {
+    width: 270px;
+    margin-bottom: 60px;
+}
 
 .results {
     padding: 0;
     margin: 0;
     color: black;
+    text-align: center;
+    // margin-top: 120px;
+}
+
+.services {
+    max-width: 1300px;
+    margin-left: 20px;
+    margin-right: 20px;
+    // margin-top: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__heading {
+        margin: 470px 0 40px;
+        padding: 0;
+        text-align: center;
+        font-size: 1.65rem;
+        font-weight: 500;
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 20px;
+        border-radius: 8px;
+        background-color: white;
+        box-shadow: 0 4px 24px rgba(black, 0.03);
+        text-align: center;
+
+        &--icon {
+            height: 56px;
+            width: auto;
+        }
+
+        h4 {
+            margin: 20px 0 0 0;
+            padding: 0;
+            font-size: 1.2rem;
+            font-weight: 550;
+        }
+
+        p {
+            line-height: 1.35;
+            color: #111;
+        }
+    }
+}
+
+.villas__heading {
+    margin: 80px 0 14px;
+    padding: 0;
+    text-align: center;
+    font-size: 1.65rem;
+    font-weight: 500;
 }
 
 .card-grid {
-    margin-top: 440px;
+    margin-top: 12px;
     max-width: 100vw;
     overflow: hidden;
     padding: 20px;
@@ -119,7 +228,7 @@ a {
     width: 100%;
     // border: 1px solid #ccc;
     background-color: white;
-    box-shadow: 0 4px 24px rgba(black, 0.1);
+    box-shadow: 0 4px 24px rgba(black, 0.03);
     border-radius: 6px;
     overflow: hidden;
 
@@ -137,6 +246,7 @@ a {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
+        gap: 8px;
 
         &--right {
             display: flex;
@@ -163,6 +273,7 @@ a {
         font-size: 0.7rem;
         font-weight: 400;
         color: #777;
+        white-space: nowrap;
     }
 
     &__content {
@@ -181,7 +292,7 @@ a {
             margin: 4px 0 0 0;
             font-weight: 350;
             line-height: 1.3;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #555;
         }
 
@@ -384,24 +495,26 @@ a {
     margin-bottom: 48px;
 
     li {
-        min-width: 40px;
-        padding: 12px;
-        border: 1px solid #eee;
-        background-color: white;
-        border-radius: 4px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        a {
+            min-width: 40px;
+            padding: 12px;
+            border: 1px solid #eee;
+            background-color: white;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
         &:hover {
             cursor: pointer;
         }
 
-        &.disabled {
+        &.disabled a {
             color: #ccc;
         }
 
-        &.selected {
+        &.selected a {
             background-color: black;
             color: white;
         }
@@ -441,23 +554,43 @@ a {
 
         &__title {
             font-weight: 530;
-            font-size: 1.5rem;
+            font-size: 2.2rem;
             text-align: center;
-            margin: 16px 0;
+            margin: 48px 0 20px;
             padding: 0;
+
+            span {
+                color: #ffb401;
+
+                sup {
+                    font-weight: 400;
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+        &__desc {
+            text-align: center;
+            font-size: 1rem;
+            color: rgba(white, 0.65);
+            max-width: 75ch;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 50px;
+            line-height: 1.35;
         }
     }
 
     .form {
         padding: 30px 20px 30px;
         background-color: white;
-        border: 1px solid #eee;
+        // border: 1px solid #eee;
         border-top: 2px solid #ffb401;
-        box-shadow: 0 4px 24px rgba(black, 0.1);
+        box-shadow: 0 4px 24px rgba(black, 0.03);
         border-radius: 8px;
         text-align: left;
         position: absolute;
-        top: 75%;
+        top: 92%;
         left: 20px;
         right: 20px;
         z-index: 100;
@@ -493,13 +626,104 @@ a {
         }
     }
 
+    .pills {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+
+        .pill {
+            display: inline-flex;
+            padding: 8px 16px;
+            border-radius: 200px;
+            background: rgba(white, 0.2);
+            color: white;
+            font-size: 0.7rem;
+
+            &.disabled {
+                background: rgba(white, 0.08);
+                color: rgba(white, 0.75);
+                border: 1px solid transparent;
+            }
+
+            img {
+                height: 16px;
+                display: block;
+                margin-right: 4px;
+            }
+        }
+    }
+
+    .signature {
+        width: 270px;
+        margin-bottom: 60px;
+    }
+
+    .services {
+        max-width: 1300px;
+        margin-left: 20px;
+        margin-right: 20px;
+        // margin-top: 160px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        &__heading {
+            margin: 420px 0 40px;
+            padding: 0;
+            text-align: center;
+            font-size: 1.65rem;
+            font-weight: 500;
+        }
+
+        &__card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 24px rgba(black, 0.03);
+            text-align: center;
+
+            &--icon {
+                height: 56px;
+                width: auto;
+            }
+
+            h4 {
+                margin: 20px 0 0 0;
+                padding: 0;
+                font-size: 1.2rem;
+                font-weight: 550;
+            }
+
+            p {
+                line-height: 1.35;
+                color: #111;
+            }
+        }
+    }
+
+    .villas__heading {
+        margin: 80px 0 14px;
+        padding: 0;
+        text-align: center;
+        font-size: 1.65rem;
+        font-weight: 500;
+    }
+
     .results {
         padding: 0;
         margin: 0;
+        color: black;
+        text-align: center;
+        // margin-top: 120px;
     }
 
     .card-grid {
-        margin-top: 390px;
+        margin-top: 12px;
         max-width: 100vw;
         overflow: hidden;
         padding: 20px;
@@ -511,7 +735,7 @@ a {
     .villa-card {
         width: 100%;
         background-color: white;
-        box-shadow: 0 4px 24px rgba(black, 0.1);
+        box-shadow: 0 4px 24px rgba(black, 0.03);
         border-radius: 6px;
         overflow: hidden;
 
@@ -529,6 +753,7 @@ a {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            gap: 8px;
 
             &--right {
                 display: flex;
@@ -555,6 +780,7 @@ a {
             font-size: 0.7rem;
             font-weight: 400;
             color: #777;
+            white-space: nowrap;
         }
 
         &__content {
@@ -752,20 +978,22 @@ a {
         font-size: 0.8rem;
 
         li {
-            min-width: 30px;
-            padding: 12px;
-            border: 1px solid #eee;
-            background-color: white;
-            border-radius: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            a {
+                min-width: 30px;
+                padding: 12px;
+                border: 1px solid #eee;
+                background-color: white;
+                border-radius: 4px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
-            &.disabled {
+            &.disabled a {
                 color: #ccc;
             }
 
-            &.selected {
+            &.selected a {
                 background-color: black;
                 color: white;
             }
@@ -806,23 +1034,43 @@ a {
 
         &__title {
             font-weight: 530;
-            font-size: 1.5rem;
+            font-size: 2.7rem;
             text-align: center;
-            margin: 16px 0;
+            margin: 48px 0 20px;
             padding: 0;
+
+            span {
+                color: #ffb401;
+
+                sup {
+                    font-weight: 400;
+                    font-size: 2rem;
+                }
+            }
+        }
+
+        &__desc {
+            text-align: center;
+            font-size: 1rem;
+            color: rgba(white, 0.75);
+            max-width: 75ch;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 50px;
+            line-height: 1.35;
         }
     }
 
     .form {
         padding: 30px 40px;
         background-color: white;
-        border: 1px solid #eee;
+        // border: 1px solid #eee;
         border-top: 2px solid #ffb401;
-        box-shadow: 0 4px 24px rgba(black, 0.1);
+        box-shadow: 0 4px 24px rgba(black, 0.03);
         border-radius: 8px;
         text-align: left;
         position: absolute;
-        top: 75%;
+        top: 90%;
         z-index: 100;
         max-width: 1200px;
         margin: 0 auto;
@@ -868,10 +1116,13 @@ a {
     .results {
         padding: 0;
         margin: 0;
+        color: black;
+        text-align: center;
+        // margin-top: 120px;
     }
 
     .card-grid {
-        margin-top: 160px;
+        margin-top: 20px;
         margin-left: auto;
         margin-right: auto;
         max-width: 1300px;
@@ -888,7 +1139,7 @@ a {
         width: 100%;
         max-width: 400px;
         background-color: white;
-        box-shadow: 0 4px 24px rgba(black, 0.1);
+        box-shadow: 0 4px 24px rgba(black, 0.03);
         border-radius: 6px;
         overflow: hidden;
 
@@ -906,6 +1157,11 @@ a {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            gap: 8px;
+
+            // &--left {
+            //     flex: 3;
+            // }
 
             &--right {
                 display: flex;
@@ -932,6 +1188,8 @@ a {
             font-size: 0.7rem;
             font-weight: 400;
             color: #777;
+            word-break: keep-all;
+            white-space: nowrap;
         }
 
         &__content {
@@ -950,7 +1208,7 @@ a {
                 margin: 4px 0 0 0;
                 font-weight: 350;
                 line-height: 1.3;
-                font-size: 0.86rem;
+                font-size: 0.8rem;
                 color: #555;
             }
 
@@ -1133,23 +1391,80 @@ a {
         font-size: 0.8rem;
 
         li {
-            min-width: 30px;
-            padding: 12px;
-            border: 1px solid #eee;
-            background-color: white;
-            border-radius: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            a {
+                min-width: 30px;
+                padding: 12px;
+                border: 1px solid #eee;
+                background-color: white;
+                border-radius: 4px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
-            &.disabled {
+            &.disabled a {
                 color: #ccc;
             }
 
-            &.selected {
+            &.selected a {
                 background-color: black;
                 color: white;
             }
         }
+    }
+
+    .services {
+        max-width: 1300px;
+        margin-left: auto;
+        margin-right: auto;
+        // margin-top: 160px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+
+        &__heading {
+            margin: 150px 0 40px;
+            padding: 0;
+            text-align: center;
+            font-size: 1.65rem;
+            font-weight: 500;
+        }
+
+        &__card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 24px rgba(black, 0.03);
+            text-align: center;
+
+            &--icon {
+                height: 56px;
+                width: auto;
+            }
+
+            h4 {
+                margin: 20px 0 0 0;
+                padding: 0;
+                font-size: 1.2rem;
+                font-weight: 550;
+            }
+
+            p {
+                line-height: 1.35;
+                color: #111;
+            }
+        }
+    }
+
+    .villas__heading {
+        margin: 80px 0 14px;
+        padding: 0;
+        text-align: center;
+        font-size: 1.65rem;
+        font-weight: 500;
     }
 }

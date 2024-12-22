@@ -105,7 +105,7 @@ const Card = ({ villa, form }) => {
                             <img src={starIcon} alt="Rating" />
                             {villa.rating}
                         </div>
-                        <div className="villa-card__review">{parseThousands(villa.reviews)} reviews</div>
+                        <div className="villa-card__review">{parseThousands(villa.reveiws)} reviews</div>
                     </div>
                 </div>
                 <div className="villa-card__capacity">
