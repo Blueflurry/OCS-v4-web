@@ -5,7 +5,7 @@ import ReactPaginate from "react-paginate";
 import Card from "./card";
 import { useParams, useSearchParams } from "react-router-dom";
 
-function CardList() {
+function CardList({ formData }) {
     const { location } = useParams();
     const [searchParams] = useSearchParams();
     const guests = +searchParams.get("guests");
@@ -16,6 +16,7 @@ function CardList() {
     const [currentItems, setCurrentItems] = useState([]);
     const [filteredVillas, setFilteredVillas] = useState([]); // To store filtered data
     const [pageCount, setPageCount] = useState(0); // To store filtered data
+    const [form, setForm] = useState({ city: location, guests });
 
     // Calculate the end offset and page count dynamically
     const endOffset = itemOffset + itemsPerPage;
@@ -34,8 +35,13 @@ function CardList() {
             setPageCount(Math.ceil(newFilteredVillas.length / itemsPerPage));
             setFilteredVillas(newFilteredVillas);
         }
+
         fetchData();
     }, [guests, location]);
+
+    useEffect(() => {
+        if (formData) setForm(formData);
+    }, [formData]);
 
     // Update current items whenever filteredVillas or itemOffset changes
     useEffect(() => {
@@ -54,7 +60,13 @@ function CardList() {
             {currentItems.length > 0 && <p className="results">Showing {filteredVillas.length} results</p>}
             <div className="card-grid">
                 {!loading && (
-                    <>{currentItems.length > 0 ? currentItems.map((villa, i) => <Card villa={villa} key={i} />) : <p>No villas found.</p>}</>
+                    <>
+                        {currentItems.length > 0 ? (
+                            currentItems.map((villa, i) => <Card villa={villa} form={form} key={i} />)
+                        ) : (
+                            <p>No villas found.</p>
+                        )}
+                    </>
                 )}
 
                 {loading && (

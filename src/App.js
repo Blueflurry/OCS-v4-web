@@ -136,8 +136,8 @@ function App() {
                 </div>
                 <div className="services__card">
                     <img src={support} alt="Easy Booking Icon" className="services__card--icon" />
-                    <h4 className="services__card--title">Easy Booking</h4>
-                    <p className="services__card--desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, sunt!</p>
+                    <h4 className="services__card--title">Dedicated Stay Manager</h4>
+                    <p className="services__card--desc">Get assistance 24/7 on any kind of stay query with a manager dedicated to you.</p>
                 </div>
             </div>
             <h2 className="villas__heading" ref={villaHeadingRef}>
