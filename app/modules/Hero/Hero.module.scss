@@ -1,0 +1,17 @@
+@import "../../styles/variables";
+
+.hero {
+    text-align: center;
+    margin-top: 30px;
+
+    h1 {
+        span {
+            color: $color-primary;
+        }
+    }
+
+    p {
+        color: $color-text-secondary;
+        margin: 10px auto 24px;
+    }
+}
