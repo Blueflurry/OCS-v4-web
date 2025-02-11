@@ -21,6 +21,15 @@
         padding: 0;
         position: relative;
     }
+    &__overlay {
+        border-radius: 12px;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        background: linear-gradient(transparent 60%, rgba(black, 0.7));
+        position: absolute;
+    }
 
     &__indicator {
         display: inline-block;

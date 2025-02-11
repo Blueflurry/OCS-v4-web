@@ -6,6 +6,8 @@ const StayCard = () => {
     return (
         <div className={styles["stay-card"]}>
             <Image src="/assets/images/banner.webp" width={400} height={500} alt="Shimla" className={styles["stay-card__image"]} />
+            {/* <div className={styles["stay-card__overlay"]} /> */}
+
             <span className={styles["stay-card__indicator"]}>Few dates left</span>
             <div className={styles["stay-card__content"]}>
                 <div className={styles["stay-card__progress"]} />
