@@ -8,10 +8,10 @@ export default function Home() {
         <>
             <Header />
             <Hero />
-            <div style={{ padding: "30px 20px 280px" }}>
+            <Locations />
+            <div style={{ padding: "30px 0px 200px" }}>
                 <StayCard />
             </div>
-            <Locations />
         </>
     );
 }

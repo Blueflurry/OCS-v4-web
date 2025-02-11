@@ -12,10 +12,10 @@
     }
 
     &__image {
-        border-radius: 12px;
+        // border-radius: 12px;
         width: 100%;
-        max-width: 350px;
-        height: 350px;
+        // max-width: 350px;
+        height: 280px;
         object-fit: cover;
         margin: 0;
         padding: 0;
@@ -27,7 +27,7 @@
         bottom: 0;
         right: 0;
         left: 0;
-        background: linear-gradient(transparent 60%, rgba(black, 0.7));
+        background: linear-gradient(transparent 60%, white 90%);
         position: absolute;
     }
 
@@ -35,7 +35,7 @@
         display: inline-block;
         position: relative;
         top: -55px;
-        left: 15px;
+        left: 23%;
         z-index: 4;
         padding: 2px 4px;
         font-size: 0.6rem;
@@ -43,21 +43,56 @@
         letter-spacing: 0.5px;
         text-transform: uppercase;
         color: black;
-        background-color: $color-primary;
+        background-color: $color-progress1;
         border-radius: 4px;
+        transform: translateY(10px);
+        opacity: 0;
+        animation: ease-up 0.5s 3.5s ease-in-out forwards;
+
+        @keyframes ease-up {
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -10px; /* Adjust this to control the gap */
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: $color-progress1 transparent transparent transparent;
+        }
     }
 
     &__progress {
         display: block;
         height: 6px;
-        background-color: $color-primary;
+        background-color: $color-progress1;
         position: absolute;
         top: 0;
         left: 0;
         max-width: 100%;
-        width: 50%;
+        width: 0;
         border-top-right-radius: 200px;
         border-bottom-right-radius: 200px;
+        animation: progress 1.5s 2s ease-in-out forwards;
+
+        @keyframes progress {
+            from {
+                width: 0;
+            }
+            to {
+                width: 30%;
+            }
+        }
     }
 
     &__content {
@@ -66,15 +101,15 @@
         border-radius: 16px;
         overflow: hidden;
         width: 100%;
-        max-width: 330px;
-        background: #21212199;
+        max-width: 320px;
+        background: rgba(#141414, 0.8);
         backdrop-filter: blur(10px);
         position: absolute;
-        top: 88%;
-        left: 10px;
+        top: 85%;
+        left: 20px;
 
         h3 {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 500;
 
             span {
@@ -92,7 +127,7 @@
         height: 14px;
         width: 1px;
         border-right: 1px solid rgba(white, 0.3);
-        margin: 0 7px -1px 6px;
+        margin: 0 7px -1.5px 6px;
     }
 
     &__header {
@@ -121,7 +156,7 @@
         }
 
         p {
-            font-size: 0.875rem;
+            font-size: 0.7rem;
             color: rgba(white, 0.7);
         }
     }
@@ -139,7 +174,7 @@
         }
 
         p {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
     }
 
@@ -210,7 +245,7 @@
         &--unit {
             font-weight: 400;
             color: rgba(white, 0.65);
-            font-size: 1.1rem;
+            font-size: 1rem;
             // margin-left: -3px;
 
             span {
