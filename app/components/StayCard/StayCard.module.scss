@@ -1,10 +1,8 @@
 @import "../../styles/variables";
 
 .stay-card {
-    border-radius: 12px;
-    overflow: hidden;
-    background: linear-gradient(160deg, #000000, #1c1c1c);
     width: 100%;
+    position: relative;
 
     hr {
         border: none;
@@ -14,27 +12,100 @@
     }
 
     &__image {
+        border-radius: 12px;
         width: 100%;
-        height: 250px;
+        max-width: 350px;
+        height: 350px;
         object-fit: cover;
         margin: 0;
         padding: 0;
+        position: relative;
+    }
+
+    &__indicator {
+        display: inline-block;
+        position: relative;
+        top: -55px;
+        left: 15px;
+        z-index: 4;
+        padding: 2px 4px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: black;
+        background-color: $color-primary;
+        border-radius: 4px;
+    }
+
+    &__progress {
+        display: block;
+        height: 6px;
+        background-color: $color-primary;
+        position: absolute;
+        top: 0;
+        left: 0;
+        max-width: 100%;
+        width: 50%;
+        border-top-right-radius: 200px;
+        border-bottom-right-radius: 200px;
     }
 
     &__content {
         margin: 0;
-        padding: 20px;
+        padding: 30px 20px 20px;
+        border-radius: 16px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 330px;
+        background: #21212199;
+        backdrop-filter: blur(10px);
+        position: absolute;
+        top: 88%;
+        left: 10px;
 
         h3 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
+            font-weight: 500;
+
+            span {
+                font-size: 1.05rem;
+                display: inline-block;
+                margin-left: -2px;
+                // margin-right: 4px;
+                color: rgba(white, 0.6);
+            }
         }
     }
 
-    &__location {
+    &__separator {
+        display: inline-block;
+        height: 14px;
+        width: 1px;
+        border-right: 1px solid rgba(white, 0.3);
+        margin: 0 7px -1px 6px;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .stay-card__separator {
+            display: inline-block;
+            height: 14px;
+            width: 1px;
+            border-right: 1px solid rgba(white, 0.3);
+            margin: -1px 7px 6px;
+        }
+    }
+
+    &__location,
+    &__rating {
         display: flex;
         align-items: center;
         margin-bottom: 8px;
-        gap: 4px;
+        gap: 2px;
 
         img {
             margin-left: -4px;
@@ -46,21 +117,47 @@
         }
     }
 
-    &__capacity {
-        color: rgba(white, 0.65);
-        margin: 12px 0 6px;
-        font-size: 1.1rem;
-
-        &--amount {
-            color: rgba(white, 0.9);
+    &__rating {
+        b {
+            font-weight: 500;
+            font-size: 0.9rem;
         }
 
-        &--separator {
+        img {
+            margin-left: 1px;
+            margin-top: 1px;
+            width: 60px;
+        }
+
+        p {
+            font-size: 0.8rem;
+        }
+    }
+
+    &__title {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+
+        .stay-card__separator {
             display: inline-block;
-            height: 14px;
+            height: 18px;
             width: 1px;
             border-right: 1px solid rgba(white, 0.3);
-            margin: 0 7px -1px 6px;
+            transform: rotate(20deg) translateY(2px);
+            margin-right: 4px;
+        }
+    }
+
+    &__capacity {
+        color: rgba(white, 0.65);
+        margin: 8px 0;
+        font-size: 0.9rem;
+
+        &--amount {
+            color: rgba(white, 1);
+            font-weight: 500;
+            font-size: 1rem;
         }
     }
 
@@ -69,7 +166,10 @@
         font-size: 0.9rem;
 
         span {
-            color: rgba(white, 0.65);
+            font-size: 1rem;
+            display: inline-block;
+            margin-left: 2px;
+            color: rgba(white, 1);
             text-decoration: underline;
             text-decoration-style: dotted;
             text-decoration-color: rgba(white, 0.3);
@@ -78,13 +178,13 @@
     }
 
     &__price {
-        margin-top: 16px;
+        margin-top: 20px;
 
         div {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
 
         &--striked {
@@ -102,7 +202,7 @@
             font-weight: 400;
             color: rgba(white, 0.65);
             font-size: 1.1rem;
-            margin-left: -3px;
+            // margin-left: -3px;
 
             span {
                 margin-right: 2px;

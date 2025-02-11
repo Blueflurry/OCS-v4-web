@@ -5,31 +5,43 @@ import styles from "./StayCard.module.scss";
 const StayCard = () => {
     return (
         <div className={styles["stay-card"]}>
-            <Image src="/assets/images/banner.webp" width={400} height={300} alt="Shimla" className={styles["stay-card__image"]} />
+            <Image src="/assets/images/banner.webp" width={400} height={500} alt="Shimla" className={styles["stay-card__image"]} />
+            <span className={styles["stay-card__indicator"]}>Few dates left</span>
             <div className={styles["stay-card__content"]}>
-                {/* <Image src="/assets/images/lohono.svg" width={70} height={30} alt="Lohono Stays" className={styles["stay-card__content--vendor"]} /> */}
-                <div className={styles["stay-card__location"]}>
-                    <Image src="/assets/images/location.svg" width={20} height={20} alt="Location" />
-                    <p>Asagao, Goa</p>
+                <div className={styles["stay-card__progress"]} />
+                <div className={styles["stay-card__header"]}>
+                    <div className={styles["stay-card__location"]}>
+                        <Image src="/assets/images/location.svg" width={20} height={20} alt="Location" />
+                        <p>Asagao, Goa</p>
+                    </div>
+                    <span className={styles["stay-card__separator"]} />
+                    <div className={styles["stay-card__rating"]}>
+                        <b>5.0</b>
+                        <Image src="/assets/images/ratings.svg" width={20} height={20} alt="Location" />
+                        <p>(300 Reviews)</p>
+                    </div>
                 </div>
-                <h3>Villa Ola Amigo</h3>
+                <div className={styles["stay-card__title"]}>
+                    <h3>Sereno By The Sea</h3>
+                    {/* <span className={styles["stay-card__separator"]} />
+                    <h3>
+                        4 <span>BHK</span>
+                    </h3> */}
+                </div>
                 <p className={styles["stay-card__capacity"]}>
                     <span className={styles["stay-card__capacity--amount"]}>2</span> BHK
-                    <span className={styles["stay-card__capacity--separator"]} />
+                    <span className={styles["stay-card__separator"]} />
                     <span className={styles["stay-card__capacity--amount"]}>4</span> Guests
+                    <span className={styles["stay-card__separator"]} />
+                    <span className={styles["stay-card__partner"]}>
+                        Hosted by <span>Elivaas</span>
+                    </span>
                 </p>
-                <p className={styles["stay-card__partner"]}>
-                    In partnership with <span>Lohono Stays</span>
-                </p>
-                <hr />
                 <div className={styles["stay-card__price"]}>
                     <div>
                         <span className={styles["stay-card__price--striked"]}>₹65,500</span>
                         <p className={styles["stay-card__price--active"]}>
-                            ₹45,500{" "}
-                            <span className={styles["stay-card__price--unit"]}>
-                                <span>/</span>night
-                            </span>
+                            ₹45,500 <span className={styles["stay-card__price--unit"]}>per night</span>
                         </p>
                     </div>
                     <p className={styles["stay-card__price--person"]}>

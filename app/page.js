@@ -8,7 +8,7 @@ export default function Home() {
         <>
             <Header />
             <Hero />
-            <div style={{ padding: "0 20px" }}>
+            <div style={{ padding: "30px 20px 280px" }}>
                 <StayCard />
             </div>
             <Locations />
