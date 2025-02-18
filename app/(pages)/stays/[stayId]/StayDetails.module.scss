@@ -1,6 +1,223 @@
+@import "../../../styles/variables";
+
 .stay-details {
-    // background-color: pink;
-    // &__carousel {
-    //     background-color: red;
-    // }
+    &__progress-bar {
+        display: flex;
+    }
+
+    &__indicator-1 {
+        display: block;
+        position: relative;
+        width: 70%;
+        z-index: 4;
+        padding: 2px 4px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: black;
+        background-color: $color-progress2;
+        transform: translateY(10px);
+        opacity: 1;
+    }
+
+    &__indicator-2 {
+        display: block;
+        position: relative;
+        width: 30%;
+        z-index: 4;
+        padding: 2px 4px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: black;
+        background-color: $color-progress3;
+        transform: translateY(10px);
+        opacity: 1;
+    }
+
+    &__content {
+        margin: 0;
+        padding: 30px 20px 20px;
+        overflow: hidden;
+        width: 100%;
+
+        h3 {
+            font-size: 1.35rem;
+            font-weight: 500;
+
+            span {
+                font-size: 1.05rem;
+                display: inline-block;
+                margin-left: -2px;
+                // margin-right: 4px;
+                color: rgba(white, 0.6);
+            }
+        }
+    }
+
+    &__separator {
+        display: inline-block;
+        height: 14px;
+        width: 1px;
+        border-right: 1px solid rgba(white, 0.3);
+        margin: 0 7px -1.5px 6px;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .stay-card__separator {
+            display: inline-block;
+            height: 14px;
+            width: 1px;
+            border-right: 1px solid rgba(white, 0.3);
+            margin: -1px 7px 6px;
+        }
+    }
+
+    &__location_group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4px;
+    }
+    &__location {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+        margin-bottom: 8px;
+        gap: 2px;
+
+        img {
+            margin-left: -4px;
+        }
+
+        p {
+            margin-left: 4px;
+            font-size: 0.8rem;
+            color: rgba(white, 0.7);
+        }
+    }
+
+    &__rating {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        gap: 2px;
+        b {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        img {
+            margin-left: 1px;
+            margin-top: 1px;
+            width: 60px;
+        }
+
+        p {
+            font-size: 0.7rem;
+        }
+    }
+
+    &__title {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+
+        .stay-card__separator {
+            display: inline-block;
+            height: 18px;
+            width: 1px;
+            border-right: 1px solid rgba(white, 0.3);
+            transform: rotate(20deg) translateY(2px);
+            margin-right: 4px;
+        }
+    }
+
+    &__capacity {
+        color: rgba(white, 0.65);
+        margin: 8px 0;
+        font-size: 0.9rem;
+
+        &--amount {
+            color: rgba(white, 1);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+    }
+
+    &__partner {
+        color: rgba(white, 0.5);
+        font-size: 0.9rem;
+
+        span {
+            font-size: 1rem;
+            display: inline-block;
+            margin-left: 2px;
+            color: rgba(white, 1);
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-decoration-color: rgba(white, 0.3);
+            text-underline-offset: 2px;
+        }
+    }
+
+    &__price {
+        margin-top: 20px;
+
+        div {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 1.3rem;
+        }
+
+        &--striked {
+            color: rgba(white, 0.5);
+            text-decoration: line-through;
+            margin-right: 8px;
+        }
+
+        &--active {
+            font-weight: 500;
+            color: $color-primary;
+        }
+
+        &--unit {
+            font-weight: 400;
+            color: rgba(white, 0.65);
+            font-size: 1rem;
+            // margin-left: -3px;
+
+            span {
+                margin-right: 2px;
+            }
+        }
+
+        &--person {
+            margin-top: 5px;
+            color: rgba(white, 0.6);
+
+            b {
+                font-weight: 500;
+                color: white;
+            }
+        }
+    }
+
+    &__date-picker {
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    &__map {
+        img {
+            width: 100%;
+        }
+    }
 }

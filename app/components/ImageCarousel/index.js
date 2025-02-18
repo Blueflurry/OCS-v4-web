@@ -6,12 +6,11 @@ const OPTIONS = { dragFree: true, direction: "ltr", loop: true };
 const SLIDE_COUNT = 5;
 const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
-// const images = ["/assets/images/villa-1.svg", "/assets/images/villa-2.svg"];
-
-const ImageCarousel = () => {
+const ImageCarousel = (props) => {
+    const { images } = props;
     return (
         <div className="bg-white">
-            <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+            <EmblaCarousel slides={SLIDES} options={OPTIONS} images={images} />
         </div>
     );
 };
