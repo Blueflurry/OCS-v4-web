@@ -7,6 +7,9 @@ import Categories from "@/app/components/Categories";
 import Image from "next/image";
 import DateRangePicker from "@/app/components/DateRangePicker";
 import Button from "@/app/components/Button";
+import Amenities from "@/app/components/Amenities";
+import ReturnPolicy from "@/app/components/ReturnPolicy";
+import Reviews from "@/app/components/Reviews";
 
 const StayDetails = () => {
     return (
@@ -16,7 +19,6 @@ const StayDetails = () => {
                     <ImageCarousel images={VILLA_IMAGES} />
                     <Categories images={VILLA_IMAGES}></Categories>
 
-                    {/* <StayCard></StayCard> */}
                     {/* progress bar */}
                     <div className={styles["stay-details__progress-bar"]}>
                         <span
@@ -30,18 +32,6 @@ const StayDetails = () => {
                     {/* stay information */}
                     <div className={styles["stay-details__content"]}>
                         <div className={styles["stay-details__header"]}>
-                            {/* <div className={styles["stay-details__location"]}>
-                                <Image
-                                    src="/assets/images/location.svg"
-                                    width={20}
-                                    height={20}
-                                    alt="Location"
-                                />
-                                <p>Asagao, Goa</p>
-                            </div> */}
-                            {/* <span
-                                className={styles["stay-details__separator"]}
-                            /> */}
                             <div className={styles["stay-details__rating"]}>
                                 <b>5.0</b>
                                 <Image
@@ -56,9 +46,9 @@ const StayDetails = () => {
                         <div className={styles["stay-details__title"]}>
                             <h3>Sereno By The Sea</h3>
                             {/* <span className={styles["stay-details__separator"]} />
-                    <h3>
-                        4 <span>BHK</span>
-                    </h3> */}
+                                <h3>
+                                    4 <span>BHK</span>
+                                </h3> */}
                         </div>
                         <p className={styles["stay-details__capacity"]}>
                             <span
@@ -161,6 +151,13 @@ const StayDetails = () => {
                     </div>
 
                     {/* amenities */}
+                    <Amenities></Amenities>
+
+                    {/* policy */}
+                    <ReturnPolicy></ReturnPolicy>
+
+                    {/* reviews & ratings */}
+                    <Reviews></Reviews>
                 </div>
             </div>
         </div>

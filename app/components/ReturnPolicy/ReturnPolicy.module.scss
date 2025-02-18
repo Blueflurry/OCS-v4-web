@@ -1,0 +1,44 @@
+@import "../../styles/variables";
+
+.policy {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 30px 20px;
+
+    h3 {
+        font-size: 1.35rem;
+        font-weight: 500;
+        padding-bottom: 20px;
+    }
+
+    &__list {
+        font-weight: 500;
+    }
+
+    &__item {
+        margin-bottom: 10px;
+        font-size: 1rem;
+        line-height: 1.5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &-icon {
+            display: flex;
+            justify-content: center;
+            width: 30%;
+        }
+
+        &-description {
+            width: 70%;
+            font-size: 0.8rem;
+
+            h4 {
+                font-weight: 600;
+            }
+            p {
+                font-weight: 500;
+            }
+        }
+    }
+}
