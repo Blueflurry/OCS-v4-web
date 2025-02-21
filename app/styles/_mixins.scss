@@ -1,0 +1,14 @@
+// ---------------------------------
+// Fluid Typography Mixin
+// ---------------------------------
+
+// This mixin smoothly scales a property (like font-size) between two viewport widths.
+@mixin fluid-type($property, $minSize, $maxSize, $minViewport: $breakpoint-md, $maxViewport: $breakpoint-xl) {
+    #{$property}: $minSize;
+    @media (min-width: $minViewport) {
+        #{$property}: calc(#{$minSize} + (#{$maxSize} - #{$minSize}) * ((100vw - #{$minViewport}) / (#{$maxViewport} - #{$minViewport})));
+    }
+    @media (min-width: $maxViewport) {
+        #{$property}: $maxSize;
+    }
+}

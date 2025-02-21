@@ -9,7 +9,7 @@
     color: $color-bg-primary;
     padding-left: 24px;
     padding-right: 24px;
-    height: 46px;
+    height: 40px;
     border: 1px solid $color-text-primary;
     border-radius: 2000px;
     cursor: pointer;
@@ -28,7 +28,13 @@
     }
 
     &--large {
-        padding: 28px 80px;
-        font-size: 1.1rem;
+        padding: 26px 80px;
+        font-size: 0.9rem;
+    }
+
+    &--square {
+        padding: 0 !important;
+        width: 40px;
+        height: 40px;
     }
 }

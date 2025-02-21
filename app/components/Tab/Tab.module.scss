@@ -17,11 +17,10 @@
         width: 60px;
         border-radius: 200px;
         transition: all 0.3s ease;
-        position: relative;
     }
 
     &__text {
-        font-size: 1rem;
+        font-size: 0.9rem;
         color: $color-text-secondary;
         text-decoration: none !important;
         transition: all 0.3s ease;
@@ -29,7 +28,7 @@
 
     &--active {
         .tab__icon {
-            background-color: $color-border-primary;
+            background-color: rgba($color-primary, 0.1);
         }
 
         .tab__text {

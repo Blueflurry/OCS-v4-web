@@ -8,8 +8,9 @@
 }
 
 body {
-    font-family: $font-family;
-    background-color: $color-bg-primary;
+    font-family: $font-family-base;
+    // background-color: $color-bg-primary;
+    background-color: $color-bg-tertiary;
     color: $color-text-primary;
     font-size: 14px;
 }

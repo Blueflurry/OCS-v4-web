@@ -10,7 +10,7 @@ const Header = () => {
             <div className={`${styles["header__actions"]}`}>
                 <Button type="secondary">Login</Button>
                 <Button type="secondary" square>
-                    <Image src="/assets/images/menu.svg" alt="Menu" width={24} height={24} />
+                    <Image src="/assets/images/menu.svg" alt="Menu" width={20} height={20} />
                 </Button>
             </div>
         </div>

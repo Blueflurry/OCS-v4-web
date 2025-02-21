@@ -1,7 +1,7 @@
-import StayCard from "./components/StayCard";
 import Header from "./modules/Header";
 import Hero from "./modules/Hero/Hero";
 import Locations from "./modules/Locations";
+import StayCarousel from "./modules/StayCarousel";
 
 export default function Home() {
     return (
@@ -9,9 +9,7 @@ export default function Home() {
             <Header />
             <Hero />
             <Locations />
-            <div style={{ padding: "30px 0px 200px" }}>
-                <StayCard />
-            </div>
+            <StayCarousel />
         </>
     );
 }
