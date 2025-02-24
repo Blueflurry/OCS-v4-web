@@ -1,0 +1,20 @@
+.stay-carousel {
+    width: 100vw;
+    overflow-x: scroll;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px;
+
+    /* Hide scrollbar - Webkit browsers */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar - Firefox */
+    scrollbar-width: none;
+
+    /* Hide scrollbar - Edge */
+    -ms-overflow-style: none;
+}

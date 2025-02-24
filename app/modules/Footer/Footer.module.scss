@@ -2,9 +2,14 @@
 
 .footer {
     width: 100%;
-    height: 90px;
+    height: 80px;
     border-top: 1px solid $color-border-primary;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     color: white;
+    position: fixed;
+    bottom: 0;
+    background-color: $color-bg-primary;
+    z-index: $z-index-layout;
+    padding: 0 4px;
 }

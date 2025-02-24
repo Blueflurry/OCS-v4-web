@@ -4,8 +4,46 @@ $color-progress2: #ffb401;
 $color-progress3: #664800;
 $color-bg-primary: #000000;
 $color-bg-secondary: #ffffff10;
+$color-bg-tertiary: #ffffff;
 $color-border-primary: #ffffff15;
 $color-text-primary: #ffffff;
 $color-text-secondary: #ffffff60;
 
-$font-family: "General Sans", sans-serif;
+$z-index-content: 96;
+$z-index-layout: 97;
+$z-index-overlay: 98;
+$z-index-modal: 99;
+
+// ---------------------------------
+// Typography Variables & Settings
+// ---------------------------------
+
+// Base typography
+$font-family-base: "General Sans", sans-serif;
+$base-font-size: 16px;
+$base-line-height: 1.5;
+
+// Typography scale (using rem values)
+$h1-min: 2rem;
+$h1-max: 2.5rem;
+
+$h2-min: 1.75rem;
+$h2-max: 2rem;
+
+$h3-min: 1.5rem;
+$h3-max: 1.75rem;
+
+$h4-min: 1.25rem;
+$h4-max: 1.5rem;
+
+$h5-min: 1rem;
+$h5-max: 1.25rem;
+
+$h6-min: 0.875rem;
+$h6-max: 1rem;
+
+// Responsive breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import styles from "./StayCard.module.scss";
+import PartnerLogo from "../PartnerLogo";
 
 const StayCard = () => {
     return (
@@ -36,7 +37,7 @@ const StayCard = () => {
                     <span className={styles["stay-card__capacity--amount"]}>4</span> Guests
                     <span className={styles["stay-card__separator"]} />
                     <span className={styles["stay-card__partner"]}>
-                        Hosted by <span>Elivaas</span>
+                        <PartnerLogo name="elivaas" />
                     </span>
                 </p>
                 <div className={styles["stay-card__price"]}>

@@ -6,9 +6,7 @@ const Button = ({ type = "secondary", children, square, large }) => {
         <span
             className={`${styles["button"]} ${styles[`button--${type}`]} ${
                 large ? styles[`button--large`] : ""
-            }
-            `}
-            style={{ width: square ? "46px" : "auto" }}
+            } ${square ? styles[`button--square`] : ""}`}
         >
             {children}
         </span>

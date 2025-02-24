@@ -1,0 +1,64 @@
+// ---------------------------------
+// Base Styles
+// ---------------------------------
+
+body {
+    font-family: $font-family-base;
+    font-size: $base-font-size;
+    line-height: $base-line-height;
+    color: $color-text-primary;
+    margin: 0;
+    padding: 0;
+}
+
+// ---------------------------------
+// Responsive Headings
+// ---------------------------------
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: $color-text-primary;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+h1 {
+    @include fluid-type(font-size, $h1-min, $h1-max);
+}
+
+h2 {
+    @include fluid-type(font-size, $h2-min, $h2-max);
+}
+
+h3 {
+    @include fluid-type(font-size, $h3-min, $h3-max);
+}
+
+h4 {
+    @include fluid-type(font-size, $h4-min, $h4-max);
+}
+
+h5 {
+    @include fluid-type(font-size, $h5-min, $h5-max);
+}
+
+h6 {
+    @include fluid-type(font-size, $h6-min, $h6-max);
+}
+
+// ---------------------------------
+// Responsive Paragraphs
+// ---------------------------------
+
+p {
+    margin-bottom: 1em;
+    color: $color-text-secondary;
+    // Optional: adjust paragraph font-size at larger breakpoints
+    @media (min-width: $breakpoint-lg) {
+        font-size: 1.125rem;
+    }
+}
