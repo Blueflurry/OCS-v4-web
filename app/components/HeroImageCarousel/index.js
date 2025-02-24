@@ -6,13 +6,13 @@ const OPTIONS = { dragFree: true, direction: "ltr", loop: true };
 const SLIDE_COUNT = 5;
 const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
-const ImageCarousel = (props) => {
+const HeroImageCarousel = (props) => {
     const { images } = props;
     return (
-        <div className="bg-white">
+        <div>
             <EmblaCarousel slides={SLIDES} options={OPTIONS} images={images} />
         </div>
     );
 };
 
-export default ImageCarousel;
+export default HeroImageCarousel;

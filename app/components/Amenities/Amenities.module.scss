@@ -30,16 +30,20 @@
     &__item {
         display: flex;
         align-items: center;
+        width: 50%;
         color: #000000;
-        margin-right: 10px;
         margin-bottom: 10px;
-        gap: 10px;
+        // margin-right: 10px;
+        // gap: 10px;
 
         img {
             width: 20px;
             height: 20px;
         }
 
+        p {
+            padding-left: 10px;
+        }
         span {
             font-size: 0.8rem;
             font-weight: 500;

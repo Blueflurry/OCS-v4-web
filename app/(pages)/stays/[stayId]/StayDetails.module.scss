@@ -1,6 +1,9 @@
 @import "../../../styles/variables";
 
 .stay-details {
+    padding: 0 !important;
+    background-color: $color-bg-primary;
+
     &__progress-bar {
         display: flex;
     }
@@ -39,7 +42,7 @@
 
     &__content {
         margin: 0;
-        padding: 30px 20px 20px;
+        padding: 0 20px 30px 20px;
         overflow: hidden;
         width: 100%;
 
@@ -69,6 +72,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        padding-top: 10px;
 
         .stay-card__separator {
             display: inline-block;
@@ -219,5 +223,11 @@
         img {
             width: 100%;
         }
+    }
+}
+
+@media (max-width: $breakpoint-md) {
+    .hide-on-mobile {
+        display: none;
     }
 }
