@@ -132,28 +132,22 @@ const StayDetails = () => {
                     {/* map */}
                     <div className={styles["stay-details__map"]}>
                         <GoogleMapComponent />
-                        {/* <Image
-                            src="/assets/images/map.svg"
-                            width={400}
-                            height={250}
-                            alt="Map"
-                        /> */}
                     </div>
 
                     {/* amenities */}
                     <Amenities></Amenities>
 
-                    <div className={styles["stay-details__separator-2"]}></div>
+                    {/* <div className={styles["stay-details__separator-2"]}></div> */}
 
                     {/* policy */}
                     <ReturnPolicy></ReturnPolicy>
 
-                    <div className={styles["stay-details__separator-2"]}></div>
+                    {/* <div className={styles["stay-details__separator-2"]}></div> */}
 
                     {/* reviews & ratings */}
                     <Reviews></Reviews>
 
-                    <div className={styles["padding"]}></div>
+                    {/* <div className={styles["padding"]}></div> */}
                 </div>
             </div>
         </>
