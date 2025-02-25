@@ -26,11 +26,12 @@
         &-icon {
             display: flex;
             justify-content: flex-start;
-            width: 25%;
+            padding-right: 10px;
+            // width: 25%;
         }
 
         &-description {
-            width: 80%;
+            // width: 80%;
             font-size: 0.8rem;
 
             h4 {

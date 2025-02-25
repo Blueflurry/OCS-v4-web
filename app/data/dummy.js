@@ -87,3 +87,31 @@ export const POLICY_LIST = [
             "Lorem ipsum dolor sit amet, consect etur adipiscing elit.",
     },
 ];
+
+export const RATINGS = {
+    totalCount: 563,
+    avgRating: 4.5,
+    highestRatingCount: 225,
+    starWiseRatings: [
+        {
+            stars: 5,
+            count: 225,
+        },
+        {
+            stars: 4,
+            count: 130,
+        },
+        {
+            stars: 3,
+            count: 70,
+        },
+        {
+            stars: 2,
+            count: 35,
+        },
+        {
+            stars: 1,
+            count: 2,
+        },
+    ],
+};

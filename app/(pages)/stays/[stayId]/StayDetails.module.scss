@@ -68,6 +68,14 @@
         margin: 0 7px -1.5px 6px;
     }
 
+    &__separator-2 {
+        display: block;
+        height: 2px;
+        width: 1px;
+        border-right: 1px solid rgba($color-bg-primary, 0.3);
+        margin: 0 7px -1.5px 6px;
+    }
+
     &__header {
         display: flex;
         justify-content: flex-start;
@@ -224,6 +232,11 @@
             width: 100%;
         }
     }
+}
+
+.padding {
+    display: block;
+    margin-bottom: 100px;
 }
 
 @media (max-width: $breakpoint-md) {

@@ -143,11 +143,19 @@ const StayDetails = () => {
                     {/* amenities */}
                     <Amenities></Amenities>
 
+                    {/* separator */}
+                    <div className={styles["stay-details__separator-2"]}></div>
+
                     {/* policy */}
                     <ReturnPolicy></ReturnPolicy>
 
+                    {/* separator */}
+                    <div className={styles["stay-details__separator-2"]}></div>
+
                     {/* reviews & ratings */}
                     <Reviews></Reviews>
+
+                    <div className={styles["padding"]}></div>
                 </div>
             </div>
         </>
