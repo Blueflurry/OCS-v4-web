@@ -3,13 +3,20 @@ import Hero from "./modules/Hero/Hero";
 import Locations from "./modules/Locations";
 import StayCarousel from "./modules/StayCarousel";
 
+import styles from "./Home.module.scss";
+
 export default function Home() {
     return (
         <>
             <Header />
-            <Hero />
             <Locations />
-            <StayCarousel />
+            <Hero />
+            <div className={styles["main"]}>
+                <StayCarousel />
+                <StayCarousel />
+                <StayCarousel />
+                <StayCarousel />
+            </div>
         </>
     );
 }

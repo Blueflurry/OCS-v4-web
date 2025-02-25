@@ -1,0 +1,36 @@
+@import "./styles/variables";
+
+.main {
+    background: white;
+    border-radius: 24px 24px 0 0;
+    position: relative;
+    display: block;
+    margin-top: 10px;
+    padding-top: 30px;
+    padding-bottom: 120px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        background: rgba(white, 0.3);
+        border-radius: 24px 24px 0 0;
+        width: 90vw;
+        height: 100px;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        background: rgba(black, 0.1);
+        border-radius: 24px;
+        width: 80px;
+        height: 6px;
+        top: 20px;
+        left: 50%;
+        z-index: 2;
+        transform: translateX(-50%);
+    }
+}
