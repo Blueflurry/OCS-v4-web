@@ -13,6 +13,7 @@
 
     &__ratings {
         display: flex;
+        margin-bottom: 40px;
 
         &-overall {
             // width: 30%;
@@ -62,6 +63,106 @@
                     background-color: $color-progress2;
                     border-radius: 5px;
                 }
+            }
+        }
+    }
+
+    &__gallery {
+        display: flex;
+        gap: 16px;
+        overflow: scroll;
+        margin-bottom: 40px;
+
+        -ms-overflow-style: none; /* Internet Explorer 10+ */
+        scrollbar-width: none; /* Firefox */
+
+        &::-webkit-scrollbar {
+            display: none; /* Safari and Chrome */
+        }
+
+        &-card {
+            display: flex;
+            flex-direction: column;
+
+            &-img {
+                margin-bottom: 10px;
+                height: 350px;
+                width: auto;
+            }
+
+            &-rating {
+                display: flex;
+                margin-bottom: 4px;
+
+                img {
+                    padding-right: 2px;
+                }
+                span b {
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                }
+            }
+
+            &-reviewDate {
+                display: flex;
+                margin-bottom: 4px;
+
+                img {
+                    padding-right: 4px;
+                }
+            }
+
+            &-location {
+                display: flex;
+                margin-bottom: 4px;
+
+                img {
+                    padding-right: 4px;
+                }
+            }
+        }
+    }
+
+    &__comments {
+        margin-bottom: 40px;
+
+        &-title {
+            display: flex;
+            margin-bottom: 10px;
+
+            &-img {
+            }
+
+            &-details {
+                padding-left: 10px;
+                display: flex;
+                flex-direction: column;
+
+                h4 {
+                    font-weight: 600;
+                    margin-bottom: 2px;
+                    padding-left: 4px;
+
+                    span {
+                        font-weight: 400;
+                        font-size: 0.7rem;
+                        padding-left: 4px;
+                        color: $color-text-tertiary;
+                    }
+                }
+
+                img {
+                }
+
+                &-rating {
+                    display: flex;
+                }
+            }
+        }
+
+        &-description {
+            margin-bottom: 32px;
+            p {
             }
         }
     }

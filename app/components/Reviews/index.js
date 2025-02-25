@@ -2,10 +2,10 @@
 import React from "react";
 import styles from "./Reviews.module.scss";
 import Image from "next/image";
-import { RATINGS } from "@/app/data/dummy";
+import { REVIEWS } from "@/app/data/dummy";
 
 const Reviews = () => {
-    const ratings = RATINGS;
+    const reviews = REVIEWS;
 
     return (
         <div className={styles["reviews"]}>
@@ -27,18 +27,19 @@ const Reviews = () => {
                     </p>
                 </div>
                 <div className={styles["reviews__ratings-distribution"]}>
-                    {ratings.starWiseRatings.map((rating, index) => (
+                    {reviews.starWiseRatings.map((rating, index) => (
                         <div
                             className={
                                 styles["reviews__ratings-distribution__item"]
                             }
+                            key={index}
                         >
                             <Image
                                 src="/assets/images/single-star.svg"
                                 width={20}
                                 height={20}
                                 alt="star"
-                            ></Image>
+                            />
                             <p>{rating.stars}</p>
                             <div
                                 className={
@@ -47,7 +48,7 @@ const Reviews = () => {
                                 style={{
                                     width: `${
                                         (rating.count /
-                                            ratings.highestRatingCount) *
+                                            reviews.highestRatingCount) *
                                         100
                                     }px`,
                                 }}
@@ -64,6 +65,124 @@ const Reviews = () => {
                         </div>
                     ))}
                 </div>
+            </div>
+
+            <div className={styles["reviews__gallery"]}>
+                {reviews.photoReviews.map((review) => (
+                    <div className={styles["reviews__gallery-card"]}>
+                        <Image
+                            className={styles["reviews__gallery-card-img"]}
+                            src={review.img}
+                            width={200}
+                            height={350}
+                            alt="photo"
+                        />
+                        <div className={styles["reviews__gallery-card-rating"]}>
+                            <Image
+                                src={"/assets/images/single-star-colored.svg"}
+                                width={20}
+                                height={20}
+                                alt="star"
+                            />
+
+                            <span>
+                                <b>{review.rating} </b>
+                                {"  "} by{"  "}
+                                <b> {review.reviewBy}</b>
+                            </span>
+                        </div>
+
+                        <div
+                            className={
+                                styles["reviews__gallery-card-reviewDate"]
+                            }
+                        >
+                            <Image
+                                src={"/assets/images/calendar.svg"}
+                                width={20}
+                                height={20}
+                                alt="reviewDate"
+                            />
+
+                            <span>{review.reviewDate}</span>
+                        </div>
+
+                        <div
+                            className={styles["reviews__gallery-card-location"]}
+                        >
+                            <Image
+                                src={"/assets/images/location-marker.svg"}
+                                width={20}
+                                height={20}
+                                alt="marker"
+                            />
+
+                            <span>{review.location}</span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className={styles["reviews__comments"]}>
+                {reviews.comments.map((comment) => (
+                    <>
+                        <div className={styles["reviews__comments-title"]}>
+                            <div
+                                className={
+                                    styles["reviews__comments-title-img"]
+                                }
+                            >
+                                <Image
+                                    src={comment.img}
+                                    width={40}
+                                    height={40}
+                                    alt="profileImg"
+                                />
+                            </div>
+                            <div
+                                className={
+                                    styles["reviews__comments-title-details"]
+                                }
+                            >
+                                <div>
+                                    <h4>
+                                        {comment.reviewBy}{" "}
+                                        <span>{comment.reviewTime} ago</span>
+                                    </h4>
+                                </div>
+
+                                <div
+                                    className={
+                                        styles[
+                                            "reviews__comments-title-details-rating"
+                                        ]
+                                    }
+                                >
+                                    {[1, 2, 3, 4].map((item) => (
+                                        <Image
+                                            src="/assets/images/full-rating-star.svg"
+                                            width={20}
+                                            height={20}
+                                            alt="rating"
+                                        />
+                                    ))}
+                                    <Image
+                                        src="/assets/images/no-rating-star.svg"
+                                        width={20}
+                                        height={20}
+                                        alt="rating"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            className={styles["reviews__comments-description"]}
+                        >
+                            <p>{comment.review}</p>
+                        </div>
+                    </>
+                ))}
             </div>
         </div>
     );

@@ -88,7 +88,7 @@ export const POLICY_LIST = [
     },
 ];
 
-export const RATINGS = {
+export const REVIEWS = {
     totalCount: 563,
     avgRating: 4.5,
     highestRatingCount: 225,
@@ -112,6 +112,59 @@ export const RATINGS = {
         {
             stars: 1,
             count: 2,
+        },
+    ],
+    photoReviews: [
+        {
+            img: "/assets/images/photo-review-1.png",
+            rating: 4.5,
+            reviewBy: "Julie Khanna",
+            reviewDate: "May 26, 2024",
+            location: "Palolem, Goa",
+        },
+        {
+            img: "/assets/images/photo-review-2.png",
+            rating: 5.0,
+            reviewBy: "Ram Sharma",
+            reviewDate: "May 26, 2024",
+            location: "Agonda, Goa",
+        },
+        {
+            img: "/assets/images/photo-review-3.png",
+            rating: 5.0,
+            reviewBy: "Mansi Sharma",
+            reviewDate: "May 26, 2024",
+            location: "Agonda, Goa",
+        },
+    ],
+    comments: [
+        {
+            img: "/assets/images/profile.svg",
+            reviewBy: "Nikhil Sharma",
+            reviewTime: "5m",
+            rating: 4.5,
+            review: "Coach Jha's enthusiasm is contagious! He pushes us to excel while keeping practices fun and engaging. Coach Jha's enthusiasm is contagious! He pushes us to excel while keeping practices fun and engaging.",
+        },
+        {
+            img: "/assets/images/profile.svg",
+            reviewBy: "Nikhil Sharma",
+            reviewTime: "5m",
+            rating: 4.5,
+            review: "Coach Jha's enthusiasm is contagious! ",
+        },
+        {
+            img: "/assets/images/profile.svg",
+            reviewBy: "Nikhil Sharma",
+            reviewTime: "5m",
+            rating: 4.5,
+            review: "Coach Jha's enthusiasm is contagious! He pushes us to excel while keeping practices fun and engaging. Coach Jha's enthusiasm is contagious! He pushes us to excel while keeping practices fun and engaging.",
+        },
+        {
+            img: "/assets/images/profile.svg",
+            reviewBy: "Nikhil Sharma",
+            reviewTime: "5m",
+            rating: 4.5,
+            review: "Coach Jha's enthusiasm is contagious! He pushes us to excel while keeping practices fun and engaging. Coach Jha's enthusiasm is contagious! He pushes us to excel while keeping practices fun and engaging.",
         },
     ],
 };
