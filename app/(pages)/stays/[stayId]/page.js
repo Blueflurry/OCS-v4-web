@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./StayDetails.module.scss";
-import ImageCarousel from "@/app/components/HeroImageCarousel";
+import HeroImageCarousel from "@/app/components/HeroImageCarousel";
 import { VILLA_IMAGES } from "@/app/data/dummy";
 import Categories from "@/app/components/Categories";
 import Image from "next/image";
@@ -21,7 +21,7 @@ const StayDetails = () => {
             </div>
             <div className={`${styles["stay-details"]} container`}>
                 <div className={styles["stay-details__carousel"]}>
-                    <ImageCarousel images={VILLA_IMAGES} />
+                    <HeroImageCarousel images={VILLA_IMAGES} />
                     {/* <Categories images={VILLA_IMAGES}></Categories> */}
 
                     {/* progress bar */}

@@ -74,7 +74,7 @@ const EmblaCarousel = (props) => {
                 if (tweenNode) {
                     tweenNode.style.transform = `scale(${1.3 * scale})`;
                     // tweenNode.style.transform = `scale(${1.4 * scale})`;
-                    // tweenNode.style.borderRadius = `2rem`;
+                    // tweenNode.style.borderRadius = `1rem`;
                 }
             });
         });

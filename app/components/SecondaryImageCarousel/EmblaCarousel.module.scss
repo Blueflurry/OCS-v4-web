@@ -1,6 +1,7 @@
 .embla {
     max-width: 48rem;
     margin: auto;
+    padding: 20px 0 30px;
     // --slide-height: 200px;
     // --slide-spacing: 10px;
     // --slide-size: 300px;
@@ -8,9 +9,9 @@
     --slide-height: 10rem;
     --slide-spacing: 0;
     --slide-size: 60%;
+    overflow: hidden;
 }
 .embla__viewport {
-    // overflow: hidden;
 }
 .embla__container {
     display: flex;

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import styles from "./EmblaCarousel.module.scss";
 
-const TWEEN_FACTOR_BASE = 0.84;
+const TWEEN_FACTOR_BASE = 0.44;
 
 const numberWithinRange = (number, min, max) =>
     Math.min(Math.max(number, min), max);
