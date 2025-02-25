@@ -1,13 +1,14 @@
 @import "../../styles/variables";
 
 .locations {
-    background: $color-bg-primary;
+    // background: $color-bg-primary;
     display: flex;
     gap: 12px;
     width: 100vw;
     overflow-x: hidden; // Hide scrollbar and prevent manual scrolling
     padding: 0 20px;
-    padding-top: 15px;
+    padding-top: 20px;
+    padding-bottom: 0;
     position: relative;
     transition: all 0.3s ease-in-out;
 
@@ -35,12 +36,12 @@
 .locations2 {
     // margin-top: 24px;
     display: flex;
-    background: $color-bg-primary;
+    background: $color-bg-tertiary;
     gap: 12px;
     width: 100vw;
     overflow-x: hidden; // Hide scrollbar and prevent manual scrolling
     padding: 12px 20px;
-    padding-bottom: 25px;
+    // padding-bottom: 25px;
     position: relative;
     transition: all 0.3s ease-in-out;
 

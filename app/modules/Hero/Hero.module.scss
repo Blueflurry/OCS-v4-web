@@ -2,11 +2,15 @@
 
 .hero {
     text-align: center;
-    background: $color-bg-primary;
-    padding: 35px 0;
+    // background: $color-bg-primary;
+    padding: 10px 0 40px;
 
     h1 {
+        margin: 0;
+        padding: 0;
         font-weight: 600;
+        font-size: 1.6rem;
+
         span {
             color: $color-primary;
         }

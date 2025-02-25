@@ -1,4 +1,4 @@
-import Footer from "./modules/Footer";
+import FooterWithoutTabs from "./modules/Footer/FooterWithoutTabs";
 import "./styles/main.scss";
 
 export const metadata = {
@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
             </head>
             <body>
                 <main>{children}</main>
-                <Footer />
+                <FooterWithoutTabs />
             </body>
         </html>
     );

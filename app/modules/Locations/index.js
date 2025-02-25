@@ -88,7 +88,7 @@ const Locations = () => {
                     )}
                 </div>
             </div>
-            <div className={styles["locations2"]}>
+            {/* <div className={styles["locations2"]}>
                 <div className={styles["locations2__wrapper"]}>
                     {[...Array(2)].map(
                         (
@@ -145,7 +145,7 @@ const Locations = () => {
                         )
                     )}
                 </div>
-            </div>
+            </div> */}
         </>
     );
 };

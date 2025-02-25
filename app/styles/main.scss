@@ -10,7 +10,8 @@
 body {
     font-family: $font-family-base;
     // background-color: $color-bg-primary;
-    background-color: $color-bg-tertiary;
+    // background-color: $color-bg-tertiary;
+    background: linear-gradient(185deg, rgba(black, 0.9), rgba(black, 1) 20%);
     color: $color-text-primary;
     font-size: 14px;
 }
@@ -24,9 +25,4 @@ a {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
-}
-
-main {
-    height: calc(100vh - 90px);
-    overflow-y: auto;
 }

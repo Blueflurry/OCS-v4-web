@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 .stay-carousel {
     width: 100vw;
     overflow-x: scroll;
@@ -6,6 +8,7 @@
     align-items: flex-start;
     gap: 10px;
     padding: 10px;
+    // margin-bottom: 40px;
 
     /* Hide scrollbar - Webkit browsers */
     &::-webkit-scrollbar {
@@ -17,4 +20,25 @@
 
     /* Hide scrollbar - Edge */
     -ms-overflow-style: none;
+}
+
+.stay-carousel__title {
+    color: $color-bg-primary;
+    padding: 35px 20px 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+
+    svg {
+        height: 20px;
+        margin-top: -2px;
+    }
+}
+
+.stay-carousel__desc {
+    color: rgba($color-bg-primary, 0.7);
+    line-height: 1.4;
+    margin: 0px 16px 16px 24px;
 }
