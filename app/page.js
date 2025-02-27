@@ -4,6 +4,7 @@ import Locations from "./modules/Locations";
 import StayCarousel from "./modules/StayCarousel";
 
 import styles from "./Home.module.scss";
+import CTASection from "./modules/CTASection";
 
 export default function Home() {
     return (
@@ -17,6 +18,7 @@ export default function Home() {
                 <StayCarousel />
                 <StayCarousel />
             </div>
+            <CTASection />
         </>
     );
 }
