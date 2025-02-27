@@ -3,12 +3,14 @@ import React from "react";
 import styles from "./Footer.module.scss";
 import Button from "@/app/components/Button";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 const Footer = () => {
     const router = useRouter();
+    const pathname = usePathname();
     const params = useParams();
     const stayId = params.stayId;
+    console.log(pathname);
     // console.log(params);
 
     const handleCheckoutClick = () => {
