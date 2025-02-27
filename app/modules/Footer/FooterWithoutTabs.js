@@ -10,12 +10,9 @@ const FooterWithoutTabs = () => {
         <div className={styles["footer"]}>
             <div className="container">
                 <div className={styles["footer__brand"]}>
-                    <Image
-                        src="/assets/images/logo.svg"
-                        width={100}
-                        height={44}
-                        alt="OneClick Stays"
-                    />
+                    <Link href={"/"}>
+                        <Image src="/assets/images/logo.svg" alt="OneClick Stays" width={100} height={44} />
+                    </Link>
                     <div className={styles["footer__brand--social"]}>
                         <Link href={"/terms-and-conditions"}>
                             <Instagram />
@@ -29,17 +26,13 @@ const FooterWithoutTabs = () => {
                     </div>
                 </div>
                 <div className={styles["footer__menu"]}>
-                    <Link href={"/terms-and-conditions"}>
-                        Terms & Conditions
-                    </Link>
+                    <Link href={"/terms-and-conditions"}>Terms & Conditions</Link>
                     <Link href={"/privacy-policy"}>Privacy Policy</Link>
                     <Link href={"/refund-policy"}>Refund Policy</Link>
                 </div>
                 <div className={styles["footer__copyright"]}>
                     Copyright &copy; {currentYear}. All Rights Reserved.
-                    <small>
-                        An entity of NurtureLuxe Experience Private Limited.
-                    </small>
+                    <small>An entity of NurtureLuxe Experience Private Limited.</small>
                 </div>
             </div>
         </div>
