@@ -1,5 +1,7 @@
+import Image from "next/image";
 import FooterWithoutTabs from "./modules/Footer/FooterWithoutTabs";
 import "./styles/main.scss";
+import Link from "next/link";
 
 export const metadata = {
     title: "OneClick Stays | Luxury Villas and Apartment at lowest price guaranteed",
@@ -47,6 +49,16 @@ export default function RootLayout({ children }) {
             </head>
             <body>
                 <main>{children}</main>
+                <section id="no-content">
+                    <Image src="/assets/images/logo.svg" alt="OneClick Stays" width={150} height={90} />
+                    <div>
+                        <h1>Our website is currently only available in Mobile devices.</h1>
+                        <p>
+                            Please visit <Link href={"https://oneclickstays.com"}>www.oneclickstays.com</Link> on your mobile for the best stay
+                            booking experience globally.
+                        </p>
+                    </div>
+                </section>
                 <FooterWithoutTabs />
             </body>
         </html>

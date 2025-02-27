@@ -27,3 +27,55 @@ a {
     margin: 0 auto;
     padding: 0 20px;
 }
+
+#no-content {
+    display: none;
+}
+
+@media only screen and (min-width: 500px) {
+    main {
+        display: none;
+    }
+
+    #no-content {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        background: $color-bg-primary;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        color: $color-text-primary;
+        font-size: 1.2rem;
+        text-align: center;
+        z-index: $z-index-modal + 10;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            max-width: 600px;
+            color: $color-text-muted;
+
+            a {
+                color: $color-primary;
+            }
+        }
+    }
+}
