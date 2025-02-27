@@ -14,7 +14,10 @@ import PartnerLogo from "@/app/components/PartnerLogo";
 import GoogleMapComponent from "@/app/components/GMap";
 import BackButton from "@/app/components/BackButton";
 
-const StayDetails = () => {
+const StayDetails = async ({ params }) => {
+    const { stayId } = await params;
+    console.log(stayId);
+
     return (
         <>
             <div className={`${styles["hide-on-mobile"]}`}>
