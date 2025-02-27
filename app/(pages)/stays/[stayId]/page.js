@@ -13,6 +13,7 @@ import Header from "@/app/modules/Header";
 import PartnerLogo from "@/app/components/PartnerLogo";
 import GoogleMapComponent from "@/app/components/GMap";
 import BackButton from "@/app/components/BackButton";
+import Footer from "@/app/modules/Footer";
 
 const StayDetails = async ({ params }) => {
     const { stayId } = await params;
@@ -156,6 +157,8 @@ const StayDetails = async ({ params }) => {
                     {/* <div className={styles["padding"]}></div> */}
                 </div>
             </div>
+
+            <Footer></Footer>
         </>
     );
 };
