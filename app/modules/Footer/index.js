@@ -1,19 +1,31 @@
 "use client";
 import React from "react";
 import styles from "./Footer.module.scss";
-import Tab from "@/app/components/Tab";
-import { usePathname } from "next/navigation";
+import Button from "@/app/components/Button";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 
 const Footer = () => {
-    const pathname = usePathname();
+    const router = useRouter();
+    const params = useParams();
+    const stayId = params.stayId;
+    // console.log(params);
+
+    const handleCheckoutClick = () => {
+        router.push(`/stays/${stayId}/addons`);
+    };
 
     return (
-        <div className={styles["footer"]}>
-            <Tab active={pathname === "/"} icon="/assets/images/icon.svg" text="Home" href="/" />
-            <Tab active={pathname === "/stays"} icon="/assets/images/icon.svg" text="Stays" href="/stays" />
-            <Tab active={pathname === "/"} icon="/assets/images/icon.svg" text="Home" href="/" />
-            <Tab active={pathname === "/"} icon="/assets/images/icon.svg" text="Home" href="/" />
-            <Tab active={pathname === "/"} icon="/assets/images/icon.svg" text="Home" href="/" />
+        <div className={styles["footer"]} onClick={handleCheckoutClick}>
+            <Button type="primary" large>
+                Proceed to Checkout
+                <Image
+                    src="/assets/images/arrow-forward.svg"
+                    width={20}
+                    height={20}
+                    alt="arrow"
+                ></Image>
+            </Button>
         </div>
     );
 };

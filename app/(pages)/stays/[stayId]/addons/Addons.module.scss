@@ -1,2 +1,13 @@
+@import "../../../../styles/variables.scss";
+
 .addons {
+    &__fixed {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        background-color: $color-bg-primary;
+        border-radius: 2rem 2rem 0 0;
+        padding: 20px;
+        z-index: 8;
+    }
 }
