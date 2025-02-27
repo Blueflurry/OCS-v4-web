@@ -1,13 +1,19 @@
 "use client";
-import React from "react";
+import React, { forwardRef } from "react";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import styles from "./DateRangePicker.module.scss";
-import "react-datepicker/dist/react-datepicker.css";
 
 const DateRangePicker = (props) => {
     const [dateRange, setDateRange] = useState([null, null]);
     const [startDate, endDate] = dateRange;
+
+    const ExampleCustomInput = forwardRef(({ value, onClick, className }, ref) => (
+        <button className={className} onClick={onClick} ref={ref}>
+            {value}
+        </button>
+    ));
+
     return (
         <div className={styles["datepicker-container"]}>
             <DatePicker
@@ -18,7 +24,9 @@ const DateRangePicker = (props) => {
                 onChange={(update) => {
                     setDateRange(update);
                 }}
-                isClearable={true}
+                monthsShown={2}
+                withPortal
+                customInput={<ExampleCustomInput className="example-custom-input" />}
             />
         </div>
     );

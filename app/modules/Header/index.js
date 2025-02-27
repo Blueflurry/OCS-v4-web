@@ -2,11 +2,14 @@ import React from "react";
 import Image from "next/image";
 import Button from "../../components/Button";
 import styles from "./Header.module.scss";
+import Link from "next/link";
 
 const Header = () => {
     return (
         <div className={`${styles["header"]} container`}>
-            <Image src="/assets/images/logo.svg" alt="OneClick Stays" width={100} height={44} />
+            <Link href={"/"}>
+                <Image src="/assets/images/logo.svg" alt="OneClick Stays" width={100} height={44} />
+            </Link>
             <div className={`${styles["header__actions"]}`}>
                 <Button type="secondary">Login</Button>
                 <Button type="secondary" square>
