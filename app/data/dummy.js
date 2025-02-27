@@ -168,3 +168,70 @@ export const REVIEWS = {
         },
     ],
 };
+
+export const ADDONSERVICES = [
+    {
+        id: 1,
+        imgUrl: "/assets/images/activity-1.svg",
+        serviceName: "Private Chef",
+        pricePerNight: "Rs. 2000/day",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    },
+    {
+        id: 2,
+        imgUrl: "/assets/images/activity-1.svg",
+        serviceName: "Butler",
+        pricePerNight: "Rs. 1500/day",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    },
+    {
+        id: 3,
+        imgUrl: "/assets/images/activity-1.svg",
+        serviceName: "Housekeeping",
+        pricePerNight: "Rs. 1000/day",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    },
+    {
+        id: 4,
+        imgUrl: "/assets/images/activity-1.svg",
+        serviceName: "Security",
+        pricePerNight: "Rs. 800/day",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    },
+    {
+        id: 5,
+        imgUrl: "/assets/images/activity-1.svg",
+        serviceName: "Driver",
+        pricePerNight: "Rs. 1200/day",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    },
+    {
+        id: 6,
+        imgUrl: "/assets/images/activity-1.svg",
+        serviceName: "Spa",
+        pricePerNight: "Rs. 2500/day",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    },
+    {
+        id: 7,
+        imgUrl: "/assets/images/activity-1.svg",
+        serviceName: "Gym",
+        pricePerNight: "Rs. 1000/day",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    },
+
+    {
+        id: 8,
+        imgUrl: "/assets/images/activity-1.svg",
+        serviceName: "Yoga",
+        pricePerNight: "Rs. 800/day",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    },
+    {
+        id: 9,
+        imgUrl: "/assets/images/activity-1.svg",
+        serviceName: "Pool",
+        pricePerNight: "Rs. 500/day",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    },
+];
