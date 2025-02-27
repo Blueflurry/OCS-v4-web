@@ -12,6 +12,7 @@ import Reviews from "@/app/components/Reviews";
 import Header from "@/app/modules/Header";
 import PartnerLogo from "@/app/components/PartnerLogo";
 import GoogleMapComponent from "@/app/components/GMap";
+import BackButton from "@/app/components/BackButton";
 
 const StayDetails = () => {
     return (
@@ -22,6 +23,8 @@ const StayDetails = () => {
             <div className={`${styles["stay-details"]} container`}>
                 <div className={styles["stay-details__carousel"]}>
                     <HeroImageCarousel images={VILLA_IMAGES} />
+                    <BackButton></BackButton>
+
                     {/* <Categories images={VILLA_IMAGES}></Categories> */}
 
                     {/* progress bar */}

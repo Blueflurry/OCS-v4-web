@@ -4,6 +4,10 @@
     padding: 0 !important;
     background-color: $color-bg-primary;
 
+    &__carousel {
+        position: relative;
+    }
+
     &__progress-bar {
         display: flex;
     }
@@ -97,6 +101,7 @@
         justify-content: space-between;
         gap: 4px;
     }
+
     &__location {
         display: flex;
         align-items: center;
@@ -133,6 +138,7 @@
 
         p {
             font-size: 0.7rem;
+            padding-left: 4px;
         }
     }
 
@@ -234,10 +240,10 @@
     }
 }
 
-.padding {
-    display: block;
-    margin-bottom: 100px;
-}
+// .padding {
+//     display: block;
+//     margin-bottom: 100px;
+// }
 
 @media (max-width: $breakpoint-md) {
     .hide-on-mobile {

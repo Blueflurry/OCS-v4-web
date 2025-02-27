@@ -68,8 +68,8 @@ const Reviews = () => {
             </div>
 
             <div className={styles["reviews__gallery"]}>
-                {reviews.photoReviews.map((review) => (
-                    <div className={styles["reviews__gallery-card"]}>
+                {reviews.photoReviews.map((review, idx) => (
+                    <div className={styles["reviews__gallery-card"]} key={idx}>
                         <Image
                             className={styles["reviews__gallery-card-img"]}
                             src={review.img}
@@ -124,8 +124,8 @@ const Reviews = () => {
             </div>
 
             <div className={styles["reviews__comments"]}>
-                {reviews.comments.map((comment) => (
-                    <>
+                {reviews.comments.map((comment, idx) => (
+                    <div key={idx}>
                         <div className={styles["reviews__comments-title"]}>
                             <div
                                 className={
@@ -158,12 +158,13 @@ const Reviews = () => {
                                         ]
                                     }
                                 >
-                                    {[1, 2, 3, 4].map((item) => (
+                                    {[1, 2, 3, 4].map((item, idx) => (
                                         <Image
                                             src="/assets/images/full-rating-star.svg"
                                             width={20}
                                             height={20}
                                             alt="rating"
+                                            key={idx}
                                         />
                                     ))}
                                     <Image
@@ -181,7 +182,7 @@ const Reviews = () => {
                         >
                             <p>{comment.review}</p>
                         </div>
-                    </>
+                    </div>
                 ))}
             </div>
         </div>
