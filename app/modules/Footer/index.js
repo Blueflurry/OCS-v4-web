@@ -10,7 +10,7 @@ const Footer = () => {
     const pathname = usePathname();
     const params = useParams();
     const stayId = params.stayId;
-    console.log(pathname);
+    // console.log(pathname);
     // console.log(params);
 
     const handleCheckoutClick = () => {

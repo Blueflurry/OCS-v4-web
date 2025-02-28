@@ -8,7 +8,7 @@ const BackButton = () => {
     const router = useRouter();
 
     const onClickBackBtn = () => {
-        console.log("Back Button Clicked");
+        // console.log("Back Button Clicked");
         router.back();
     };
 

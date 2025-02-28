@@ -17,7 +17,7 @@ import Footer from "@/app/modules/Footer";
 
 const StayDetails = async ({ params }) => {
     const { stayId } = await params;
-    console.log(stayId);
+    // console.log(stayId);
 
     return (
         <>
