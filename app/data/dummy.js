@@ -172,6 +172,7 @@ export const REVIEWS = {
 export const ADDONSERVICES = [
     {
         id: 1,
+        isChecked: false,
         imgUrl: "/assets/images/activity-1.svg",
         serviceName: "Private Chef",
         pricePerNight: "Rs. 2000/day",
@@ -179,6 +180,7 @@ export const ADDONSERVICES = [
     },
     {
         id: 2,
+        isChecked: false,
         imgUrl: "/assets/images/activity-1.svg",
         serviceName: "Butler",
         pricePerNight: "Rs. 1500/day",
@@ -186,6 +188,7 @@ export const ADDONSERVICES = [
     },
     {
         id: 3,
+        isChecked: false,
         imgUrl: "/assets/images/activity-1.svg",
         serviceName: "Housekeeping",
         pricePerNight: "Rs. 1000/day",
@@ -193,6 +196,7 @@ export const ADDONSERVICES = [
     },
     {
         id: 4,
+        isChecked: false,
         imgUrl: "/assets/images/activity-1.svg",
         serviceName: "Security",
         pricePerNight: "Rs. 800/day",
@@ -200,6 +204,7 @@ export const ADDONSERVICES = [
     },
     {
         id: 5,
+        isChecked: false,
         imgUrl: "/assets/images/activity-1.svg",
         serviceName: "Driver",
         pricePerNight: "Rs. 1200/day",
@@ -207,6 +212,7 @@ export const ADDONSERVICES = [
     },
     {
         id: 6,
+        isChecked: false,
         imgUrl: "/assets/images/activity-1.svg",
         serviceName: "Spa",
         pricePerNight: "Rs. 2500/day",
@@ -214,6 +220,7 @@ export const ADDONSERVICES = [
     },
     {
         id: 7,
+        isChecked: false,
         imgUrl: "/assets/images/activity-1.svg",
         serviceName: "Gym",
         pricePerNight: "Rs. 1000/day",
@@ -222,6 +229,7 @@ export const ADDONSERVICES = [
 
     {
         id: 8,
+        isChecked: false,
         imgUrl: "/assets/images/activity-1.svg",
         serviceName: "Yoga",
         pricePerNight: "Rs. 800/day",
@@ -229,6 +237,7 @@ export const ADDONSERVICES = [
     },
     {
         id: 9,
+        isChecked: false,
         imgUrl: "/assets/images/activity-1.svg",
         serviceName: "Pool",
         pricePerNight: "Rs. 500/day",

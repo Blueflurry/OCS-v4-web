@@ -7,11 +7,13 @@
 
     &__header {
         // padding: 80px 20px 20px 40px;
-        padding: 20px;
+        padding: 30px 20px 30px;
 
         h2 {
+            font-size: 1.5rem;
             font-weight: 500;
-            margin-bottom: 10px;
+            margin: 4px 0;
+            text-align: center;
 
             span {
                 color: $color-primary;
@@ -20,10 +22,32 @@
             }
         }
 
+        &--partner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            // padding: 20px 20px 0 20px;
+            background-color: $color-bg-secondary;
+            border-radius: 20px;
+            margin-top: 10px;
+
+            span {
+                color: $color-text-tertiary;
+            }
+
+            img {
+                width: 90px;
+                height: auto;
+                object-fit: cover;
+            }
+        }
+
         p {
-            // color: $color-text-secondary;
+            color: $color-text-tertiary;
             font-size: 0.9rem;
             font-weight: 400;
+            text-align: center;
 
             span {
                 padding: 0 4px;
@@ -32,14 +56,29 @@
     }
 
     &__listing {
-        background-color: $color-bg-tertiary;
+        background-color: #fafafa;
         color: $color-text-black;
-
         border-radius: 24px 24px 0 0;
         position: relative;
         display: block;
         margin-top: 10px;
         padding: 44px 12px;
+
+        h4 {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        &--description {
+            margin: 0 auto 24px;
+            color: #6d6d6d;
+            font-size: 0.9rem;
+            font-weight: 400;
+            text-align: center;
+            max-width: 300px;
+        }
 
         &::after {
             content: "";
@@ -54,25 +93,78 @@
             transform: translateX(-50%);
         }
 
+        &--row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+
+            &-checkLabel {
+                // padding: 4px 8px;
+
+                /* Hide the default checkbox */
+                input[type="checkbox"] {
+                    appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    width: 30px;
+                    height: 30px;
+                    border: 1px solid #6d6d6d;
+                    border-radius: 50%;
+                    background-color: #fafafa;
+                    position: relative;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+
+                    &:focus-visible {
+                        outline: none;
+                    }
+                }
+
+                /* Creating the checkmark */
+                input[type="checkbox"]::after {
+                    content: "";
+                    position: absolute;
+                    left: 8px;
+                    top: 1px;
+                    width: 8px;
+                    height: 18px;
+                    border: solid #6d6d6d; /* Green checkmark */
+                    border-width: 0 3px 3px 0;
+                    transform: rotate(45deg);
+                    display: none;
+                }
+
+                /* Show the checkmark when checked */
+                input[type="checkbox"]:checked::after {
+                    display: block;
+                }
+            }
+        }
+
         &--item {
             display: flex;
-            // align-items: center;
+            align-items: center;
             padding: 12px;
             margin-bottom: 12px;
-            background-color: $color-bg-light-grey;
-            border-bottom: 1px solid $color-border-primary;
+            background-color: $color-bg-tertiary;
+            // border: 1px solid rgba(black, 0.025);
+            box-shadow: 0 0 1px rgba(black, 0.1), 0 2px 8px rgba(black, 0.075);
             border-radius: 20px;
 
             &:last-child {
                 border-bottom: none;
             }
 
+            &--selected {
+                border: 1px solid rgba(black, 0.1);
+                background-color: #f0f0f0;
+            }
+
             &-image {
-                img {
-                    width: 120px;
-                    height: auto;
-                    object-fit: cover;
-                }
+                height: auto;
+                width: 120px;
+                object-fit: cover;
             }
 
             &-details {
@@ -119,12 +211,12 @@
         background-color: $color-bg-primary;
         color: $color-text-primary;
         border-radius: 20px 20px 0 0;
-        padding: 24px 10px 4px;
+        padding: 18px 5px 0px;
         z-index: 8;
 
         &--image {
             img {
-                width: 100px;
+                width: 80px;
                 height: auto;
                 object-fit: cover;
             }
