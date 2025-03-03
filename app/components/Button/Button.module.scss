@@ -36,6 +36,14 @@
         }
     }
 
+    &--half-fill {
+        background: linear-gradient(to right, $color-primary 50%, #fff4cd 50%);
+    }
+
+    &--sixtyfive-fill {
+        background: linear-gradient(to right, $color-primary 65%, #fff4cd 35%);
+    }
+
     &--large {
         padding: 26px 80px;
         font-size: 0.9rem;

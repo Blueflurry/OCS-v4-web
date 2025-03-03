@@ -173,7 +173,7 @@ export const ADDONSERVICES = [
     {
         id: 1,
         isChecked: false,
-        imgUrl: "/assets/images/activity-1.svg",
+        imgUrl: "/assets/images/addons-1.svg",
         serviceName: "Private Chef",
         pricePerNight: "Rs. 2000/day",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -181,7 +181,7 @@ export const ADDONSERVICES = [
     {
         id: 2,
         isChecked: false,
-        imgUrl: "/assets/images/activity-1.svg",
+        imgUrl: "/assets/images/addons-2.svg",
         serviceName: "Butler",
         pricePerNight: "Rs. 1500/day",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -189,15 +189,15 @@ export const ADDONSERVICES = [
     {
         id: 3,
         isChecked: false,
-        imgUrl: "/assets/images/activity-1.svg",
-        serviceName: "Housekeeping",
+        imgUrl: "/assets/images/addons-3.svg",
+        serviceName: "HousekeepHHousekeepingousekeeping Housekeeping",
         pricePerNight: "Rs. 1000/day",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     },
     {
         id: 4,
         isChecked: false,
-        imgUrl: "/assets/images/activity-1.svg",
+        imgUrl: "/assets/images/addons-4.svg",
         serviceName: "Security",
         pricePerNight: "Rs. 800/day",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -205,7 +205,7 @@ export const ADDONSERVICES = [
     {
         id: 5,
         isChecked: false,
-        imgUrl: "/assets/images/activity-1.svg",
+        imgUrl: "/assets/images/addons-1.svg",
         serviceName: "Driver",
         pricePerNight: "Rs. 1200/day",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -213,7 +213,7 @@ export const ADDONSERVICES = [
     {
         id: 6,
         isChecked: false,
-        imgUrl: "/assets/images/activity-1.svg",
+        imgUrl: "/assets/images/addons-2.svg",
         serviceName: "Spa",
         pricePerNight: "Rs. 2500/day",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -221,7 +221,7 @@ export const ADDONSERVICES = [
     {
         id: 7,
         isChecked: false,
-        imgUrl: "/assets/images/activity-1.svg",
+        imgUrl: "/assets/images/addons-3.svg",
         serviceName: "Gym",
         pricePerNight: "Rs. 1000/day",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -230,7 +230,7 @@ export const ADDONSERVICES = [
     {
         id: 8,
         isChecked: false,
-        imgUrl: "/assets/images/activity-1.svg",
+        imgUrl: "/assets/images/addons-4.svg",
         serviceName: "Yoga",
         pricePerNight: "Rs. 800/day",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -238,9 +238,27 @@ export const ADDONSERVICES = [
     {
         id: 9,
         isChecked: false,
-        imgUrl: "/assets/images/activity-1.svg",
+        imgUrl: "/assets/images/addons-1.svg",
         serviceName: "Pool",
         pricePerNight: "Rs. 500/day",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    },
+];
+
+export const PAGES = [
+    {
+        id: 1,
+        title: "Stay Details",
+        url: "/stays/[stayId]",
+    },
+    {
+        id: 2,
+        title: "Addons",
+        url: "/stays/[stayId]/addons",
+    },
+    {
+        id: 3,
+        title: "Checkout",
+        url: "/stays/[stayId]/checkout",
     },
 ];

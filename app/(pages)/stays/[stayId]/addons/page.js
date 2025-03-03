@@ -19,7 +19,8 @@ const Addons = ({ params }) => {
             const updatedServices = prev.map((ct) =>
                 ct.id == value ? { ...ct, isChecked: checked } : ct
             );
-            return updatedServices.sort((a, b) => b.isChecked - a.isChecked);
+            return updatedServices;
+            // .sort((a, b) => b.isChecked - a.isChecked);
         });
     };
 
@@ -53,10 +54,14 @@ const Addons = ({ params }) => {
 
             {/* addons listing */}
             <div className={styles["addons__listing"]}>
+                <h4>Pay at Stay</h4>
                 <p className={styles["addons__listing--description"]}>
-                    Exclusive in-stay services from Elivaas on OneClick Stay
+                    {/* Exclusive in-stay services from Elivaas on OneClick Stay
                     bookings. Tap to select, pay later at the stay, with 0%
-                    commission.
+                    commission. */}
+                    Our team will contact you after you confirm your booking for
+                    these services. You don't have to pay at the time of
+                    booking.
                 </p>
                 {services.map((service, index) => (
                     <div
@@ -86,6 +91,14 @@ const Addons = ({ params }) => {
                                     ? styles["addons__listing--item--selected"]
                                     : ""
                             }`}
+                            onClick={() =>
+                                onChangeCheckBox({
+                                    target: {
+                                        value: service.id,
+                                        checked: !service.isChecked,
+                                    },
+                                })
+                            }
                         >
                             <Image
                                 src={service.imgUrl}

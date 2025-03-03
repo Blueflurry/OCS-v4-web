@@ -28,7 +28,7 @@
             justify-content: center;
             gap: 8px;
             // padding: 20px 20px 0 20px;
-            background-color: $color-bg-secondary;
+            // background-color: $color-bg-secondary;
             border-radius: 20px;
             margin-top: 10px;
 
@@ -72,7 +72,7 @@
         }
 
         &--description {
-            margin: 0 auto 24px;
+            margin: 0 auto 30px;
             color: #6d6d6d;
             font-size: 0.9rem;
             font-weight: 400;
@@ -94,8 +94,10 @@
         }
 
         &--row {
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 20px auto;
+            max-width: calc(100vw - 20px);
+            // justify-content: center;
             align-items: center;
             gap: 8px;
 
@@ -107,9 +109,9 @@
                     appearance: none;
                     -webkit-appearance: none;
                     -moz-appearance: none;
-                    width: 30px;
-                    height: 30px;
-                    border: 1px solid #6d6d6d;
+                    width: 20px;
+                    height: 20px;
+                    border: 1px solid #aaa;
                     border-radius: 50%;
                     background-color: #fafafa;
                     position: relative;
@@ -125,19 +127,27 @@
                 input[type="checkbox"]::after {
                     content: "";
                     position: absolute;
-                    left: 8px;
-                    top: 1px;
-                    width: 8px;
-                    height: 18px;
-                    border: solid #6d6d6d; /* Green checkmark */
-                    border-width: 0 3px 3px 0;
-                    transform: rotate(45deg);
-                    display: none;
+                    left: calc((8px / 18px) * 8px) * 1.8;
+                    top: 3px;
+                    width: calc((8px / 18px) * 8px);
+                    height: 8px;
+                    border: solid #fff; /* Green checkmark */
+                    border-width: 0 2px 2px 0;
+                    transform: rotate(0);
+                    opacity: 0;
+                    transition: all 0.3s ease;
+                    // display: none;
                 }
 
                 /* Show the checkmark when checked */
                 input[type="checkbox"]:checked::after {
-                    display: block;
+                    transform: rotate(45deg);
+                    opacity: 1;
+                }
+
+                input[type="checkbox"]:checked {
+                    background-color: $color-primary;
+                    border-color: $color-primary;
                 }
             }
         }
@@ -148,23 +158,31 @@
             padding: 12px;
             margin-bottom: 12px;
             background-color: $color-bg-tertiary;
-            // border: 1px solid rgba(black, 0.025);
+            border: 1px solid rgba(black, 0);
             box-shadow: 0 0 1px rgba(black, 0.1), 0 2px 8px rgba(black, 0.075);
             border-radius: 20px;
+            // max-width: calc(100vw - 50px);
 
-            &:last-child {
-                border-bottom: none;
-            }
+            // &:last-child {
+            //     border-bottom: none;
+            // }
 
             &--selected {
-                border: 1px solid rgba(black, 0.1);
-                background-color: #f0f0f0;
+                // border: 1px solid #cfcfcf;
+                // background-color: #f7f7f7;
+                background-color: black;
+                color: white;
+
+                p {
+                    color: rgba(white, 0.75) !important;
+                }
             }
 
             &-image {
-                height: auto;
-                width: 120px;
+                height: 80px;
+                width: 180px;
                 object-fit: cover;
+                border-radius: 8px;
             }
 
             &-details {
@@ -178,6 +196,7 @@
                     font-size: 1rem;
                     font-weight: 500;
                     margin-bottom: 2px;
+                    word-break: break-word;
                 }
 
                 h4 {
@@ -188,7 +207,7 @@
                     span {
                         // color: $color-primary;
                         font-weight: 500;
-                        padding-left: 4px;
+                        // padding-left: 4px;
                     }
                 }
 
