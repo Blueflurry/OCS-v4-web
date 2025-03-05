@@ -5,7 +5,8 @@ import Link from "next/link";
 
 export const metadata = {
     title: "OneClick Stays | Luxury Villas and Apartment at lowest price guaranteed",
-    description: "OneClick Stays provides Luxury Villas and Apartment at lowest price guaranteed",
+    description:
+        "OneClick Stays provides Luxury Villas and Apartment at lowest price guaranteed",
     other: {
         "gtag-id": "G-WWB084J6BG", // Replace with your GA4 Measurement ID
         "hotjar-id": "5249346", // Replace with your Hotjar ID
@@ -18,7 +19,10 @@ export default function RootLayout({ children }) {
         <html lang="en">
             <head>
                 {/* Google Analytics Script */}
-                <script async src={`https://www.googletagmanager.com/gtag/js?id=${metadata.other["gtag-id"]}`} />
+                <script
+                    async
+                    src={`https://www.googletagmanager.com/gtag/js?id=${metadata.other["gtag-id"]}`}
+                />
                 <script
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -50,16 +54,28 @@ export default function RootLayout({ children }) {
             <body>
                 <main>{children}</main>
                 <section id="no-content">
-                    <Image src="/assets/images/logo.svg" alt="OneClick Stays" width={150} height={90} />
+                    <Image
+                        src="/assets/images/logo.svg"
+                        alt="OneClick Stays"
+                        width={150}
+                        height={90}
+                    />
                     <div>
-                        <h1>Our website is currently only available in Mobile devices.</h1>
+                        <h1>
+                            Our website is currently only available in Mobile
+                            devices.
+                        </h1>
                         <p>
-                            Please visit <Link href={"https://oneclickstays.com"}>www.oneclickstays.com</Link> on your mobile for the best stay
-                            booking experience globally.
+                            Please visit{" "}
+                            <Link href={"https://oneclickstays.com"}>
+                                www.oneclickstays.com
+                            </Link>{" "}
+                            on your mobile for the best stay booking experience
+                            globally.
                         </p>
                     </div>
                 </section>
-                <FooterWithoutTabs />
+                {/* <FooterWithoutTabs /> */}
             </body>
         </html>
     );

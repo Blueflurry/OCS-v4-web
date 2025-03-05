@@ -1,0 +1,11 @@
+@import "../../../../styles/variables.scss";
+
+.payment {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-bg-primary;
+    color: white;
+    padding: 0 4px;
+}

@@ -262,6 +262,18 @@ export const PAGES = [
         id: 3,
         title: "Checkout",
         url: "/stays/${stayId}/checkout",
-        nextUrl: "/stays/${stayId}/pay",
+        nextUrl: "/stays/${stayId}/payment",
+    },
+    {
+        id: 4,
+        title: "Payment in Progress",
+        url: "/stays/${stayId}/payment",
+        nextUrl: "/stays/${stayId}/payment-success",
+    },
+    {
+        id: 5,
+        title: "Payment Success",
+        url: "/stays/${stayId}/payment-success",
+        // nextUrl: "/stays/${stayId}/pay",
     },
 ];
