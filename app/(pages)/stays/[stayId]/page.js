@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import styles from "./StayDetails.module.scss";
 import HeroImageCarousel from "@/app/components/HeroImageCarousel";
 import { ADDONSERVICES, VILLA_IMAGES } from "@/app/data/dummy";
@@ -16,8 +16,8 @@ import GoogleMapComponent from "@/app/components/GMap";
 import BackButton from "@/app/components/BackButton";
 import Footer from "@/app/modules/Footer";
 
-const StayDetails = async ({ params }) => {
-    const { stayId } = await params;
+const StayDetails = ({ params }) => {
+    const { stayId } = use(params);
     const [services, setServices] = useState(ADDONSERVICES);
 
     return (
