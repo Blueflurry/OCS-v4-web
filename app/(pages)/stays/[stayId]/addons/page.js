@@ -4,12 +4,12 @@ import styles from "./Addons.module.scss";
 import Image from "next/image";
 import Footer from "@/app/modules/Footer";
 import BackButton from "@/app/components/BackButton";
-// import { ADDONSERVICES } from "@/app/data/dummy";
 import PartnerLogo from "@/app/components/PartnerLogo";
+import { ADDONSERVICES } from "@/app/data/dummy";
 
 const Addons = ({ params }) => {
     const { stayId } = use(params);
-    const [services, setServices] = useState([]);
+    const [services, setServices] = useState([...ADDONSERVICES]);
 
     const onChangeCheckBox = (event) => {
         const { value, checked } = event.target;
@@ -137,7 +137,7 @@ const Addons = ({ params }) => {
                 </div>
                 <div className={styles["addons__fixed--details"]}>
                     <h4>CEO’s Paradise - OneClick Exclusive</h4>
-                    <p>Rs. 4,000/night</p>
+                    <p>₹ 4,000/night</p>
                     <p>Mar 24, 2025 - Mar 30, 2025</p>
                 </div>
             </div>

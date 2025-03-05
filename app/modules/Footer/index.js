@@ -23,38 +23,46 @@ const Footer = () => {
     // console.log(params);
 
     const handleCheckoutClick = () => {
-        if (pathname.includes("/addons")) {
-            setCurrentPage(PAGES[2]);
-            router.push(`/stays/${stayId}/checkout`);
-            return;
-        } else {
-            setCurrentPage(PAGES[1]);
-            router.push(`/stays/${stayId}/addons`);
-            return;
+        // console.log("pathname", pathname);
+        // let stayId = params.stayId;
+
+        for (let idx = 0; idx < PAGES.length; idx++) {
+            let page = PAGES[idx];
+            page.url = page.url.replace("${stayId}", stayId);
+            page.nextUrl = page.nextUrl.replace("${stayId}", stayId);
+            console.log("page.url", page.url, pathname, page.nextUrl);
+            if (pathname === page.url) {
+                // setCurrentPage(page);
+                router.push(page.nextUrl);
+                break; // Exit the loop
+            }
         }
     };
 
     useEffect(() => {
-        // if (pathname.includes("/addons")) setButtonType("half-fill");
-        // else setButtonType("sixtyfive-fill");
+        if (pathname.includes("/addons")) {
+            setButtonType("half-fill");
+            setCurrentPage(PAGES[1]);
+        }
+
+        if (pathname.includes("/checkout")) {
+            setCurrentPage(PAGES[2]);
+            // setButtonType("sixtyfive-fill");
+        }
     }, [pathname]);
 
     return (
         <div className={styles["footer"]} onClick={handleCheckoutClick}>
             <Button type={buttonType} large>
-                Proceed to Checkout
-                {currentPage.id == 1 ? (
-                    <Image
-                        src="/assets/images/arrow-forward.svg"
-                        width={20}
-                        height={20}
-                        alt="arrow"
-                    ></Image>
-                ) : currentPage.id == 2 ? (
-                    <span>with 50%</span>
-                ) : (
-                    <span>Pay now</span>
-                )}
+                {currentPage.id == 1 || currentPage.id == 2
+                    ? "Proceed to Checkout"
+                    : "Pay now"}
+                <Image
+                    src="/assets/images/arrow-forward.svg"
+                    width={20}
+                    height={20}
+                    alt="arrow"
+                ></Image>
             </Button>
         </div>
     );
