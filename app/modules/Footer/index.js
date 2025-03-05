@@ -7,32 +7,37 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { PAGES } from "@/app/data/dummy";
 
 const Footer = () => {
+    const [services, setServices] = useState([]);
+
     const router = useRouter();
     const params = useParams();
     const stayId = params.stayId;
     const pathname = usePathname();
     // console.log(pathname);
-    var currentPage = PAGES[0];
-    var [buttonType, setButtonType] = useState("primary");
+
+    // console.log(services);
+
+    const [currentPage, setCurrentPage] = useState(PAGES[0]);
+    const [buttonType, setButtonType] = useState("primary");
     // type = pathname.includes("/addons") ? "secondary" : "primary";
     // console.log(params);
 
     const handleCheckoutClick = () => {
         if (pathname.includes("/addons")) {
-            currentPage = PAGES[2];
+            setCurrentPage(PAGES[2]);
             router.push(`/stays/${stayId}/checkout`);
             return;
         } else {
-            currentPage = PAGES[1];
+            setCurrentPage(PAGES[1]);
             router.push(`/stays/${stayId}/addons`);
             return;
         }
     };
 
-    // useEffect(() => {
-    //     if (pathname.includes("/addons")) setButtonType("half-fill");
-    //     else setButtonType("sixtyfive-fill");
-    // }, [pathname]);
+    useEffect(() => {
+        // if (pathname.includes("/addons")) setButtonType("half-fill");
+        // else setButtonType("sixtyfive-fill");
+    }, [pathname]);
 
     return (
         <div className={styles["footer"]} onClick={handleCheckoutClick}>

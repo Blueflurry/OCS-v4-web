@@ -1,7 +1,8 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import styles from "./StayDetails.module.scss";
 import HeroImageCarousel from "@/app/components/HeroImageCarousel";
-import { VILLA_IMAGES } from "@/app/data/dummy";
+import { ADDONSERVICES, VILLA_IMAGES } from "@/app/data/dummy";
 import Categories from "@/app/components/Categories";
 import Image from "next/image";
 import DateRangePicker from "@/app/components/DateRangePicker";
@@ -17,7 +18,7 @@ import Footer from "@/app/modules/Footer";
 
 const StayDetails = async ({ params }) => {
     const { stayId } = await params;
-    // console.log(stayId);
+    const [services, setServices] = useState(ADDONSERVICES);
 
     return (
         <>

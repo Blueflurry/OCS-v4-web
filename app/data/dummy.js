@@ -190,7 +190,7 @@ export const ADDONSERVICES = [
         id: 3,
         isChecked: false,
         imgUrl: "/assets/images/addons-3.svg",
-        serviceName: "HousekeepHHousekeepingousekeeping Housekeeping",
+        serviceName: "Housekeeping",
         pricePerNight: "Rs. 1000/day",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     },

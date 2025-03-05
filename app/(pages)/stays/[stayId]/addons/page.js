@@ -1,16 +1,15 @@
 "use client";
-import React, { use, useState, useEffect } from "react";
+import React, { use, useState } from "react";
 import styles from "./Addons.module.scss";
 import Image from "next/image";
 import Footer from "@/app/modules/Footer";
 import BackButton from "@/app/components/BackButton";
-import { ADDONSERVICES } from "@/app/data/dummy";
+// import { ADDONSERVICES } from "@/app/data/dummy";
 import PartnerLogo from "@/app/components/PartnerLogo";
 
 const Addons = ({ params }) => {
     const { stayId } = use(params);
-    const [services, setServices] = useState(ADDONSERVICES);
-    // console.log(stayId);
+    const [services, setServices] = useState([]);
 
     const onChangeCheckBox = (event) => {
         const { value, checked } = event.target;
@@ -143,7 +142,7 @@ const Addons = ({ params }) => {
                 </div>
             </div>
 
-            <Footer></Footer>
+            <Footer />
         </div>
     );
 };
