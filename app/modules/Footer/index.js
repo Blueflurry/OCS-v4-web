@@ -41,7 +41,7 @@ const Footer = () => {
 
     useEffect(() => {
         if (pathname.includes("/addons")) {
-            setButtonType("half-fill");
+            // setButtonType("half-fill");
             setCurrentPage(PAGES[1]);
         }
 
@@ -54,9 +54,11 @@ const Footer = () => {
     return (
         <div className={styles["footer"]} onClick={handleCheckoutClick}>
             <Button type={buttonType} large>
-                {currentPage.id == 1 || currentPage.id == 2
-                    ? "Proceed to Checkout"
-                    : "Pay now"}
+                <span>
+                    {currentPage.id == 1 || currentPage.id == 2
+                        ? "Proceed to Checkout"
+                        : "Pay now"}
+                </span>
                 <Image
                     src="/assets/images/arrow-forward.svg"
                     width={20}
