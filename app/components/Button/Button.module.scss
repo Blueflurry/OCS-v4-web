@@ -54,4 +54,14 @@
         width: 40px;
         height: 40px;
     }
+
+    &--input {
+        background-color: $color-bg-secondary;
+        color: $color-text-primary;
+        justify-content: flex-start;
+        gap: 16px;
+        padding: 26px 16px;
+        width: 100%;
+        font-weight: 500;
+    }
 }

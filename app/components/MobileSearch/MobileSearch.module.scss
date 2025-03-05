@@ -3,11 +3,11 @@
 .mobile-search {
     position: fixed;
     z-index: $z-index-modal;
-    opacity: 0;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
+    opacity: 0;
     transform: scale(0.9);
     background-color: black;
     transition: all 200ms ease-in-out;
@@ -17,6 +17,18 @@
         transform: scale(1);
         pointer-events: all;
         opacity: 1;
+    }
+
+    &__input {
+        padding: 16px 16px 16px 48px;
+        border-radius: 200px;
+        display: flex;
+        width: 100%;
+        border: none;
+        background-color: $color-bg-input;
+        color: $color-text-primary;
+        font-size: 14px;
+        z-index: -1;
     }
 }
 
