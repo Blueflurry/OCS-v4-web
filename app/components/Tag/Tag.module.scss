@@ -1,2 +1,17 @@
+@import "../../styles/variables.scss";
+
 .tag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // padding: 10px;
+
+    &--info {
+        background-color: $color-info;
+        color: $color-primary;
+        border-radius: 24px;
+        padding: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
 }

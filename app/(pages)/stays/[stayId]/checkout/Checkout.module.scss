@@ -21,6 +21,8 @@
         background-color: #fafafa;
         color: $color-text-black;
         padding: 8px 0;
+        min-height: calc(100vh - 128px);
+        overflow: scroll;
 
         &:last-child {
             padding: 20px;
@@ -158,4 +160,8 @@
             }
         }
     }
+}
+
+.padding {
+    padding-bottom: 72px;
 }

@@ -15,6 +15,7 @@ $color-text-tertiary: #a9aaaa;
 $color-text-black: #000000;
 $color-text-muted: #ffffff80;
 $color-success: #1fa130;
+$color-info: lighten($color-primary, 45%);
 
 $z-index-content: 96;
 $z-index-layout: 97;

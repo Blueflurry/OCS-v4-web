@@ -37,11 +37,11 @@ const Checkout = ({}) => {
                         <p>₹98000</p>
                     </div>
                     <div className={styles["checkout__price-breakup--item"]}>
-                        <h4>@SGST (8%)</h4>
+                        <h4>SGST (8%)</h4>
                         <p>₹12000</p>
                     </div>
                     <div className={styles["checkout__price-breakup--item"]}>
-                        <h4>@IGST (8%)</h4>
+                        <h4>IGST (8%)</h4>
                         <p>₹12000</p>
                     </div>
                     <div className={styles["checkout__price-breakup--item"]}>
@@ -70,6 +70,8 @@ const Checkout = ({}) => {
                         <h4>Sea Food & Crabs</h4>
                     </div>
                 </div>
+
+                <div className={styles["padding"]}></div>
             </div>
 
             <Footer></Footer>
