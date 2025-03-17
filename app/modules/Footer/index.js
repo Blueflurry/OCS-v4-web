@@ -19,8 +19,8 @@ const Footer = ({ btnText, btnType = "primary", ...props }) => {
     const handleCheckoutClick = () => {
         for (let idx = 0; idx < PAGES.length; idx++) {
             let page = PAGES[idx];
-            page.url = page.url.replace("${stayId}", stayId);
-            page.nextUrl = page.nextUrl.replace("${stayId}", stayId);
+            page.url = page.url?.replace("${stayId}", stayId);
+            page.nextUrl = page.nextUrl?.replace("${stayId}", stayId);
             console.log("page.url", page.url, pathname, page.nextUrl);
             if (pathname === page.url) {
                 router.push(page.nextUrl);

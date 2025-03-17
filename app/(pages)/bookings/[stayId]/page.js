@@ -42,7 +42,10 @@ const BookingDetails = () => {
                     {/* <BadgeCheck style={{ stroke: "lightgreen" }} /> */}
                 </p>
 
-                <BackButton className={styles["booking__backbtn"]}></BackButton>
+                <BackButton
+                    className={styles["booking__backbtn"]}
+                    link="/bookings/upcoming"
+                ></BackButton>
             </div>
 
             <div className={styles["booking__details"]}>
