@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { PAGES } from "@/app/data/dummy";
 import { ArrowRight } from "lucide-react";
+import RazorpayButton from "@/app/components/RazorpayButton";
 
 const Footer = ({ btnText, btnType = "primary", ...props }) => {
     const router = useRouter();
@@ -21,10 +22,15 @@ const Footer = ({ btnText, btnType = "primary", ...props }) => {
             let page = PAGES[idx];
             page.url = page.url?.replace("${stayId}", stayId);
             page.nextUrl = page.nextUrl?.replace("${stayId}", stayId);
-            console.log("page.url", page.url, pathname, page.nextUrl);
+            // console.log("page.url", page.url, pathname, page.nextUrl);
+
+            if (btnType == "razorpay") {
+                return;
+            }
+
             if (pathname === page.url) {
                 router.push(page.nextUrl);
-                break; // Exit the loop
+                return; // Exit the loop
             }
         }
     };
@@ -51,38 +57,56 @@ const Footer = ({ btnText, btnType = "primary", ...props }) => {
 
     return (
         <div className={styles["footer"]} onClick={handleCheckoutClick}>
-            <Button type={btnType} large>
-                {btnType == "whatsapp" ? (
-                    <Image
-                        src="/assets/images/whatsapp-icon.webp"
-                        width={24}
-                        height={24}
-                        alt="arrow"
-                    ></Image>
-                ) : (
-                    <></>
-                )}
-                <span>
-                    {/* {currentPage.id == 1 || currentPage.id == 2
+            {btnType == "razorpay" ? (
+                <>
+                    <RazorpayButton></RazorpayButton>
+                </>
+            ) : (
+                <Button type={btnType} large>
+                    {btnType == "whatsapp" ? (
+                        <>
+                            <Image
+                                src="/assets/images/whatsapp-icon.webp"
+                                width={24}
+                                height={24}
+                                alt="arrow"
+                            ></Image>
+
+                            <span>
+                                {/* {currentPage.id == 1 || currentPage.id == 2
                         ? "Proceed to Checkout"
                         : "Pay now"} */}
 
-                    {btnText}
-                </span>
+                                {btnText}
+                            </span>
+                        </>
+                    ) : (
+                        <></>
+                    )}
 
-                {btnType != "whatsapp" ? (
-                    <Image
-                        src="/assets/images/arrow-forward.svg"
-                        width={20}
-                        height={20}
-                        alt="arrow"
-                    ></Image>
-                ) : (
-                    <></>
-                )}
+                    {btnType != "whatsapp" && btnType != "razorpay" ? (
+                        <>
+                            <span>
+                                {/* {currentPage.id == 1 || currentPage.id == 2
+                         ? "Proceed to Checkout"
+                         : "Pay now"} */}
 
-                {/* <ArrowRight /> */}
-            </Button>
+                                {btnText}
+                            </span>
+                            <Image
+                                src="/assets/images/arrow-forward.svg"
+                                width={20}
+                                height={20}
+                                alt="arrow"
+                            ></Image>
+                        </>
+                    ) : (
+                        <></>
+                    )}
+
+                    {/* <ArrowRight /> */}
+                </Button>
+            )}
         </div>
     );
 };

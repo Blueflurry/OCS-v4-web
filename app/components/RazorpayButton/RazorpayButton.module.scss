@@ -1,0 +1,21 @@
+@import "../../styles/variables";
+
+.razorpayBtn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+    margin: 6px;
+
+    background-color: $color-primary;
+    color: $color-text-black;
+    padding-left: 24px;
+    padding-right: 24px;
+    height: 52px;
+    border-radius: 2000px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}

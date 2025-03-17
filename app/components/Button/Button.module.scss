@@ -19,7 +19,8 @@
     font-weight: 600;
     transition: all 0.3s;
 
-    &--primary {
+    &--primary,
+    --razorpay {
         background-color: $color-primary;
         color: $color-text-black;
 
