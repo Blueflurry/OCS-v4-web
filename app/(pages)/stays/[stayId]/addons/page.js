@@ -142,7 +142,7 @@ const Addons = ({ params }) => {
                 </div>
             </div>
 
-            <Footer />
+            <Footer btnText="Proceed to checkout" />
         </div>
     );
 };

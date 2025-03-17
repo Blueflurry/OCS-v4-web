@@ -5,8 +5,9 @@ import Button from "@/app/components/Button";
 import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { PAGES } from "@/app/data/dummy";
+import { ArrowRight } from "lucide-react";
 
-const Footer = () => {
+const Footer = ({ btnText, btnType = "primary", ...props }) => {
     const router = useRouter();
     const params = useParams();
     const stayId = params.stayId;
@@ -50,18 +51,37 @@ const Footer = () => {
 
     return (
         <div className={styles["footer"]} onClick={handleCheckoutClick}>
-            <Button type={buttonType} large>
+            <Button type={btnType} large>
+                {btnType == "whatsapp" ? (
+                    <Image
+                        src="/assets/images/whatsapp-icon.webp"
+                        width={24}
+                        height={24}
+                        alt="arrow"
+                    ></Image>
+                ) : (
+                    <></>
+                )}
                 <span>
-                    {currentPage.id == 1 || currentPage.id == 2
+                    {/* {currentPage.id == 1 || currentPage.id == 2
                         ? "Proceed to Checkout"
-                        : "Pay now"}
+                        : "Pay now"} */}
+
+                    {btnText}
                 </span>
-                <Image
-                    src="/assets/images/arrow-forward.svg"
-                    width={20}
-                    height={20}
-                    alt="arrow"
-                ></Image>
+
+                {btnType != "whatsapp" ? (
+                    <Image
+                        src="/assets/images/arrow-forward.svg"
+                        width={20}
+                        height={20}
+                        alt="arrow"
+                    ></Image>
+                ) : (
+                    <></>
+                )}
+
+                {/* <ArrowRight /> */}
             </Button>
         </div>
     );

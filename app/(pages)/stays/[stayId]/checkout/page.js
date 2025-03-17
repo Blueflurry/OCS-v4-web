@@ -74,7 +74,7 @@ const Checkout = ({}) => {
                 <div className={styles["padding"]}></div>
             </div>
 
-            <Footer></Footer>
+            <Footer btnText="Proceed to checkout" />
         </div>
     );
 };

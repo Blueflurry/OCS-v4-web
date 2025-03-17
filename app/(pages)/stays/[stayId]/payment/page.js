@@ -10,16 +10,13 @@ import dynamic from "next/dynamic";
 import Button from "@/app/components/Button";
 import Link from "next/link";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+const coinsOnBooking = 50;
 
 const Payment = () => {
-    const message = "You have earned 50 OCS Coins";
-    const imgUrl = "/assets/images/ocs-coin.svg";
     const [animationFlag, setAnimationFlag] = useState(false);
 
     const handleAnimationEnterFrame = (frame) => {
-        console.log("frame", frame);
-        // if (frame === 50) {
-        // }
+        // console.log("frame", frame);
         setTimeout(() => {
             setAnimationFlag(true);
         }, 800);
@@ -41,19 +38,19 @@ const Payment = () => {
                         <p>Payment Completed Successfully.</p>
                         <Tag type="info">
                             <Image
-                                src={imgUrl}
+                                src={"/assets/images/ocs-coin.svg"}
                                 width={100}
                                 height={100}
                                 alt="OCS Coin"
                                 className={styles["payment__coin-image"]}
                             ></Image>
                             <span className={styles["payment__coin-message"]}>
-                                {message}
+                                You have earned {coinsOnBooking} OCS Coins
                             </span>
                         </Tag>
 
                         <Link
-                            href="/"
+                            href="/bookings/24"
                             className={styles["payment__bookingBtn"]}
                         >
                             <Button type="outline" large>

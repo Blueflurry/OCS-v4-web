@@ -74,4 +74,13 @@
         width: 100%;
         font-weight: 500;
     }
+
+    &--whatsapp {
+        background-color: $color-success;
+        color: $color-text-primary;
+
+        svg {
+            stroke: $color-text-primary;
+        }
+    }
 }

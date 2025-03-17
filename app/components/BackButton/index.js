@@ -4,7 +4,7 @@ import styles from "./BackButton.module.scss";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-const BackButton = () => {
+const BackButton = ({ className, ...props }) => {
     const router = useRouter();
 
     const onClickBackBtn = () => {
@@ -15,8 +15,9 @@ const BackButton = () => {
     return (
         <div
             tabIndex="-1"
-            className={styles["back-button"]}
+            className={`${styles["back-button"]} ${className}`}
             onClick={onClickBackBtn}
+            {...props}
         >
             <span className={styles["back-button--icon"]}>
                 <Image

@@ -159,7 +159,7 @@ const StayDetails = ({ params }) => {
                 </div>
             </div>
 
-            <Footer></Footer>
+            <Footer btnText="Proceed to checkout" />
         </>
     );
 };
