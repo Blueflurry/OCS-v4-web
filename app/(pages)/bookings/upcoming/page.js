@@ -36,57 +36,61 @@ const Upcoming = () => {
             </div>
 
             <div className={styles["upcoming-bookings__details"]}>
-                <div className={styles["upcoming-bookings__stay-details"]}>
-                    <div
-                        className={
-                            styles["upcoming-bookings__stay-details--image"]
-                        }
-                    >
-                        <Image
-                            src="/assets/images/villa-1.svg"
-                            width={100}
-                            height={100}
-                            alt="villa"
-                        ></Image>
-                    </div>
-                    <div
-                        className={
-                            styles["upcoming-bookings__stay-details--details"]
-                        }
-                    >
-                        <h4>
-                            <span>Booking ID:</span>
-                            #OCSBK299024
-                        </h4>
-                        <h3>CEO’s Paradise - OneClick Exclusive</h3>
-                        {/* <p>₹ 4,000/night</p> */}
-                        <p>
-                            Mar 24, 2025 - Mar 30, 2025
-                            {/* • 12 Guests */}
-                        </p>
-
+                <Link href={"/bookings/24"}>
+                    <div className={styles["upcoming-bookings__stay-details"]}>
                         <div
                             className={
-                                styles[
-                                    "upcoming-bookings__stay-details--location"
-                                ]
+                                styles["upcoming-bookings__stay-details--image"]
                             }
                         >
                             <Image
-                                src="/assets/images/location-black.svg"
-                                width={20}
-                                height={20}
-                                alt="Location"
-                            />
-                            <p>Asagao, Goa</p>
+                                src="/assets/images/villa-1.svg"
+                                width={100}
+                                height={100}
+                                alt="villa"
+                            ></Image>
                         </div>
+                        <div
+                            className={
+                                styles[
+                                    "upcoming-bookings__stay-details--details"
+                                ]
+                            }
+                        >
+                            <h4>
+                                <span>Booking ID:</span>
+                                #OCSBK299024
+                            </h4>
+                            <h3>CEO’s Paradise - OneClick Exclusive</h3>
+                            {/* <p>₹ 4,000/night</p> */}
+                            <p>
+                                Mar 24, 2025 - Mar 30, 2025
+                                {/* • 12 Guests */}
+                            </p>
 
-                        <h2>
-                            <span>₹1,15000</span>
-                            ₹98000
-                        </h2>
+                            <div
+                                className={
+                                    styles[
+                                        "upcoming-bookings__stay-details--location"
+                                    ]
+                                }
+                            >
+                                <Image
+                                    src="/assets/images/location-black.svg"
+                                    width={20}
+                                    height={20}
+                                    alt="Location"
+                                />
+                                <p>Asagao, Goa</p>
+                            </div>
+
+                            <h2>
+                                <span>₹1,15000</span>
+                                ₹98000
+                            </h2>
+                        </div>
                     </div>
-                </div>
+                </Link>
             </div>
         </div>
     );

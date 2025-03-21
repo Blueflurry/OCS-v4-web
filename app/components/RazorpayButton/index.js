@@ -18,49 +18,50 @@ const RazorpayButton = () => {
 
     const handlePayment = async () => {
         if (!razorpayLoaded) {
-            alert("Razorpay is still loading. Please wait.");
+            // alert("Razorpay is still loading. Please wait.");
             return;
         }
 
         setLoading(true);
         try {
             const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Replace with your Razorpay Key ID
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
                 amount: 100000, // ₹1000.00 (Razorpay works in paise)
                 currency: "INR",
-                name: "Your Company Name",
+                name: "OneClick Stays",
                 description: "Test Transaction",
-                image: "/assets/icon.svg", // Change this to your brand logo
+                image: "/assets/images/icon.svg", // Change this to your brand logo
                 handler: function (response) {
                     // alert(
                     //     `✅ Payment successful! Payment ID: ${response.razorpay_payment_id}`
                     // );
                     console.log("Payment Success:", response);
+                    // router.push("/stays/24/payment-success");
                     // redirecting to orders page
-                    router.push("/bookings/upcoming");
+                    router.push("/bookings/24");
                 },
                 prefill: {
                     name: "Test User",
                     email: "test@example.com",
                     contact: "9999999999",
                 },
-                theme: { color: "#3399cc" },
+                theme: { color: "#000000" },
+                // redirect: true,
+                // callback_url: "http://localhost:3000/stays/24/payment-success",
             };
 
             const razor = new window.Razorpay(options);
 
             // 🔴 Handle payment failure
             razor.on("payment.failed", function (response) {
-                alert("❌ Payment failed. Please try again.");
+                // alert("❌ Payment failed. Please try again.");
                 console.error("Payment Failed:", response);
             });
 
             razor.open();
         } catch (error) {
             console.error(error);
-            alert(
-                "❌ Payment process failed. Please check the console for more details."
-            );
+            alert("❌ Payment process failed.");
         }
         setLoading(false);
     };
