@@ -22,6 +22,10 @@
     -ms-overflow-style: none;
 }
 
+.stay-carousel-vertical {
+    flex-direction: column;
+}
+
 .stay-carousel__title {
     color: $color-bg-primary;
     padding: 35px 20px 10px;

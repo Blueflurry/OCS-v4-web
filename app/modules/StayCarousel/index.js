@@ -8,6 +8,7 @@ const StayCarousel = ({
     title = "Trending Stays",
     titleIcon = <Flame />,
     desc = `Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet.`,
+    vertical = false,
 }) => {
     return (
         <>
@@ -15,9 +16,13 @@ const StayCarousel = ({
                 {titleIcon} {title}
             </h4>
             <p className={styles["stay-carousel__desc"]}>{desc}</p>
-            <div className={styles["stay-carousel"]}>
+            <div
+                className={`${styles["stay-carousel"]} ${
+                    vertical ? styles["stay-carousel-vertical"] : ""
+                }`}
+            >
                 {stays.map((stay, i) => (
-                    <StayCard key={i} />
+                    <StayCard key={i} vertical={vertical} />
                 ))}
             </div>
         </>

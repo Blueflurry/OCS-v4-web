@@ -4,12 +4,16 @@ import styles from "./StayCard.module.scss";
 import PartnerLogo from "../PartnerLogo";
 import Link from "next/link";
 
-const StayCard = () => {
+const StayCard = ({ vertical }) => {
     const stayID = 24;
 
     return (
         <Link href={"/stays/" + stayID}>
-            <div className={styles["stay-card"]}>
+            <div
+                className={`${styles["stay-card"]} ${
+                    vertical ? styles["stay-card-vertical"] : ""
+                }`}
+            >
                 <Image
                     src="/assets/images/banner.webp"
                     width={400}
