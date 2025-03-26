@@ -67,7 +67,8 @@
     }
 
     &--input {
-        background-color: $color-bg-secondary;
+        // background-color: $color-bg-secondary;
+        background-color: #222222;
         color: $color-text-primary;
         justify-content: flex-start;
         gap: 16px;
