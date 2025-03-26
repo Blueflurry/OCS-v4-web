@@ -277,3 +277,22 @@ export const PAGES = [
         // nextUrl: "/stays/${stayId}/pay",
     },
 ];
+
+export const GUESTS = [
+    {
+        type: "Men",
+        count: 0,
+    },
+    {
+        type: "Women",
+        count: 0,
+    },
+    {
+        type: "Children",
+        count: 0,
+    },
+    {
+        type: "Pets",
+        count: 0,
+    },
+];

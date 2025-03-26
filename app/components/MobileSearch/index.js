@@ -4,8 +4,15 @@ import Image from "next/image";
 import Button from "../Button";
 import DateRangePicker from "../DateRangePicker";
 import styles from "./MobileSearch.module.scss";
-import { Calendar, MapPin, MousePointer2, Search } from "lucide-react";
+import {
+    Calendar,
+    MapPin,
+    MousePointer2,
+    Search,
+    UserRound,
+} from "lucide-react";
 import { formatDateRange } from "@/app/utils/date";
+import { GUESTS } from "@/app/data/dummy";
 
 const MobileSearch = ({}) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +20,9 @@ const MobileSearch = ({}) => {
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [autocompleteVal, setAutocompleteVal] = useState("");
     const [locationDropdown, setLocationDropdown] = useState(false);
-    const options = [
+    const [filteredLocationOptions, setFilteredLocationOptions] = useState([]);
+    const [guests, setGuests] = useState([...GUESTS]);
+    const locationOptions = [
         { key: 1, value: "Apple" },
         { key: 2, value: "Banana" },
         { key: 3, value: "Cherry" },
@@ -26,8 +35,6 @@ const MobileSearch = ({}) => {
         { key: 10, value: "Strawberry" },
     ];
 
-    const [filteredOptions, setFilteredOptions] = useState([]);
-
     const handleLocationSelect = (option) => {
         setAutocompleteVal(option.value);
         setLocationDropdown(false);
@@ -39,11 +46,23 @@ const MobileSearch = ({}) => {
         const value = e.target.value;
         setAutocompleteVal(value);
 
-        setFilteredOptions(
-            options.filter((option) =>
+        setFilteredLocationOptions(
+            locationOptions.filter((option) =>
                 option.value.toLowerCase().includes(value.toLowerCase())
             )
         );
+    };
+
+    const decreaseCount = (index) => {
+        const newGuests = [...guests];
+        newGuests[index].count = Math.max(0, newGuests[index].count - 1);
+        setGuests(newGuests);
+    };
+
+    const increaseCount = (index) => {
+        const newGuests = [...guests];
+        newGuests[index].count = newGuests[index].count + 1;
+        setGuests(newGuests);
     };
 
     useEffect(() => {
@@ -137,8 +156,8 @@ const MobileSearch = ({}) => {
                                             <span>Use my current location</span>
                                         </li>
                                         {/* list */}
-                                        {filteredOptions.length > 0 ? (
-                                            filteredOptions.map(
+                                        {filteredLocationOptions.length > 0 ? (
+                                            filteredLocationOptions.map(
                                                 (option, index) => (
                                                     <li
                                                         key={option.key}
@@ -195,7 +214,45 @@ const MobileSearch = ({}) => {
                         inputClassName={styles["mobile-search__input"]}
                     />
 
-                    {/* GUESTS */}
+                    {/* guests */}
+                    <div className={styles["mobile-search__guests"]}>
+                        <div className={styles["mobile-search__guests--head"]}>
+                            <UserRound />
+                            <h4>Guests</h4>
+                        </div>
+
+                        {guests.map((guest, index) => (
+                            <div
+                                className={
+                                    styles["mobile-search__guests--item"]
+                                }
+                                key={index}
+                            >
+                                <div>{guest.type}</div>
+                                <div
+                                    className={
+                                        styles["mobile-search__guests--count"]
+                                    }
+                                >
+                                    <div
+                                        onClick={() => {
+                                            decreaseCount(index);
+                                        }}
+                                    >
+                                        -
+                                    </div>
+                                    <div>{guest.count}</div>
+                                    <div
+                                        onClick={() => {
+                                            increaseCount(index);
+                                        }}
+                                    >
+                                        +
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
 
                     {/* CTA SEARCH BTN */}
                 </div>
