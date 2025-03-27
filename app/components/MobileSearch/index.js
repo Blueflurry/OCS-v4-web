@@ -5,6 +5,7 @@ import Button from "../Button";
 import DateRangePicker from "../DateRangePicker";
 import styles from "./MobileSearch.module.scss";
 import {
+    ArrowRight,
     Calendar,
     MapPin,
     MousePointer2,
@@ -13,8 +14,11 @@ import {
 } from "lucide-react";
 import { formatDateRange } from "@/app/utils/date";
 import { GUESTS } from "@/app/data/dummy";
+import { useRouter } from "next/navigation";
 
 const MobileSearch = ({}) => {
+    const router = useRouter();
+
     const [isOpen, setIsOpen] = useState(false);
     const [dateRange, setDateRange] = useState([null, null]);
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
@@ -113,7 +117,7 @@ const MobileSearch = ({}) => {
                     <h3>Search</h3>
                 </div>
 
-                <div className="container" style={{ marginTop: 90 }}>
+                <div className="container" style={{ marginTop: 80 }}>
                     {/* LOCATION */}
                     <div className={styles["autocomplete"]}>
                         <div className={styles["autocomplete--input-wrapper"]}>
@@ -255,6 +259,25 @@ const MobileSearch = ({}) => {
                     </div>
 
                     {/* CTA SEARCH BTN */}
+                    <Button
+                        large
+                        type="primary"
+                        onClick={() => {
+                            router.push("/stays");
+                        }}
+                    >
+                        Search Stays <ArrowRight />
+                    </Button>
+
+                    {/* logo */}
+                    <div style={{ marginTop: 0 }}>
+                        <Image
+                            src="/assets/images/logo.svg"
+                            alt="OneClick Stays"
+                            width={90}
+                            height={90}
+                        />
+                    </div>
                 </div>
             </div>
         </>
