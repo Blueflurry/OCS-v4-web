@@ -26,6 +26,7 @@ const MobileSearch = ({}) => {
     const [locationDropdown, setLocationDropdown] = useState(false);
     const [filteredLocationOptions, setFilteredLocationOptions] = useState([]);
     const [guests, setGuests] = useState([...GUESTS]);
+    const [isSearchDisabled, setIsSearchDisabled] = useState(true);
     const locationOptions = [
         { key: 1, value: "Apple" },
         { key: 2, value: "Banana" },
@@ -82,6 +83,12 @@ const MobileSearch = ({}) => {
             setIsDatePickerOpen(false);
         };
     }, [isOpen]);
+
+    useEffect(() => {
+        const totalGuests = guests.reduce((sum, guest) => sum + guest.count, 0);
+        if (totalGuests > 0) setIsSearchDisabled(false);
+        else setIsSearchDisabled(true);
+    }, [guests]);
 
     return (
         <>
@@ -265,6 +272,7 @@ const MobileSearch = ({}) => {
                         onClick={() => {
                             router.push("/stays");
                         }}
+                        disabled={isSearchDisabled}
                     >
                         Search Stays <ArrowRight />
                     </Button>

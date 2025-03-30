@@ -85,4 +85,11 @@
             stroke: $color-text-primary;
         }
     }
+
+    &--disabled,
+    &--disabled:hover {
+        background-color: $color-bg-secondary;
+        color: $color-text-secondary;
+        cursor: not-allowed;
+    }
 }
