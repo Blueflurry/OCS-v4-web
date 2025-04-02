@@ -2,7 +2,7 @@
 import React from "react";
 import styles from "./Reviews.module.scss";
 import Image from "next/image";
-import { REVIEWS } from "@/app/data/dummy";
+import { REVIEWS } from "@/app/constants/dummy";
 
 const Reviews = () => {
     const reviews = REVIEWS;

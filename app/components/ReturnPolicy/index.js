@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import styles from "./ReturnPolicy.module.scss";
-import { POLICY_LIST } from "@/app/data/dummy";
+import { POLICY_LIST } from "@/app/constants/dummy";
 import Image from "next/image";
 
 const ReturnPolicy = () => {

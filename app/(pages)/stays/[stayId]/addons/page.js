@@ -1,38 +1,75 @@
-"use client";
-import React, { use, useState } from "react";
+import React, { Suspense } from "react";
 import styles from "./Addons.module.scss";
 import Image from "next/image";
 import Footer from "@/app/modules/Footer";
 import BackButton from "@/app/components/BackButton";
 import PartnerLogo from "@/app/components/PartnerLogo";
-import { ADDONSERVICES } from "@/app/data/dummy";
+import { dummyAddonsData, dummyStaysData } from "@/app/constants/dummy";
+import AddonsClient from "./AddonsClient";
+import FooterWithAction from "./FooterWithAction";
+import Loading from "./loading";
 
-const Addons = ({ params }) => {
-    const { stayId } = use(params);
-    const [services, setServices] = useState([...ADDONSERVICES]);
+// Server component to fetch addons data
+async function getAddonsData(stayId) {
+    try {
+        // MOCK DATA MODE - Use dummy data
+        // Find the stay with the matching ID to get basic stay details
+        const stay = dummyStaysData.find(
+            (stay) => stay.id.toString() === stayId.toString()
+        );
 
-    const onChangeCheckBox = (event) => {
-        const { value, checked } = event.target;
+        if (!stay) {
+            throw new Error("Stay not found");
+        }
 
-        setServices((prev) => {
-            const updatedServices = prev.map((ct) =>
-                ct.id == value ? { ...ct, isChecked: checked } : ct
-            );
-            return updatedServices;
-            // .sort((a, b) => b.isChecked - a.isChecked);
-        });
-    };
+        // Combine stay details with addons data
+        const addonsData = {
+            ...dummyAddonsData,
+            stayDetails: {
+                title: stay.title,
+                price: stay.price,
+                bookingDates: {
+                    checkIn: "2025-03-24",
+                    checkOut: "2025-03-30",
+                },
+            },
+        };
+
+        return addonsData;
+
+        // REAL API MODE - Uncomment this section when your API is ready
+        /*
+    const response = await fetch(`/api/stays/${stayId}/addons`, {
+      cache: "no-store",
+      next: { tags: [`stay-${stayId}-addons`] },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch addons: ${response.status}`);
+    }
+    
+    return await response.json();
+    */
+    } catch (error) {
+        console.error("Error fetching addons:", error);
+        throw error;
+    }
+}
+
+const Addons = async ({ params }) => {
+    // const { stayId } = params;
+    const unwrappedParams = React.use(params);
+    const { stayId } = unwrappedParams;
+
+    // Fetch addons data
+    const addonsData = await getAddonsData(stayId);
 
     return (
         <div className={styles["addons"]}>
-            {/* <BackButton></BackButton> */}
+            <BackButton />
 
             <div className={styles["addons__header"]}>
-                <p>
-                    Make your experience special with...
-                    {/* Book Now <span>|</span> Pay Later <span>|</span> 0%
-                    Commission */}
-                </p>
+                <p>Make your experience special with...</p>
                 <h2>
                     Exclusive Stay
                     <span>Add-Ons</span>
@@ -47,82 +84,25 @@ const Addons = ({ params }) => {
                         style={{ width: "70px", marginBottom: "-4px" }}
                     />
                     <span className={styles[""]}>x</span>
-                    <PartnerLogo name="elivaas" color="white" />
+                    <PartnerLogo
+                        name={addonsData.partner || "elivaas"}
+                        color="white"
+                    />
                 </div>
             </div>
 
             {/* addons listing */}
             <div className={styles["addons__listing"]}>
-                <h4>Pay at Stay</h4>
+                <h4>{addonsData.title || "Pay at Stay"}</h4>
                 <p className={styles["addons__listing--description"]}>
-                    {/* Exclusive in-stay services from Elivaas on OneClick Stay
-                    bookings. Tap to select, pay later at the stay, with 0%
-                    commission. */}
-                    Our team will contact you after you confirm your booking for
-                    these services. You don't have to pay at the time of
-                    booking.
+                    {addonsData.description ||
+                        "Our team will contact you after you confirm your booking for these services. You don't have to pay at the time of booking."}
                 </p>
-                {services.map((service, index) => (
-                    <div
-                        className={styles["addons__listing--row"]}
-                        key={service.id}
-                    >
-                        <label
-                            htmlFor={service.id}
-                            className={
-                                styles["addons__listing--row-checkLabel"]
-                            }
-                        >
-                            <input
-                                type="checkbox"
-                                value={service.id}
-                                name="isSelected"
-                                onChange={onChangeCheckBox}
-                                id={service.id}
-                                checked={service.isChecked}
-                            />
-                        </label>
 
-                        {/* Item */}
-                        <div
-                            className={`${styles["addons__listing--item"]} ${
-                                service.isChecked
-                                    ? styles["addons__listing--item--selected"]
-                                    : ""
-                            }`}
-                            onClick={() =>
-                                onChangeCheckBox({
-                                    target: {
-                                        value: service.id,
-                                        checked: !service.isChecked,
-                                    },
-                                })
-                            }
-                        >
-                            <Image
-                                src={service.imgUrl}
-                                width={200}
-                                height={200}
-                                alt="activity"
-                                className={
-                                    styles["addons__listing--item-image"]
-                                }
-                            ></Image>
-                            <div
-                                className={
-                                    styles["addons__listing--item-details"]
-                                }
-                            >
-                                <h2>{service.serviceName}</h2>
-                                <h4>
-                                    {/* Starting from */}
-                                    <span>{service.pricePerNight}</span>
-                                </h4>
-                                <p>{service.description}</p>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                {/* Client component for interactive addons selection */}
+                <Suspense fallback={<Loading />}>
+                    <AddonsClient addons={addonsData.addons} />
+                </Suspense>
             </div>
 
             {/* fixed */}
@@ -133,16 +113,43 @@ const Addons = ({ params }) => {
                         width={100}
                         height={100}
                         alt="villa"
-                    ></Image>
+                    />
                 </div>
                 <div className={styles["addons__fixed--details"]}>
-                    <h4>CEO’s Paradise - OneClick Exclusive</h4>
-                    <p>₹ 4,000/night</p>
-                    <p>Mar 24, 2025 - Mar 30, 2025</p>
+                    <h4>
+                        {addonsData.stayDetails.title ||
+                            "CEO's Paradise - OneClick Exclusive"}
+                    </h4>
+                    <p>
+                        {addonsData.stayDetails.price?.discounted ||
+                            "₹ 4,000/night"}
+                    </p>
+                    <p>
+                        {new Date(
+                            addonsData.stayDetails.bookingDates.checkIn
+                        ).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                        })}{" "}
+                        -
+                        {new Date(
+                            addonsData.stayDetails.bookingDates.checkOut
+                        ).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                        })}
+                    </p>
                 </div>
             </div>
 
-            <Footer btnText="Proceed to checkout" />
+            {/* Client component for footer with proceed button */}
+            <Suspense
+                fallback={<div className={styles["footer-loading"]}></div>}
+            >
+                <FooterWithAction stayId={stayId} />
+            </Suspense>
         </div>
     );
 };

@@ -1,11 +1,8 @@
 "use client";
-import React, { use, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./StayDetails.module.scss";
 import HeroImageCarousel from "@/app/components/HeroImageCarousel";
-import { ADDONSERVICES, VILLA_IMAGES } from "@/app/data/dummy";
-import Categories from "@/app/components/Categories";
 import Image from "next/image";
-import DateRangePicker from "@/app/components/DateRangePicker";
 import Button from "@/app/components/Button";
 import Amenities from "@/app/components/Amenities";
 import ReturnPolicy from "@/app/components/ReturnPolicy";
@@ -15,66 +12,156 @@ import PartnerLogo from "@/app/components/PartnerLogo";
 import GoogleMapComponent from "@/app/components/GMap";
 import BackButton from "@/app/components/BackButton";
 import Footer from "@/app/modules/Footer";
+import { dummyStaysData } from "@/app/constants/dummy";
 
 const StayDetails = ({ params }) => {
-    const { stayId } = use(params);
-    const [services, setServices] = useState(ADDONSERVICES);
+    // Unwrap params using React.use()
+    const unwrappedParams = React.use(params);
+    const { stayId } = unwrappedParams;
+
+    // State management
+    const [stayData, setStayData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Fetch stay details when component mounts or stayId changes
+    useEffect(() => {
+        const fetchStayDetails = async () => {
+            if (!stayId) return;
+
+            setIsLoading(true);
+            setError(null);
+
+            try {
+                // MOCK DATA MODE - Use dummy data
+                // Find the stay with matching ID
+                const stay = dummyStaysData.find(
+                    (stay) => stay.id.toString() === stayId.toString()
+                );
+
+                if (!stay) {
+                    throw new Error("Stay not found");
+                }
+
+                setStayData(stay);
+                setIsLoading(false);
+
+                // REAL API MODE - Uncomment this section when your API is ready
+                /*
+                // API call to get stay details
+                const response = await fetch(`/api/stays/${stayId}`);
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Failed to fetch stay details: ${response.status}`
+                    );
+                }
+
+                const data = await response.json();
+                setStayData(data);
+
+                // Fetch additional services
+                try {
+                    const servicesResponse = await fetch(
+                        `//api/stays/${stayId}/services`
+                    );
+                    if (servicesResponse.ok) {
+                        const servicesData = await servicesResponse.json();
+                        setServices(servicesData);
+                    }
+                } catch (serviceError) {
+                    console.warn("Failed to fetch services:", serviceError);
+                }
+                */
+
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Error fetching stay details:", error);
+                setError(error.message || "Failed to load stay details");
+                setIsLoading(false);
+            }
+        };
+
+        fetchStayDetails();
+    }, [stayId]);
+
+    // Handle checkout process
+    const handleCheckout = () => {
+        // Navigate to checkout or process booking
+        console.log("Proceeding to checkout with:", {
+            stayId,
+        });
+        // Example: router.push(`/checkout?stayId=${stayId}`);
+    };
+
+    // Loading state
+    if (isLoading) {
+        return (
+            <div className={`${styles["stay-details"]} container`}>
+                <div className={styles["stay-details__loading"]}>
+                    <p>Loading stay details...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Error state
+    if (error) {
+        return (
+            <div className={`${styles["stay-details"]} container`}>
+                <div className={styles["stay-details__error"]}>
+                    <h3>Something went wrong</h3>
+                    <p>{error}</p>
+                    <Button onClick={() => window.location.reload()}>
+                        Retry
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    // If no stay data was found
+    if (!stayData) {
+        return (
+            <div className={`${styles["stay-details"]} container`}>
+                <div className={styles["stay-details__error"]}>
+                    <h3>Stay not found</h3>
+                    <p>We couldn't find the stay you're looking for.</p>
+                    <Button onClick={() => window.history.back()}>
+                        Go Back
+                    </Button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>
             <div className={`${styles["hide-on-mobile"]}`}>
-                <Header></Header>
+                <Header />
             </div>
             <div className={`${styles["stay-details"]} container`}>
                 <div className={styles["stay-details__carousel"]}>
-                    <HeroImageCarousel images={VILLA_IMAGES} />
-                    <BackButton></BackButton>
-
-                    {/* <Categories images={VILLA_IMAGES}></Categories> */}
-
-                    {/* progress bar */}
-                    {/* <div className={styles["stay-details__progress-bar"]}>
-                        <span
-                            className={styles["stay-details__indicator-1"]}
-                        ></span>
-                        <span
-                            className={styles["stay-details__indicator-2"]}
-                        ></span>
-                    </div> */}
+                    <HeroImageCarousel images={stayData.heroImages || []} />
+                    <BackButton />
 
                     {/* stay information */}
                     <div className={styles["stay-details__content"]}>
                         <div className={styles["stay-details__progress"]} />
                         <div className={styles["stay-details__header"]}>
-                            {/* <div className={styles["stay-details__location"]}>
-                                <Image
-                                    src="/assets/images/location.svg"
-                                    width={20}
-                                    height={20}
-                                    alt="Location"
-                                />
-                                <p>Asagao, Goa</p>
-                            </div>
-                            <span
-                                className={styles["stay-details__separator"]}
-                            /> */}
                             <div className={styles["stay-details__rating"]}>
-                                <b>5.0</b>
+                                <b>{stayData.rating || "5.0"}</b>
                                 <Image
                                     src="/assets/images/ratings.svg"
                                     width={20}
                                     height={20}
-                                    alt="Location"
+                                    alt="Rating"
                                 />
-                                <p>(300 Reviews)</p>
+                                <p>({stayData.reviewsCount || 0} Reviews)</p>
                             </div>
                         </div>
                         <div className={styles["stay-details__title"]}>
-                            <h3>Sereno By The Sea</h3>
-                            {/* <span className={styles["stay-details__separator"]} />
-                    <h3>
-                        4 <span>BHK</span>
-                    </h3> */}
+                            <h3>{stayData.title}</h3>
                         </div>
                         <p className={styles["stay-details__capacity"]}>
                             <span
@@ -82,7 +169,7 @@ const StayDetails = ({ params }) => {
                                     styles["stay-details__capacity--amount"]
                                 }
                             >
-                                2
+                                {stayData.bhk || 2}
                             </span>{" "}
                             BHK
                             <span
@@ -93,14 +180,16 @@ const StayDetails = ({ params }) => {
                                     styles["stay-details__capacity--amount"]
                                 }
                             >
-                                4
+                                {stayData.guests || 4}
                             </span>{" "}
                             Guests
                             <span
                                 className={styles["stay-details__separator"]}
                             />
                             <span className={styles["stay-details__partner"]}>
-                                <PartnerLogo name="elivaas" />
+                                <PartnerLogo
+                                    name={stayData.partner || "elivaas"}
+                                />
                             </span>
                         </p>
                         <div className={styles["stay-details__price"]}>
@@ -110,20 +199,20 @@ const StayDetails = ({ params }) => {
                                         styles["stay-details__price--striked"]
                                     }
                                 >
-                                    ₹65,500
+                                    {stayData.price?.original || "₹65,500"}
                                 </span>
                                 <p
                                     className={
                                         styles["stay-details__price--active"]
                                     }
                                 >
-                                    ₹45,500{" "}
+                                    {stayData.price?.discounted || "₹45,500"}{" "}
                                     <span
                                         className={
                                             styles["stay-details__price--unit"]
                                         }
                                     >
-                                        per night
+                                        {stayData.price?.unit || "per night"}
                                     </span>
                                 </p>
                             </div>
@@ -132,34 +221,35 @@ const StayDetails = ({ params }) => {
                                     styles["stay-details__price--person"]
                                 }
                             >
-                                Equals to <b>₹10,000</b> per person
+                                Equals to{" "}
+                                <b>{stayData.price?.perPerson || "₹10,000"}</b>{" "}
+                                per person
                             </p>
                         </div>
+
+                        {/* Date selection and Guest selection sections removed */}
                     </div>
 
                     {/* map */}
                     <div className={styles["stay-details__map"]}>
-                        <GoogleMapComponent />
+                        <GoogleMapComponent
+                            latitude={stayData.mapLocation?.lat}
+                            longitude={stayData.mapLocation?.lng}
+                        />
                     </div>
 
                     {/* amenities */}
-                    <Amenities></Amenities>
-
-                    {/* <div className={styles["stay-details__separator-2"]}></div> */}
+                    <Amenities amenities={stayData.amenties || []} />
 
                     {/* policy */}
-                    <ReturnPolicy></ReturnPolicy>
-
-                    {/* <div className={styles["stay-details__separator-2"]}></div> */}
+                    <ReturnPolicy policies={stayData.policies} />
 
                     {/* reviews & ratings */}
-                    <Reviews></Reviews>
-
-                    {/* <div className={styles["padding"]}></div> */}
+                    <Reviews reviews={stayData.reviews} />
                 </div>
             </div>
 
-            <Footer btnText="Proceed to checkout" />
+            <Footer btnText="Proceed to checkout" onClick={handleCheckout} />
         </>
     );
 };

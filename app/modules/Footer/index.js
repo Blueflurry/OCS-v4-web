@@ -4,7 +4,7 @@ import styles from "./Footer.module.scss";
 import Button from "@/app/components/Button";
 import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { PAGES } from "@/app/data/dummy";
+import { PAGES } from "@/app/constants/dummy";
 import { ArrowRight } from "lucide-react";
 import RazorpayButton from "@/app/components/RazorpayButton";
 

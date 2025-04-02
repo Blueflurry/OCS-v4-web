@@ -13,7 +13,7 @@ import {
     UserRound,
 } from "lucide-react";
 import { formatDateRange } from "@/app/utils/date";
-import { GUESTS } from "@/app/data/dummy";
+import { GUESTS } from "@/app/constants/dummy";
 import { useRouter } from "next/navigation";
 
 const MobileSearch = ({}) => {

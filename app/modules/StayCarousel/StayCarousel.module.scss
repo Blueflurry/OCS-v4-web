@@ -46,3 +46,46 @@
     line-height: 1.4;
     margin: 0px 16px 16px 24px;
 }
+
+/* These styles should be added to your existing StayCarousel.module.scss file */
+
+.stay-carousel__container {
+    width: 100%;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.stay-carousel__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.stay-carousel__wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.stay-carousel__empty {
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.stay-carousel__no-results {
+    padding: 30px 0;
+    text-align: center;
+    color: $color-bg-primary;
+    font-weight: 500;
+}
+
+.stay-carousel__error {
+    padding: 20px;
+    text-align: center;
+    color: #e53935;
+    background-color: rgba(229, 57, 53, 0.1);
+    border-radius: 8px;
+    margin: 20px;
+}

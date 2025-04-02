@@ -4,27 +4,24 @@ import styles from "./StayCard.module.scss";
 import PartnerLogo from "../PartnerLogo";
 import Link from "next/link";
 
-const StayCard = ({ vertical }) => {
-    const stayID = 24;
-
+const StayCard = ({ vertical, stayData, ...props }) => {
     return (
-        <Link href={"/stays/" + stayID}>
+        <Link href={`/stays/${stayData.id}`}>
             <div
                 className={`${styles["stay-card"]} ${
                     vertical ? styles["stay-card-vertical"] : ""
                 }`}
             >
                 <Image
-                    src="/assets/images/banner.webp"
+                    src={stayData.bannerImage}
                     width={400}
                     height={500}
-                    alt="Shimla"
+                    alt={stayData.title}
                     className={styles["stay-card__image"]}
                 />
-                {/* <div className={styles["stay-card__overlay"]} /> */}
 
                 <span className={styles["stay-card__indicator"]}>
-                    available
+                    {stayData.availability}
                 </span>
                 <div className={styles["stay-card__content"]}>
                     <div className={styles["stay-card__progress"]} />
@@ -36,40 +33,36 @@ const StayCard = ({ vertical }) => {
                                 height={20}
                                 alt="Location"
                             />
-                            <p>Asagao, Goa</p>
+                            <p>{stayData.location}</p>
                         </div>
                         <span className={styles["stay-card__separator"]} />
                         <div className={styles["stay-card__rating"]}>
-                            <b>5.0</b>
+                            <b>{stayData.rating}</b>
                             <Image
                                 src="/assets/images/ratings.svg"
                                 width={20}
                                 height={20}
-                                alt="Location"
+                                alt="Rating"
                             />
-                            <p>(300 Reviews)</p>
+                            <p>({stayData.reviewsCount} Reviews)</p>
                         </div>
                     </div>
                     <div className={styles["stay-card__title"]}>
-                        <h3>Sereno By The Sea</h3>
-                        {/* <span className={styles["stay-card__separator"]} />
-                    <h3>
-                        4 <span>BHK</span>
-                    </h3> */}
+                        <h3>{stayData.title}</h3>
                     </div>
                     <p className={styles["stay-card__capacity"]}>
                         <span className={styles["stay-card__capacity--amount"]}>
-                            2
+                            {stayData.bhk}
                         </span>{" "}
                         BHK
                         <span className={styles["stay-card__separator"]} />
                         <span className={styles["stay-card__capacity--amount"]}>
-                            4
+                            {stayData.guests}
                         </span>{" "}
                         Guests
                         <span className={styles["stay-card__separator"]} />
                         <span className={styles["stay-card__partner"]}>
-                            <PartnerLogo name="elivaas" />
+                            <PartnerLogo name={stayData.partner} />
                         </span>
                     </p>
                     <div className={styles["stay-card__price"]}>
@@ -77,19 +70,20 @@ const StayCard = ({ vertical }) => {
                             <span
                                 className={styles["stay-card__price--striked"]}
                             >
-                                ₹65,500
+                                {stayData.price.original}
                             </span>
                             <p className={styles["stay-card__price--active"]}>
-                                ₹45,500{" "}
+                                {stayData.price.discounted}{" "}
                                 <span
                                     className={styles["stay-card__price--unit"]}
                                 >
-                                    per night
+                                    {stayData.price.unit}
                                 </span>
                             </p>
                         </div>
                         <p className={styles["stay-card__price--person"]}>
-                            Equals to <b>₹10,000</b> per person
+                            Equals to <b>{stayData.price.perPerson}</b> per
+                            person
                         </p>
                     </div>
                 </div>

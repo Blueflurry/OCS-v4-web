@@ -2,7 +2,7 @@
 import React from "react";
 import styles from "./Amenities.module.scss";
 import SecondaryImageCarousel from "../SecondaryImageCarousel";
-import { AMENITIES_LIST, VILLA_IMAGES } from "@/app/data/dummy";
+import { AMENITIES_LIST, VILLA_IMAGES } from "@/app/constants/dummy";
 import Button from "../Button";
 import Image from "next/image";
 

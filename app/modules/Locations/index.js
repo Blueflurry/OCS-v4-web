@@ -4,15 +4,17 @@ import styles from "./Locations.module.scss";
 import Link from "next/link";
 import Image from "next/image";
 
-const Locations = () => {
+const Locations = ({ data }) => {
+    // console.log(data);
     const [scrolled, setScrolled] = useState(false);
     const locationsRef = useRef(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                console.log("SCROLLED");
-                setScrolled(entry.boundingClientRect.top <= window.innerHeight * 0.2);
+                setScrolled(
+                    entry.boundingClientRect.top <= window.innerHeight * 0.2
+                );
             },
             { threshold: 0.1 }
         );
@@ -30,122 +32,25 @@ const Locations = () => {
 
     return (
         <>
-            <div className={`${styles["locations"]} ${scrolled ? styles["locations__scrolled"] : ""}`}>
+            <div
+                className={`${styles["locations"]} ${
+                    scrolled ? styles["locations__scrolled"] : ""
+                }`}
+            >
                 <div className={styles["locations__wrapper"]}>
-                    {[...Array(2)].map(
-                        (
-                            _,
-                            i // Duplicate images for seamless looping
-                        ) => (
-                            <React.Fragment key={i}>
-                                <Link href="/">
-                                    <Image
-                                        src="/assets/images/himachal.png"
-                                        width={120}
-                                        height={120}
-                                        alt="Goa"
-                                        className={styles["locations__image"]}
-                                    />
-                                </Link>
-                                <Link href="/">
-                                    <Image
-                                        src="/assets/images/himachal.png"
-                                        width={120}
-                                        height={120}
-                                        alt="Goa"
-                                        className={styles["locations__image"]}
-                                    />
-                                </Link>
-                                <Link href="/">
-                                    <Image
-                                        src="/assets/images/himachal.png"
-                                        width={120}
-                                        height={120}
-                                        alt="Goa"
-                                        className={styles["locations__image"]}
-                                    />
-                                </Link>
-                                <Link href="/">
-                                    <Image
-                                        src="/assets/images/himachal.png"
-                                        width={120}
-                                        height={120}
-                                        alt="Goa"
-                                        className={styles["locations__image"]}
-                                    />
-                                </Link>
-                                <Link href="/">
-                                    <Image
-                                        src="/assets/images/himachal.png"
-                                        width={120}
-                                        height={120}
-                                        alt="Goa"
-                                        className={styles["locations__image"]}
-                                    />
-                                </Link>
-                            </React.Fragment>
-                        )
-                    )}
+                    {data.map((location, i) => (
+                        <Link href={location.link} key={i}>
+                            <Image
+                                src={location.image}
+                                width={120}
+                                height={120}
+                                alt={location.name}
+                                className={styles["locations__image"]}
+                            />
+                        </Link>
+                    ))}
                 </div>
             </div>
-            {/* <div className={styles["locations2"]}>
-                <div className={styles["locations2__wrapper"]}>
-                    {[...Array(2)].map(
-                        (
-                            _,
-                            i // Duplicate images for seamless looping
-                        ) => (
-                            <React.Fragment key={i}>
-                                <Link href="/">
-                                    <Image
-                                        src="/assets/images/himachal.png"
-                                        width={120}
-                                        height={120}
-                                        alt="Goa"
-                                        className={styles["locations2__image"]}
-                                    />
-                                </Link>
-                                <Link href="/">
-                                    <Image
-                                        src="/assets/images/himachal.png"
-                                        width={120}
-                                        height={120}
-                                        alt="Goa"
-                                        className={styles["locations2__image"]}
-                                    />
-                                </Link>
-                                <Link href="/">
-                                    <Image
-                                        src="/assets/images/himachal.png"
-                                        width={120}
-                                        height={120}
-                                        alt="Goa"
-                                        className={styles["locations2__image"]}
-                                    />
-                                </Link>
-                                <Link href="/">
-                                    <Image
-                                        src="/assets/images/himachal.png"
-                                        width={120}
-                                        height={120}
-                                        alt="Goa"
-                                        className={styles["locations2__image"]}
-                                    />
-                                </Link>
-                                <Link href="/">
-                                    <Image
-                                        src="/assets/images/himachal.png"
-                                        width={120}
-                                        height={120}
-                                        alt="Goa"
-                                        className={styles["locations2__image"]}
-                                    />
-                                </Link>
-                            </React.Fragment>
-                        )
-                    )}
-                </div>
-            </div> */}
         </>
     );
 };
