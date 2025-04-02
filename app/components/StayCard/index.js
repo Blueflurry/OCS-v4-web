@@ -4,27 +4,46 @@ import styles from "./StayCard.module.scss";
 import PartnerLogo from "../PartnerLogo";
 import Link from "next/link";
 
-const StayCard = ({ vertical }) => {
-    const stayID = 24;
+const StayCard = ({ stay }) => {
+    // If stay data is not provided, don't render
+    if (!stay) return null;
+
+    const {
+        id,
+        name,
+        location,
+        images,
+        rating,
+        reviewCount,
+        available,
+        bhk,
+        maxGuests,
+        partner,
+        pricing,
+    } = stay;
+
+    // Get the first image or use a placeholder
+    const imageUrl =
+        images && images.length > 0 ? images[0] : "/assets/images/banner.webp";
+
+    // Format prices for display (with thousands separator)
+    const formatPrice = (price) => {
+        return price.toLocaleString("en-IN");
+    };
 
     return (
-        <Link href={"/stays/" + stayID}>
-            <div
-                className={`${styles["stay-card"]} ${
-                    vertical ? styles["stay-card-vertical"] : ""
-                }`}
-            >
+        <Link href={`/stays/${id}`}>
+            <div className={`${styles["stay-card"]}`}>
                 <Image
-                    src="/assets/images/banner.webp"
+                    src={imageUrl}
                     width={400}
                     height={500}
-                    alt="Shimla"
+                    alt={name}
                     className={styles["stay-card__image"]}
                 />
-                {/* <div className={styles["stay-card__overlay"]} /> */}
 
                 <span className={styles["stay-card__indicator"]}>
-                    available
+                    {available ? "available" : "unavailable"}
                 </span>
                 <div className={styles["stay-card__content"]}>
                     <div className={styles["stay-card__progress"]} />
@@ -36,62 +55,84 @@ const StayCard = ({ vertical }) => {
                                 height={20}
                                 alt="Location"
                             />
-                            <p>Asagao, Goa</p>
+                            <p>{location?.name || "Location Not Available"}</p>
                         </div>
                         <span className={styles["stay-card__separator"]} />
                         <div className={styles["stay-card__rating"]}>
-                            <b>5.0</b>
+                            <b>{rating?.toFixed(1) || "N/A"}</b>
                             <Image
                                 src="/assets/images/ratings.svg"
                                 width={20}
                                 height={20}
-                                alt="Location"
+                                alt="Rating"
                             />
-                            <p>(300 Reviews)</p>
+                            <p>({reviewCount || 0} Reviews)</p>
                         </div>
                     </div>
                     <div className={styles["stay-card__title"]}>
-                        <h3>Sereno By The Sea</h3>
-                        {/* <span className={styles["stay-card__separator"]} />
-                    <h3>
-                        4 <span>BHK</span>
-                    </h3> */}
+                        <h3>{name}</h3>
                     </div>
                     <p className={styles["stay-card__capacity"]}>
                         <span className={styles["stay-card__capacity--amount"]}>
-                            2
+                            {bhk}
                         </span>{" "}
                         BHK
                         <span className={styles["stay-card__separator"]} />
                         <span className={styles["stay-card__capacity--amount"]}>
-                            4
+                            {maxGuests}
                         </span>{" "}
                         Guests
-                        <span className={styles["stay-card__separator"]} />
-                        <span className={styles["stay-card__partner"]}>
-                            <PartnerLogo name="elivaas" />
-                        </span>
-                    </p>
-                    <div className={styles["stay-card__price"]}>
-                        <div>
-                            <span
-                                className={styles["stay-card__price--striked"]}
-                            >
-                                ₹65,500
-                            </span>
-                            <p className={styles["stay-card__price--active"]}>
-                                ₹45,500{" "}
+                        {partner && (
+                            <>
                                 <span
-                                    className={styles["stay-card__price--unit"]}
-                                >
-                                    per night
+                                    className={styles["stay-card__separator"]}
+                                />
+                                <span className={styles["stay-card__partner"]}>
+                                    <PartnerLogo name={partner.name} />
                                 </span>
-                            </p>
+                            </>
+                        )}
+                    </p>
+                    {pricing && (
+                        <div className={styles["stay-card__price"]}>
+                            <div>
+                                {pricing.originalPrice && (
+                                    <span
+                                        className={
+                                            styles["stay-card__price--striked"]
+                                        }
+                                    >
+                                        ₹{formatPrice(pricing.originalPrice)}
+                                    </span>
+                                )}
+                                <p
+                                    className={
+                                        styles["stay-card__price--active"]
+                                    }
+                                >
+                                    ₹{formatPrice(pricing.currentPrice)}{" "}
+                                    <span
+                                        className={
+                                            styles["stay-card__price--unit"]
+                                        }
+                                    >
+                                        per night
+                                    </span>
+                                </p>
+                            </div>
+                            {pricing.perPerson && (
+                                <p
+                                    className={
+                                        styles["stay-card__price--person"]
+                                    }
+                                >
+                                    Equals to{" "}
+                                    <b>₹{formatPrice(pricing.perPerson)}</b> per
+                                    person
+                                </p>
+                            )}
                         </div>
-                        <p className={styles["stay-card__price--person"]}>
-                            Equals to <b>₹10,000</b> per person
-                        </p>
-                    </div>
+                    )}
                 </div>
             </div>
         </Link>

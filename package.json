@@ -10,6 +10,8 @@
     },
     "dependencies": {
         "@react-google-maps/api": "^2.20.6",
+        "axios": "^1.8.4",
+        "axios-mock-adapter": "^2.1.0",
         "embla-carousel": "^8.5.2",
         "embla-carousel-react": "^8.5.2",
         "lottie-react": "^2.4.1",

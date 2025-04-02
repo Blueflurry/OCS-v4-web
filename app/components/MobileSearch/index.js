@@ -12,7 +12,7 @@ import {
     Search,
     UserRound,
 } from "lucide-react";
-import { formatDateRange } from "@/app/utils/date";
+import { formatDateRange, formatISODate } from "@/app/utils/date";
 import { GUESTS } from "@/app/data/dummy";
 import { useRouter } from "next/navigation";
 
@@ -28,16 +28,16 @@ const MobileSearch = ({}) => {
     const [guests, setGuests] = useState([...GUESTS]);
     const [isSearchDisabled, setIsSearchDisabled] = useState(true);
     const locationOptions = [
-        { key: 1, value: "Apple" },
-        { key: 2, value: "Banana" },
-        { key: 3, value: "Cherry" },
-        { key: 4, value: "Date" },
-        { key: 5, value: "Grapes" },
-        { key: 6, value: "Mango" },
-        { key: 7, value: "Orange" },
-        { key: 8, value: "Peach" },
-        { key: 9, value: "Pineapple" },
-        { key: 10, value: "Strawberry" },
+        { key: 1, value: "Goa" },
+        { key: 2, value: "Mumbai" },
+        { key: 3, value: "Delhi" },
+        { key: 4, value: "Bangalore" },
+        { key: 5, value: "Jaipur" },
+        { key: 6, value: "Manali" },
+        { key: 7, value: "Udaipur" },
+        { key: 8, value: "Kerala" },
+        { key: 9, value: "Chennai" },
+        { key: 10, value: "Kolkata" },
     ];
 
     const handleLocationSelect = (option) => {
@@ -89,6 +89,37 @@ const MobileSearch = ({}) => {
         if (totalGuests > 0) setIsSearchDisabled(false);
         else setIsSearchDisabled(true);
     }, [guests]);
+
+    // Handle search button click
+    const handleSearch = () => {
+        // Extract guest counts by type
+        const menCount = guests.find((g) => g.type === "Men")?.count || 0;
+        const womenCount = guests.find((g) => g.type === "Women")?.count || 0;
+        const childrenCount =
+            guests.find((g) => g.type === "Children")?.count || 0;
+        const petsCount = guests.find((g) => g.type === "Pets")?.count || 0;
+
+        // Format dates as ISO strings if they exist
+        const checkin = dateRange[0] ? formatISODate(dateRange[0]) : "";
+        const checkout = dateRange[1] ? formatISODate(dateRange[1]) : "";
+
+        // Create the query string
+        const queryParams = new URLSearchParams({
+            location: autocompleteVal,
+            checkin,
+            checkout,
+            men: menCount,
+            women: womenCount,
+            children: childrenCount,
+            pets: petsCount,
+        }).toString();
+
+        // Navigate to stays page with search parameters
+        router.push(`/stays?${queryParams}`);
+
+        // Close the search modal
+        setIsOpen(false);
+    };
 
     return (
         <>
@@ -269,9 +300,7 @@ const MobileSearch = ({}) => {
                     <Button
                         large
                         type="primary"
-                        onClick={() => {
-                            router.push("/stays");
-                        }}
+                        onClick={handleSearch}
                         disabled={isSearchDisabled}
                     >
                         Search Stays <ArrowRight />

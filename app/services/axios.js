@@ -1,38 +1,85 @@
 /**
- * Global axios instance configuration
+ * Global axios instance configuration for both server and client components
+ * Automatically uses mock in development environment
  */
-import axios from "axios";
+import mockApi from "./axiosMock";
 
-const axiosInstance = axios.create({
-    baseURL: "https://api.oneclickstays.com/api",
-    timeout: 10000,
-    headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-    },
-});
+// Check if running in development mode
+const isDevelopment = process.env.NODE_ENV === "development";
 
-// Request interceptor
-axiosInstance.interceptors.request.use(
-    (config) => {
-        // You can add auth token here if needed
-        // const token = localStorage.getItem('token');
-        // if (token) {
-        //   config.headers.Authorization = `Bearer ${token}`;
-        // }
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
+// Use mock API in development, real API in production
+const api = isDevelopment ? mockApi : createRealApi();
 
-// Response interceptor
-axiosInstance.interceptors.response.use(
-    (response) => response.data,
-    (error) => {
-        // Handle global error responses
-        console.error("API Error:", error);
-        return Promise.reject(error);
+// Real API implementation
+function createRealApi() {
+    // Server-safe fetch function for real API
+    async function fetchAPI(endpoint, options = {}) {
+        const {
+            params = {},
+            method = "GET",
+            body = null,
+            headers = {},
+        } = options;
+
+        // Build URL with params
+        const url = new URL(`https://api.oneclickstays.com/api${endpoint}`);
+
+        // Add query parameters
+        if (params && Object.keys(params).length > 0) {
+            Object.keys(params).forEach((key) => {
+                if (params[key] !== undefined && params[key] !== null) {
+                    url.searchParams.append(key, params[key]);
+                }
+            });
+        }
+
+        // Configure fetch options
+        const fetchOptions = {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                ...headers,
+            },
+        };
+
+        // Add body if it exists (for POST, PUT, etc.)
+        if (
+            body &&
+            (method === "POST" || method === "PUT" || method === "PATCH")
+        ) {
+            fetchOptions.body = JSON.stringify(body);
+        }
+
+        try {
+            const response = await fetch(url.toString(), fetchOptions);
+
+            if (!response.ok) {
+                throw new Error(
+                    `API error: ${response.status} ${response.statusText}`
+                );
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error("API Error:", error);
+            throw error;
+        }
     }
-);
 
-export default axiosInstance;
+    // Create common methods that work in both server and client components
+    return {
+        get: (endpoint, options = {}) =>
+            fetchAPI(endpoint, { ...options, method: "GET" }),
+        post: (endpoint, body, options = {}) =>
+            fetchAPI(endpoint, { ...options, body, method: "POST" }),
+        put: (endpoint, body, options = {}) =>
+            fetchAPI(endpoint, { ...options, body, method: "PUT" }),
+        patch: (endpoint, body, options = {}) =>
+            fetchAPI(endpoint, { ...options, body, method: "PATCH" }),
+        delete: (endpoint, options = {}) =>
+            fetchAPI(endpoint, { ...options, method: "DELETE" }),
+    };
+}
+
+export default api;

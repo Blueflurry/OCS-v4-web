@@ -22,10 +22,6 @@
     -ms-overflow-style: none;
 }
 
-.stay-carousel-vertical {
-    flex-direction: column;
-}
-
 .stay-carousel__title {
     color: $color-bg-primary;
     padding: 35px 20px 10px;
@@ -38,6 +34,7 @@
     svg {
         height: 20px;
         margin-top: -2px;
+        margin-right: 4px;
     }
 }
 
