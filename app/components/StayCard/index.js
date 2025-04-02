@@ -10,6 +10,7 @@ const StayCard = ({ stay }) => {
 
     const {
         id,
+        _id,
         name,
         location,
         images,
@@ -22,6 +23,7 @@ const StayCard = ({ stay }) => {
         pricing,
     } = stay;
 
+    console.log(stay);
     // Get the first image or use a placeholder
     const imageUrl =
         images && images.length > 0 ? images[0] : "/assets/images/banner.webp";
@@ -32,7 +34,7 @@ const StayCard = ({ stay }) => {
     };
 
     return (
-        <Link href={`/stays/${id}`}>
+        <Link href={`/stays/${id | _id}`}>
             <div className={`${styles["stay-card"]}`}>
                 <Image
                     src={imageUrl}

@@ -3,6 +3,7 @@
 .stay-details {
     padding: 0 !important;
     background-color: $color-bg-primary;
+    padding-bottom: 100px !important; // Add padding for the fixed footer
 
     &__carousel {
         position: relative;
@@ -74,10 +75,10 @@
 
     &__separator-2 {
         display: block;
-        height: 2px;
-        width: 1px;
-        border-right: 1px solid rgba($color-bg-primary, 0.3);
-        margin: 0 7px -1.5px 6px;
+        height: 1px;
+        width: 100%;
+        background-color: rgba(white, 0.6);
+        // margin: 1px 0;
     }
 
     &__header {
@@ -238,12 +239,145 @@
             width: 100%;
         }
     }
+
+    /* New styles for added features */
+    &__dates {
+        margin: 2rem 0;
+        position: relative;
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+    }
+
+    &__date-button {
+        width: 100%;
+        padding: 12px 15px;
+        background-color: rgba(white, 0.05);
+        border: 1px solid rgba(white, 0.2);
+        border-radius: 8px;
+        color: white;
+        font-size: 0.9rem;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: $color-primary;
+        }
+    }
+
+    &__summary {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: rgba(white, 0.05);
+        border-radius: 8px;
+
+        p {
+            margin: 0 0 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(white, 0.7);
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: white;
+        }
+    }
+
+    &__guests {
+        margin: 2rem 0;
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        p {
+            margin: 0.5rem 0 0;
+            font-size: 0.9rem;
+            color: rgba(white, 0.7);
+        }
+    }
+
+    &__guests-selector {
+        display: flex;
+        align-items: center;
+
+        button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(white, 0.2);
+            background: rgba(white, 0.1);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
+        }
+
+        span {
+            margin: 0 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: white;
+        }
+    }
+
+    &__description {
+        padding: 1.5rem;
+        background-color: rgba(white, 0.05);
+        border-radius: 8px;
+        margin: 1.5rem 0;
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: rgba(white, 0.8);
+        }
+    }
 }
 
-// .padding {
-//     display: block;
-//     margin-bottom: 100px;
-// }
+.padding {
+    display: block;
+    // height: 10px;
+}
+
+.loading,
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    background-color: $color-bg-primary;
+}
 
 @media (max-width: $breakpoint-md) {
     .hide-on-mobile {

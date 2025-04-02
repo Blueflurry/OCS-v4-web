@@ -77,7 +77,7 @@ const EmblaCarousel = (props) => {
                         <div className={styles["embla__slide"]} key={index}>
                             <img
                                 className={styles["embla__slide__img"]}
-                                src={images[index].imgUrl}
+                                src={images[index]}
                                 alt="Your alt text"
                             />
                         </div>

@@ -3,7 +3,7 @@
  */
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { carouselData, mockStays } from "./mockData";
+import { carouselData, allStays } from "./mockData";
 
 // Create a new instance of axios
 const axiosInstance = axios.create({
@@ -48,7 +48,7 @@ mock.onPost("/stays").reply((config) => {
         const filters = JSON.parse(config.data);
 
         // Apply filters to mock data
-        let filteredStays = [...mockStays];
+        let filteredStays = [...allStays];
 
         // Filter by location if provided
         if (filters.location && filters.location.trim() !== "") {
@@ -99,6 +99,106 @@ mock.onPost("/stays").reply((config) => {
         });
     } catch (error) {
         console.error("Error in mock /stays endpoint:", error);
+        return [500, { error: "Internal server error" }];
+    }
+});
+
+// Mock the stay details endpoint
+mock.onGet(/\/stay\/\w+/).reply((config) => {
+    const stayId = config.url.split("/").pop();
+
+    // Find the stay by ID
+    const stay = allStays.find((s) => s._id === stayId) || allStays[0];
+
+    return [200, stay];
+});
+
+// Mock the create payment intent endpoint
+mock.onPost("/create-payment-intent").reply((config) => {
+    try {
+        const { stayId, checkin, checkout, guests } = JSON.parse(config.data);
+
+        // Find the stay
+        const stay = allStays.find((s) => s._id === stayId) || allStays[0];
+
+        // Calculate number of nights
+        const checkInDate = new Date(checkin || new Date());
+        const checkOutDate = new Date(
+            checkout ||
+                new Date(checkInDate.getTime() + 7 * 24 * 60 * 60 * 1000)
+        );
+        const nights = Math.ceil(
+            (checkOutDate - checkInDate) / (24 * 60 * 60 * 1000)
+        );
+
+        // Calculate the total amount
+        const stayTotal = stay.pricing.currentPrice * nights;
+        const gst = Math.round(stayTotal * 0.18); // 18% GST
+        const totalAmount = stayTotal + gst;
+
+        const paymentIntent = {
+            id: `pi_${Math.random().toString(36).substring(2, 15)}`,
+            stayId,
+            stayName: stay.name,
+            stayImage: stay.images[0],
+            checkin: checkInDate.toISOString(),
+            checkout: checkOutDate.toISOString(),
+            nights,
+            guests: guests || stay.maxGuests,
+            pricing: {
+                stayPrice: stayTotal,
+                gst,
+                totalAmount,
+            },
+            addOns: [],
+            createdAt: new Date().toISOString(),
+            status: "created",
+        };
+
+        return [200, paymentIntent];
+    } catch (error) {
+        console.error("Error in mock payment intent handler:", error);
+        return [500, { error: "Internal server error" }];
+    }
+});
+
+// Mock the update payment intent with addons endpoint
+mock.onPatch("/payment-intent-addons").reply((config) => {
+    try {
+        const { paymentIntentId, addOns } = JSON.parse(config.data);
+
+        // In a real implementation, you would retrieve the payment intent first
+        // For the mock, we'll create a new one
+        const paymentIntent = {
+            id: paymentIntentId,
+            addOns: addOns,
+            status: "updated",
+        };
+
+        return [200, paymentIntent];
+    } catch (error) {
+        console.error("Error in mock update payment intent handler:", error);
+        return [500, { error: "Internal server error" }];
+    }
+});
+
+// Mock the create payment endpoint
+mock.onPost("/create-payment").reply((config) => {
+    try {
+        const { paymentIntentId } = JSON.parse(config.data);
+
+        // Success response from payment gateway
+        const paymentResponse = {
+            id: `pay_${Math.random().toString(36).substring(2, 15)}`,
+            paymentIntentId,
+            status: "success",
+            transactionId: `txn_${Math.random().toString(36).substring(2, 15)}`,
+            processingTime: new Date().toISOString(),
+        };
+
+        return [200, paymentResponse];
+    } catch (error) {
+        console.error("Error in mock payment handler:", error);
         return [500, { error: "Internal server error" }];
     }
 });

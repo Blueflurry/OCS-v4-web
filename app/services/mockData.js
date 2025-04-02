@@ -194,7 +194,7 @@ export const carouselData = {
 export const availableCategories = Object.keys(carouselData);
 
 // Mock data for all stays
-export const mockStays = [
+export const allStays = [
     {
         _id: "stay1",
         name: "Sereno By The Sea",
@@ -204,7 +204,12 @@ export const mockStays = [
             name: "Asagao, Goa",
         },
         categories: ["trending", "featured"],
-        images: ["/assets/images/banner.webp"],
+        images: [
+            "/assets/images/banner.webp",
+            "/assets/images/villa-1.svg",
+            "/assets/images/villa-2.svg",
+            "/assets/images/villa-3.png",
+        ],
         rating: 5.0,
         reviewCount: 302,
         available: true,

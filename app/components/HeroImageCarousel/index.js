@@ -9,11 +9,13 @@ const OPTIONS = {
     // dragFree: true // swipe multiple slides at once
 };
 
-const SLIDE_COUNT = 5;
-const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
-
 const HeroImageCarousel = (props) => {
     const { images } = props;
+
+    const SLIDE_COUNT = images.length;
+    const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+
+    console.log("images", images);
     return (
         <div>
             <EmblaCarousel slides={SLIDES} options={OPTIONS} images={images} />

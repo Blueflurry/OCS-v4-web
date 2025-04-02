@@ -7,24 +7,45 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { PAGES } from "@/app/data/dummy";
 import { ArrowRight } from "lucide-react";
 import RazorpayButton from "@/app/components/RazorpayButton";
+import { formatCurrency } from "@/app/utils/formatter";
 
-const Footer = ({ btnText, btnType = "primary", ...props }) => {
+/**
+ * Footer component with action button
+ * @param {Object} props - Component props
+ * @param {string} props.btnText - Button text
+ * @param {string} props.btnType - Button type (primary, whatsapp, razorpay)
+ * @param {Function} props.onClick - Function to call when button is clicked
+ * @param {boolean} props.showTotalAmount - Whether to show total amount
+ * @param {number} props.totalAmount - Total amount to display
+ * @returns {JSX.Element} Footer component
+ */
+const Footer = ({
+    btnText,
+    btnType = "primary",
+    onClick,
+    showTotalAmount = false,
+    totalAmount = 0,
+}) => {
     const router = useRouter();
     const params = useParams();
     const stayId = params.stayId;
     const pathname = usePathname();
     const [currentPage, setCurrentPage] = useState(PAGES[0]);
-    const [buttonType, setButtonType] = useState("primary");
-    // type = pathname.includes("/addons") ? "secondary" : "primary";
 
     const handleCheckoutClick = () => {
+        // If custom onClick is provided, call it first
+        if (onClick) {
+            onClick();
+            return;
+        }
+
+        // Otherwise, use the default navigation logic
         for (let idx = 0; idx < PAGES.length; idx++) {
             let page = PAGES[idx];
             page.url = page.url?.replace("${stayId}", stayId);
             page.nextUrl = page.nextUrl?.replace("${stayId}", stayId);
-            // console.log("page.url", page.url, pathname, page.nextUrl);
 
-            if (btnType == "razorpay") {
+            if (btnType === "razorpay") {
                 return;
             }
 
@@ -37,12 +58,10 @@ const Footer = ({ btnText, btnType = "primary", ...props }) => {
 
     useEffect(() => {
         if (pathname.includes("/addons")) {
-            // setButtonType("half-fill");
             setCurrentPage(PAGES[1]);
         }
 
         if (pathname.includes("/checkout")) {
-            // setButtonType("sixtyfive-fill");
             setCurrentPage(PAGES[2]);
         }
 
@@ -56,57 +75,46 @@ const Footer = ({ btnText, btnType = "primary", ...props }) => {
     }, [pathname]);
 
     return (
-        <div className={styles["footer"]} onClick={handleCheckoutClick}>
-            {btnType == "razorpay" ? (
-                <>
-                    <RazorpayButton></RazorpayButton>
-                </>
-            ) : (
-                <Button type={btnType} large>
-                    {btnType == "whatsapp" ? (
-                        <>
-                            <Image
-                                src="/assets/images/whatsapp-icon.webp"
-                                width={24}
-                                height={24}
-                                alt="arrow"
-                            ></Image>
+        <div className={styles["footer"]}>
+            {/* {showTotalAmount && (
+                <div className={styles["total-amount"]}>
+                    <span>Total</span>
+                    <h4>₹{formatCurrency(totalAmount)}</h4>
+                </div>
+            )} */}
 
-                            <span>
-                                {/* {currentPage.id == 1 || currentPage.id == 2
-                        ? "Proceed to Checkout"
-                        : "Pay now"} */}
-
-                                {btnText}
-                            </span>
-                        </>
-                    ) : (
-                        <></>
-                    )}
-
-                    {btnType != "whatsapp" && btnType != "razorpay" ? (
-                        <>
-                            <span>
-                                {/* {currentPage.id == 1 || currentPage.id == 2
-                         ? "Proceed to Checkout"
-                         : "Pay now"} */}
-
-                                {btnText}
-                            </span>
-                            <Image
-                                src="/assets/images/arrow-forward.svg"
-                                width={20}
-                                height={20}
-                                alt="arrow"
-                            ></Image>
-                        </>
-                    ) : (
-                        <></>
-                    )}
-
-                    {/* <ArrowRight /> */}
-                </Button>
-            )}
+            <div
+                className={styles["button-container"]}
+                onClick={handleCheckoutClick}
+            >
+                {btnType === "razorpay" ? (
+                    <RazorpayButton />
+                ) : (
+                    <Button type={btnType} large>
+                        {btnType === "whatsapp" ? (
+                            <>
+                                <Image
+                                    src="/assets/images/whatsapp-icon.webp"
+                                    width={24}
+                                    height={24}
+                                    alt="WhatsApp"
+                                />
+                                <span>{btnText}</span>
+                            </>
+                        ) : (
+                            <>
+                                <span>{btnText}</span>
+                                <Image
+                                    src="/assets/images/arrow-forward.svg"
+                                    width={20}
+                                    height={20}
+                                    alt="arrow"
+                                />
+                            </>
+                        )}
+                    </Button>
+                )}
+            </div>
         </div>
     );
 };

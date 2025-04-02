@@ -12,7 +12,7 @@ import {
     Search,
     UserRound,
 } from "lucide-react";
-import { formatDateRange, formatISODate } from "@/app/utils/date";
+import { formatDateRange, formatISODate } from "@/app/utils/formatter";
 import { GUESTS } from "@/app/data/dummy";
 import { useRouter } from "next/navigation";
 
