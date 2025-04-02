@@ -1,28 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./StayCarousel.module.scss";
 import StayCard from "@/app/components/StayCard";
-import { Flame } from "lucide-react";
+import * as LucideIcons from "lucide-react";
+import { fetchStaysByCategory } from "@/app/services/stayService";
 
-const StayCarousel = ({
-    stays = [1, 2, 3, 4, 5, 6],
-    title = "Trending Stays",
-    titleIcon = <Flame />,
-    desc = `Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet.`,
-    vertical = false,
-}) => {
+const StayCarousel = ({ category, vertical = false }) => {
+    const [carouselData, setCarouselData] = useState(null);
+
+    useEffect(() => {
+        const getStays = async () => {
+            try {
+                const data = await fetchStaysByCategory(category);
+                setCarouselData(data);
+            } catch (error) {
+                console.error("Failed to fetch stays:", error);
+            }
+        };
+
+        if (category) {
+            getStays();
+        }
+    }, [category]);
+
+    // Don't render the component until data is loaded
+    if (!carouselData) return null;
+
+    const { stays, title, icon, description } = carouselData;
+    const IconComponent =
+        icon && LucideIcons[icon] ? LucideIcons[icon] : LucideIcons.Flame;
+
     return (
         <>
             <h4 className={styles["stay-carousel__title"]}>
-                {titleIcon} {title}
+                <IconComponent /> {title}
             </h4>
-            <p className={styles["stay-carousel__desc"]}>{desc}</p>
+            <p className={styles["stay-carousel__desc"]}>{description}</p>
             <div
                 className={`${styles["stay-carousel"]} ${
                     vertical ? styles["stay-carousel-vertical"] : ""
                 }`}
             >
                 {stays.map((stay, i) => (
-                    <StayCard key={i} vertical={vertical} />
+                    <StayCard
+                        key={stay.id || i}
+                        stay={stay}
+                        vertical={vertical}
+                    />
                 ))}
             </div>
         </>
