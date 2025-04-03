@@ -1,38 +1,131 @@
 "use client";
-import React, { use, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Addons.module.scss";
 import Image from "next/image";
 import Footer from "@/app/modules/Footer";
 import BackButton from "@/app/components/BackButton";
 import PartnerLogo from "@/app/components/PartnerLogo";
-import { ADDONSERVICES } from "@/app/data/dummy";
+import { useParams, useRouter } from "next/navigation";
+import {
+    getStayAddons,
+    updatePaymentIntentWithAddOns,
+} from "@/app/services/stayDetailsService";
+import { formatCurrency } from "@/app/utils/formatter";
+import Loading from "../loading";
 
-const Addons = ({ params }) => {
-    const { stayId } = use(params);
-    const [services, setServices] = useState([...ADDONSERVICES]);
+const Addons = () => {
+    const params = useParams();
+    const { stayId } = params;
 
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [stayDetails, setStayDetails] = useState(null);
+    const [services, setServices] = useState([]);
+    const [paymentIntentId, setPaymentIntentId] = useState(null);
+
+    // Get stay details from localStorage and fetch add-ons from API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+
+                // Get the payment intent ID from localStorage
+                const savedPaymentIntentId =
+                    localStorage.getItem("paymentIntentId");
+                if (!savedPaymentIntentId) {
+                    throw new Error(
+                        "No payment intent found. Please start booking process again."
+                    );
+                }
+                setPaymentIntentId(savedPaymentIntentId);
+
+                // Get stay basics from localStorage
+                const stayBasics = localStorage.getItem("stayBasics");
+                if (!stayBasics) {
+                    throw new Error(
+                        "Stay details not found. Please return to stay details page."
+                    );
+                }
+
+                const parsedStayDetails = JSON.parse(stayBasics);
+                setStayDetails(parsedStayDetails);
+
+                // Fetch add-on services for this stay
+                const addons = await getStayAddons(stayId);
+
+                if (Array.isArray(addons) && addons.length > 0) {
+                    setServices(addons);
+                } else {
+                    console.warn(
+                        "No add-ons found or invalid format. Using default add-ons."
+                    );
+                    // If no add-ons are returned or data format is incorrect,
+                    // you might want to set some default add-ons here
+                    setServices([]);
+                }
+            } catch (err) {
+                console.error("Error in Addons page:", err);
+                setError(err.message || "Something went wrong");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [stayId]);
+
+    // Handle checkbox changes
     const onChangeCheckBox = (event) => {
         const { value, checked } = event.target;
 
         setServices((prev) => {
-            const updatedServices = prev.map((ct) =>
-                ct.id == value ? { ...ct, isChecked: checked } : ct
+            return prev.map((service) =>
+                service.id === value
+                    ? { ...service, isChecked: checked }
+                    : service
             );
-            return updatedServices;
-            // .sort((a, b) => b.isChecked - a.isChecked);
         });
+    };
+
+    // Handle proceed to checkout
+    const handleProceedToCheckout = async () => {
+        try {
+            // Get selected addons
+            const selectedAddOns = services
+                .filter((service) => service.isChecked)
+                .map((service) => ({
+                    id: service.id,
+                    name: service.serviceName,
+                    price: service.pricePerNight,
+                }));
+
+            // Update payment intent with selected addons
+            if (paymentIntentId) {
+                await updatePaymentIntentWithAddOns({
+                    paymentIntentId,
+                    addOns: selectedAddOns,
+                });
+
+                // Store selected addons for checkout page
+                localStorage.setItem(
+                    "selectedAddOns",
+                    JSON.stringify(selectedAddOns)
+                );
+
+                // The Footer component will handle the navigation
+            }
+        } catch (err) {
+            console.error("Error updating payment intent:", err);
+            setError("Failed to update add-ons. Please try again.");
+        }
     };
 
     return (
         <div className={styles["addons"]}>
-            {/* <BackButton></BackButton> */}
+            <BackButton />
 
             <div className={styles["addons__header"]}>
-                <p>
-                    Make your experience special with...
-                    {/* Book Now <span>|</span> Pay Later <span>|</span> 0%
-                    Commission */}
-                </p>
+                <p>Make your experience special with...</p>
                 <h2>
                     Exclusive Stay
                     <span>Add-Ons</span>
@@ -47,7 +140,10 @@ const Addons = ({ params }) => {
                         style={{ width: "70px", marginBottom: "-4px" }}
                     />
                     <span className={styles[""]}>x</span>
-                    <PartnerLogo name="elivaas" color="white" />
+                    <PartnerLogo
+                        name={stayDetails?.partner?.name || "elivaas"}
+                        color="white"
+                    />
                 </div>
             </div>
 
@@ -55,14 +151,11 @@ const Addons = ({ params }) => {
             <div className={styles["addons__listing"]}>
                 <h4>Pay at Stay</h4>
                 <p className={styles["addons__listing--description"]}>
-                    {/* Exclusive in-stay services from Elivaas on OneClick Stay
-                    bookings. Tap to select, pay later at the stay, with 0%
-                    commission. */}
                     Our team will contact you after you confirm your booking for
                     these services. You don't have to pay at the time of
                     booking.
                 </p>
-                {services.map((service, index) => (
+                {services.map((service) => (
                     <div
                         className={styles["addons__listing--row"]}
                         key={service.id}
@@ -103,11 +196,11 @@ const Addons = ({ params }) => {
                                 src={service.imgUrl}
                                 width={200}
                                 height={200}
-                                alt="activity"
+                                alt={service.serviceName}
                                 className={
                                     styles["addons__listing--item-image"]
                                 }
-                            ></Image>
+                            />
                             <div
                                 className={
                                     styles["addons__listing--item-details"]
@@ -115,7 +208,6 @@ const Addons = ({ params }) => {
                             >
                                 <h2>{service.serviceName}</h2>
                                 <h4>
-                                    {/* Starting from */}
                                     <span>{service.pricePerNight}</span>
                                 </h4>
                                 <p>{service.description}</p>
@@ -125,24 +217,40 @@ const Addons = ({ params }) => {
                 ))}
             </div>
 
-            {/* fixed */}
+            {/* fixed bottom stay info */}
             <div className={styles["addons__fixed"]}>
                 <div className={styles["addons__fixed--image"]}>
                     <Image
-                        src="/assets/images/villa-1.svg"
+                        src={
+                            stayDetails?.image ||
+                            stayDetails?.images?.[0] ||
+                            "/assets/images/villa-1.svg"
+                        }
                         width={100}
                         height={100}
-                        alt="villa"
-                    ></Image>
+                        alt={stayDetails?.name || "Luxury Stay"}
+                    />
                 </div>
                 <div className={styles["addons__fixed--details"]}>
-                    <h4>CEO’s Paradise - OneClick Exclusive</h4>
-                    <p>₹ 4,000/night</p>
-                    <p>Mar 24, 2025 - Mar 30, 2025</p>
+                    <h4>{stayDetails?.name || "Luxury Villa"}</h4>
+                    <p>
+                        ₹{" "}
+                        {formatCurrency(
+                            stayDetails?.pricing?.currentPrice || 40000
+                        )}
+                        /night
+                    </p>
+                    <p>
+                        {stayDetails?.checkin || "Check-in"} -{" "}
+                        {stayDetails?.checkout || "Check-out"}
+                    </p>
                 </div>
             </div>
 
-            <Footer btnText="Proceed to checkout" />
+            <Footer
+                btnText="Proceed to checkout"
+                onClick={handleProceedToCheckout}
+            />
         </div>
     );
 };

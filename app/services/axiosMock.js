@@ -3,7 +3,7 @@
  */
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { carouselData, allStays } from "./mockData";
+import { carouselData, allStays, addonServices } from "./mockData";
 
 // Create a new instance of axios
 const axiosInstance = axios.create({
@@ -101,6 +101,29 @@ mock.onPost("/stays").reply((config) => {
         console.error("Error in mock /stays endpoint:", error);
         return [500, { error: "Internal server error" }];
     }
+});
+
+// Mock the stay add-ons endpoint
+mock.onGet(/\/stay\/\w+\/addons/).reply((config) => {
+    // Extract stayId correctly from URL
+    // The URL pattern is /stay/{stayId}/addons
+    const urlParts = config.url.split("/");
+    // The stayId is the part after "stay/" and before "/addons"
+    const stayId = urlParts[urlParts.indexOf("stay") + 1];
+
+    const delay = getRandomDelay();
+
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            // Check if we have specific add-ons for this stay
+            if (addonServices[stayId]) {
+                resolve([200, addonServices[stayId]]);
+            } else {
+                // Return default add-ons if no specific ones exist
+                resolve([200, addonServices.default]);
+            }
+        }, delay);
+    });
 });
 
 // Mock the stay details endpoint

@@ -52,7 +52,7 @@ export const getFilteredStays = async (filters) => {
             limit,
         });
 
-        console.log("Filtered stays:", response.data);
+        // console.log("Filtered stays:", response.data);
         return response.data || [];
     } catch (error) {
         console.error("Error fetching filtered stays:", error);

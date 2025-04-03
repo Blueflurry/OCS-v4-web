@@ -12,7 +12,9 @@ const Locations = () => {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 console.log("SCROLLED");
-                setScrolled(entry.boundingClientRect.top <= window.innerHeight * 0.2);
+                setScrolled(
+                    entry.boundingClientRect.top <= window.innerHeight * 0.2
+                );
             },
             { threshold: 0.1 }
         );
@@ -30,7 +32,11 @@ const Locations = () => {
 
     return (
         <>
-            <div className={`${styles["locations"]} ${scrolled ? styles["locations__scrolled"] : ""}`}>
+            <div
+                className={`${styles["locations"]} ${
+                    scrolled ? styles["locations__scrolled"] : ""
+                }`}
+            >
                 <div className={styles["locations__wrapper"]}>
                     {[...Array(2)].map(
                         (

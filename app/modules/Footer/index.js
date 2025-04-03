@@ -36,7 +36,7 @@ const Footer = ({
         // If custom onClick is provided, call it first
         if (onClick) {
             onClick();
-            return;
+            // return;
         }
 
         // Otherwise, use the default navigation logic
@@ -45,6 +45,9 @@ const Footer = ({
             page.url = page.url?.replace("${stayId}", stayId);
             page.nextUrl = page.nextUrl?.replace("${stayId}", stayId);
 
+            // console.log("pathname", pathname);
+            // console.log("page.url", page.url);
+            // console.log("page.nextUrl", page.nextUrl);
             if (btnType === "razorpay") {
                 return;
             }

@@ -16,6 +16,21 @@ export const getStayDetails = async (stayId) => {
 };
 
 /**
+ * Get add-on services for a specific stay
+ * @param {string} stayId - The ID of the stay
+ * @returns {Promise<Array>} - Array of add-on services
+ */
+export const getStayAddons = async (stayId) => {
+    try {
+        const response = await api.get(`/stay/${stayId}/addons`);
+        return response.data || [];
+    } catch (error) {
+        console.error(`Error fetching add-ons for stay ${stayId}:`, error);
+        return [];
+    }
+};
+
+/**
  * Create a new payment intent for a stay
  * @param {Object} paymentDetails - Payment details
  * @param {string} paymentDetails.stayId - The ID of the stay

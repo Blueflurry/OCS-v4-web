@@ -485,3 +485,170 @@ export const allStays = [
         },
     },
 ];
+
+// Mock data for add-on services by stayId
+export const addonServices = {
+    // Default add-ons available for all stays
+    default: [
+        {
+            id: "addon1",
+            serviceName: "Airport Pickup",
+            pricePerNight: "₹2,000 per trip",
+            description:
+                "Hassle-free pickup from the nearest airport in a luxury vehicle",
+            imgUrl: "/assets/images/addons-1.svg",
+            isChecked: false,
+        },
+        {
+            id: "addon2",
+            serviceName: "Gourmet Meals",
+            pricePerNight: "₹1,500 per person",
+            description:
+                "Exquisite cuisine prepared by our in-house chef with local ingredients",
+            imgUrl: "/assets/images/addons-2.svg",
+            isChecked: false,
+        },
+        {
+            id: "addon3",
+            serviceName: "Indian Starboy Festival",
+            pricePerNight: "₹5,000 per event",
+            description:
+                "Exclusive access to local cultural performances and festivities",
+            imgUrl: "/assets/images/addons-3.svg",
+            isChecked: false,
+        },
+        {
+            id: "addon4",
+            serviceName: "Sea Food & Crabs",
+            pricePerNight: "₹2,500 per meal",
+            description:
+                "Fresh seafood specialties prepared according to your preferences",
+            imgUrl: "/assets/images/addons-4.svg",
+            isChecked: false,
+        },
+    ],
+
+    // Specific add-ons for stay1 (coastal property)
+    stay1: [
+        {
+            id: "addon1",
+            serviceName: "Airport Pickup",
+            pricePerNight: "₹2,000 per trip",
+            description:
+                "Hassle-free pickup from the nearest airport in a luxury vehicle",
+            imgUrl: "/assets/images/addons-1.svg",
+            isChecked: false,
+        },
+        {
+            id: "addon2",
+            serviceName: "Gourmet Meals",
+            pricePerNight: "₹1,800 per person",
+            description:
+                "Exquisite cuisine prepared by our in-house chef with local ingredients",
+            imgUrl: "/assets/images/addons-2.svg",
+            isChecked: false,
+        },
+        {
+            id: "addon5",
+            serviceName: "Sunset Yacht Cruise",
+            pricePerNight: "₹8,000 per trip",
+            description:
+                "Exclusive private yacht cruise along the coast to watch the sunset",
+            imgUrl: "/assets/images/addons-3.svg",
+            isChecked: false,
+        },
+        {
+            id: "addon6",
+            serviceName: "Beach Barbecue",
+            pricePerNight: "₹3,500 per event",
+            description:
+                "Private beach barbecue with fresh seafood and refreshing cocktails",
+            imgUrl: "/assets/images/addons-4.svg",
+            isChecked: false,
+        },
+    ],
+
+    // Specific add-ons for stay2 (mountain property)
+    stay2: [
+        {
+            id: "addon1",
+            serviceName: "Airport Pickup",
+            pricePerNight: "₹2,500 per trip",
+            description:
+                "Comfortable pickup from the nearest airport in a 4x4 vehicle",
+            imgUrl: "/assets/images/addons-1.svg",
+            isChecked: false,
+        },
+        {
+            id: "addon2",
+            serviceName: "Traditional Mountain Cuisine",
+            pricePerNight: "₹1,600 per person",
+            description:
+                "Authentic Himalayan cuisine prepared with organic local ingredients",
+            imgUrl: "/assets/images/addons-2.svg",
+            isChecked: false,
+        },
+        {
+            id: "addon7",
+            serviceName: "Mountain Trekking Guide",
+            pricePerNight: "₹3,000 per day",
+            description:
+                "Professional guide for mountain treks with equipment provided",
+            imgUrl: "/assets/images/addons-3.svg",
+            isChecked: false,
+        },
+        {
+            id: "addon8",
+            serviceName: "Bonfire Evening",
+            pricePerNight: "₹2,000 per event",
+            description:
+                "Cozy evening bonfire with traditional music and refreshments",
+            imgUrl: "/assets/images/addons-4.svg",
+            isChecked: false,
+        },
+    ],
+};
+
+// GUESTS data for search filters
+export const GUESTS = [
+    {
+        type: "Men",
+        count: 0,
+    },
+    {
+        type: "Women",
+        count: 0,
+    },
+    {
+        type: "Children",
+        count: 0,
+    },
+    {
+        type: "Pets",
+        count: 0,
+    },
+];
+
+// Navigation pages for the Footer component
+export const PAGES = [
+    {
+        url: "/stays/${stayId}",
+        nextUrl: "/stays/${stayId}/addons",
+    },
+    {
+        url: "/stays/${stayId}/addons",
+        nextUrl: "/stays/${stayId}/checkout",
+    },
+    {
+        url: "/stays/${stayId}/checkout",
+        nextUrl: "/stays/${stayId}/payment",
+    },
+    {
+        url: "/stays/${stayId}/payment",
+        nextUrl: "/stays/${stayId}/payment-success",
+    },
+    {
+        url: "/stays/${stayId}/payment-success",
+        nextUrl: "/bookings/upcoming",
+    },
+];

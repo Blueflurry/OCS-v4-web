@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import styles from "./StayDetails.module.scss";
 import HeroImageCarousel from "@/app/components/HeroImageCarousel";
-import { ADDONSERVICES } from "@/app/data/dummy";
 import Image from "next/image";
-import DateRangePicker from "@/app/components/DateRangePicker";
 import Amenities from "@/app/components/Amenities";
 import ReturnPolicy from "@/app/components/ReturnPolicy";
 import Reviews from "@/app/components/Reviews";
@@ -28,20 +26,60 @@ const StayDetails = () => {
     const [stayData, setStayData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [datePickerOpen, setDatePickerOpen] = useState(false);
-    const [selectedDates, setSelectedDates] = useState([
-        new Date(),
-        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Default 7 days
-    ]);
-    const [guests, setGuests] = useState(2);
+    // Get booking info from localStorage if available
+    const [bookingInfo, setBookingInfo] = useState(() => {
+        if (typeof window !== "undefined") {
+            const savedInfo = localStorage.getItem("bookingInfo");
+            return savedInfo
+                ? JSON.parse(savedInfo)
+                : {
+                      checkin: "21 May, 2025",
+                      checkout: "28 May, 2025",
+                      nights: 7,
+                      guests: 2,
+                  };
+        }
+        return {
+            checkin: "21 May, 2025",
+            checkout: "28 May, 2025",
+            nights: 7,
+            guests: 2,
+        };
+    });
 
     useEffect(() => {
         const fetchStayDetails = async () => {
             try {
                 setIsLoading(true);
                 const data = await getStayDetails(stayId);
-                console.log("Stay details:", data);
                 setStayData(data);
+
+                // Save essential stay details to localStorage
+                if (data && data._id) {
+                    const stayBasics = {
+                        id: data._id,
+                        name: data.name,
+                        description: data.description,
+                        image: data.images[0],
+                        location: data.location?.name,
+                        rating: data.rating,
+                        reviewCount: data.reviewCount,
+                        bhk: data.bhk,
+                        maxGuests: data.maxGuests,
+                        partner: data.partner,
+                        pricing: {
+                            currentPrice: data.pricing.currentPrice,
+                            originalPrice: data.pricing.originalPrice,
+                            perPerson: data.pricing.perPerson,
+                        },
+                        ...bookingInfo, // Include the booking info
+                    };
+
+                    localStorage.setItem(
+                        "stayBasics",
+                        JSON.stringify(stayBasics)
+                    );
+                }
             } catch (err) {
                 console.error("Error fetching stay details:", err);
                 setError(
@@ -55,38 +93,31 @@ const StayDetails = () => {
         if (stayId) {
             fetchStayDetails();
         }
-    }, [stayId]);
-
-    const handleDateChange = (dates) => {
-        setSelectedDates(dates);
-    };
-
-    const handleGuestChange = (count) => {
-        setGuests(count);
-    };
+    }, [stayId, bookingInfo]);
 
     const handleProceedToCheckout = async () => {
         try {
-            // Create a payment intent
+            // Get stay basics from localStorage
+            const stayBasics = JSON.parse(localStorage.getItem("stayBasics"));
+
+            // Create a payment intent using stored data
             const paymentIntent = await createPaymentIntent({
                 stayId: stayData._id,
-                checkin: selectedDates[0]?.toISOString(),
-                checkout: selectedDates[1]?.toISOString(),
-                guests: guests,
+                checkin: stayBasics.checkin,
+                checkout: stayBasics.checkout,
+                guests: stayBasics.guests,
             });
 
-            // Store the payment intent ID in localStorage to use it in the next steps
+            // Store the payment intent ID in localStorage
             localStorage.setItem("paymentIntentId", paymentIntent.id);
-
-            // The default Footer navigation will handle the redirect
+            // console.log("Payment intent created:", paymentIntent);
         } catch (err) {
             console.error("Error creating payment intent:", err);
-            alert("Failed to proceed to checkout. Please try again.");
         }
     };
 
     if (isLoading) {
-        return <Loading></Loading>;
+        return <Loading />;
     }
 
     if (error) {
@@ -96,27 +127,6 @@ const StayDetails = () => {
     if (!stayData) {
         return <div className={styles["error"]}>Stay not found</div>;
     }
-
-    // Calculate nights between selected dates
-    const nights =
-        selectedDates[0] && selectedDates[1]
-            ? Math.ceil(
-                  (selectedDates[1] - selectedDates[0]) / (24 * 60 * 60 * 1000)
-              )
-            : 0;
-
-    // Calculate total amount
-    const totalAmount = stayData.pricing.currentPrice * (nights || 1);
-
-    // Format dates for display
-    const formatDate = (date) => {
-        if (!date) return "";
-        return date.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-        });
-    };
 
     return (
         <>
@@ -230,81 +240,25 @@ const StayDetails = () => {
                             </p>
                         </div>
 
-                        {/* Date selection */}
-                        {/* <div className={styles["stay-details__dates"]}>
-                            <h3>Select your dates</h3>
-                            <button
-                                className={styles["stay-details__date-button"]}
-                                onClick={() => setDatePickerOpen(true)}
-                            >
-                                {selectedDates[0] && selectedDates[1]
-                                    ? `${formatDate(
-                                          selectedDates[0]
-                                      )} - ${formatDate(selectedDates[1])}`
-                                    : "Click to select dates"}
-                            </button>
-
-                            <DateRangePicker
-                                onChange={handleDateChange}
-                                value={selectedDates}
-                                onOpen={setDatePickerOpen}
-                                isOpen={datePickerOpen}
-                            />
-
+                        {/* Note about selected dates and guests */}
+                        <div className={styles["stay-details__dates"]}>
                             <div className={styles["stay-details__summary"]}>
                                 <p>
-                                    <strong>{nights} nights</strong> · ₹
-                                    {formatCurrency(
-                                        stayData.pricing.currentPrice
-                                    )}{" "}
-                                    per night
+                                    <strong>{bookingInfo.nights} nights</strong>{" "}
+                                    •{bookingInfo.checkin} -{" "}
+                                    {bookingInfo.checkout} •{bookingInfo.guests}{" "}
+                                    guest{bookingInfo.guests !== 1 ? "s" : ""}
                                 </p>
-                                <h3>Total: ₹{formatCurrency(totalAmount)}</h3>
+                                <h3>
+                                    Total: ₹
+                                    {formatCurrency(
+                                        stayData.pricing.currentPrice *
+                                            bookingInfo.nights
+                                    )}
+                                </h3>
                             </div>
-                        </div> */}
-
-                        {/* Guest selection */}
-                        {/* <div className={styles["stay-details__guests"]}>
-                            <h3>Number of guests</h3>
-                            <div
-                                className={
-                                    styles["stay-details__guests-selector"]
-                                }
-                            >
-                                <button
-                                    onClick={() =>
-                                        handleGuestChange(
-                                            Math.max(1, guests - 1)
-                                        )
-                                    }
-                                    disabled={guests <= 1}
-                                >
-                                    -
-                                </button>
-                                <span>{guests}</span>
-                                <button
-                                    onClick={() =>
-                                        handleGuestChange(
-                                            Math.min(
-                                                stayData.maxGuests,
-                                                guests + 1
-                                            )
-                                        )
-                                    }
-                                    disabled={guests >= stayData.maxGuests}
-                                >
-                                    +
-                                </button>
-                            </div>
-                            <p>Maximum {stayData.maxGuests} guests allowed</p>
-                        </div> */}
+                        </div>
                     </div>
-
-                    {/* Description */}
-                    {/* <div className={styles["stay-details__description"]}>
-                        <h3>About this place</h3>
-                        <p>{stayData.description}</p>
-                    </div> */}
 
                     {/* map */}
                     <div className={styles["stay-details__map"]}>
@@ -335,8 +289,6 @@ const StayDetails = () => {
                 btnText="Proceed to checkout"
                 btnType="primary"
                 onClick={handleProceedToCheckout}
-                showTotalAmount={true}
-                totalAmount={totalAmount}
             />
         </>
     );
