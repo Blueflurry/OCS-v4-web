@@ -1,11 +1,7 @@
-import Header from "@/app/modules/Header";
-import Hero from "@/app/modules/Hero/Hero";
-import styles from "./Stays.module.scss";
 import { getFilteredStays } from "@/app/services/staysService";
-import { Search } from "lucide-react";
-import StayListings from "@/app/components/StayListings";
+import StaysClient from "./StaysClient";
 
-// Next.js server component that handles search parameters
+// Next.js server component that handles search parameters and fetches initial data
 export default async function Stays({ searchParams }) {
     const resolvedSearchParams = await searchParams;
 
@@ -34,38 +30,11 @@ export default async function Stays({ searchParams }) {
     // Fetch initial batch of filtered stays data (first 10 items)
     const initialStays = await getFilteredStays(filters);
 
-    // Create description with dates and guests if available
-    let description = "";
-    if (checkin && checkout) {
-        const checkInDate = new Date(checkin);
-        const checkOutDate = new Date(checkout);
-        description += `${checkInDate.toLocaleDateString()} - ${checkOutDate.toLocaleDateString()}`;
-    }
-
-    const totalGuests = men + women + children;
-    if (totalGuests > 0) {
-        description += description ? " • " : "";
-        description += `${totalGuests} guest${totalGuests !== 1 ? "s" : ""}`;
-    }
-
-    if (pets > 0) {
-        description += description ? " • " : "";
-        description += `${pets} pet${pets !== 1 ? "s" : ""}`;
-    }
-
+    // Pass both the search parameters and initial stays to the client component
     return (
-        <>
-            <Header />
-            <Hero />
-            <div className={styles["main"]}>
-                <StayListings
-                    initialStays={initialStays}
-                    title={`Stays in ${location || "All Destinations"}`}
-                    description={description}
-                    filters={filters}
-                />
-                {/* icon={<Search />} */}
-            </div>
-        </>
+        <StaysClient
+            searchParams={resolvedSearchParams}
+            initialStays={initialStays}
+        />
     );
 }

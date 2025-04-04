@@ -103,7 +103,52 @@ const MobileSearch = ({}) => {
         const checkin = dateRange[0] ? formatISODate(dateRange[0]) : "";
         const checkout = dateRange[1] ? formatISODate(dateRange[1]) : "";
 
-        // Create the query string
+        // Calculate number of nights if both dates are selected
+        let nights = 0;
+        if (dateRange[0] && dateRange[1]) {
+            nights = Math.ceil(
+                (dateRange[1] - dateRange[0]) / (1000 * 60 * 60 * 24)
+            );
+        }
+
+        // Format dates for display
+        const formattedCheckin = dateRange[0]
+            ? dateRange[0].toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+              })
+            : "";
+        const formattedCheckout = dateRange[1]
+            ? dateRange[1].toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+              })
+            : "";
+
+        // Calculate total guests
+        const totalGuests = menCount + womenCount + childrenCount;
+
+        // Save search parameters to localStorage for use in booking flow
+        const searchParams = {
+            location: autocompleteVal,
+            checkin: checkin,
+            checkout: checkout,
+            formattedCheckin: formattedCheckin,
+            formattedCheckout: formattedCheckout,
+            nights: nights,
+            men: menCount,
+            women: womenCount,
+            children: childrenCount,
+            pets: petsCount,
+            totalGuests: totalGuests,
+        };
+
+        localStorage.setItem("searchParams", JSON.stringify(searchParams));
+        console.log("Saved search parameters:", searchParams);
+
+        // Create the query string for URL
         const queryParams = new URLSearchParams({
             location: autocompleteVal,
             checkin,

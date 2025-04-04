@@ -26,25 +26,44 @@ const StayDetails = () => {
     const [stayData, setStayData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+
     // Get booking info from localStorage if available
     const [bookingInfo, setBookingInfo] = useState(() => {
-        if (typeof window !== "undefined") {
-            const savedInfo = localStorage.getItem("bookingInfo");
-            return savedInfo
-                ? JSON.parse(savedInfo)
-                : {
-                      checkin: "21 May, 2025",
-                      checkout: "28 May, 2025",
-                      nights: 7,
-                      guests: 2,
-                  };
-        }
-        return {
+        // Default booking info if none is available
+        const defaultBooking = {
             checkin: "21 May, 2025",
             checkout: "28 May, 2025",
             nights: 7,
             guests: 2,
         };
+
+        // Try to get search parameters from localStorage
+        if (typeof window !== "undefined") {
+            const searchParamsStr = localStorage.getItem("searchParams");
+            if (searchParamsStr) {
+                try {
+                    const searchParams = JSON.parse(searchParamsStr);
+                    console.log("Retrieved search parameters:", searchParams);
+
+                    // If we have search parameters with dates and guests, use them
+                    if (
+                        searchParams.formattedCheckin &&
+                        searchParams.formattedCheckout
+                    ) {
+                        return {
+                            checkin: searchParams.formattedCheckin,
+                            checkout: searchParams.formattedCheckout,
+                            nights: searchParams.nights || 7,
+                            guests: searchParams.totalGuests || 2,
+                        };
+                    }
+                } catch (e) {
+                    console.error("Error parsing search parameters:", e);
+                }
+            }
+        }
+
+        return defaultBooking;
     });
 
     useEffect(() => {
@@ -97,20 +116,30 @@ const StayDetails = () => {
 
     const handleProceedToCheckout = async () => {
         try {
-            // Get stay basics from localStorage
-            const stayBasics = JSON.parse(localStorage.getItem("stayBasics"));
+            // Get search parameters for raw data if available
+            let checkinDate, checkoutDate, guestCount;
+
+            if (typeof window !== "undefined") {
+                const searchParamsStr = localStorage.getItem("searchParams");
+                if (searchParamsStr) {
+                    const searchParams = JSON.parse(searchParamsStr);
+                    checkinDate = searchParams.checkin; // ISO format for API
+                    checkoutDate = searchParams.checkout; // ISO format for API
+                    guestCount = searchParams.totalGuests;
+                }
+            }
 
             // Create a payment intent using stored data
             const paymentIntent = await createPaymentIntent({
                 stayId: stayData._id,
-                checkin: stayBasics.checkin,
-                checkout: stayBasics.checkout,
-                guests: stayBasics.guests,
+                checkin: checkinDate || bookingInfo.checkin,
+                checkout: checkoutDate || bookingInfo.checkout,
+                guests: guestCount || bookingInfo.guests,
             });
 
             // Store the payment intent ID in localStorage
             localStorage.setItem("paymentIntentId", paymentIntent.id);
-            // console.log("Payment intent created:", paymentIntent);
+            console.log("Payment intent created:", paymentIntent);
         } catch (err) {
             console.error("Error creating payment intent:", err);
         }
@@ -127,6 +156,9 @@ const StayDetails = () => {
     if (!stayData) {
         return <div className={styles["error"]}>Stay not found</div>;
     }
+
+    // Calculate total price based on nights
+    const totalPrice = stayData.pricing.currentPrice * bookingInfo.nights;
 
     return (
         <>
@@ -240,7 +272,7 @@ const StayDetails = () => {
                             </p>
                         </div>
 
-                        {/* Note about selected dates and guests */}
+                        {/* Display booking info from search parameters */}
                         <div className={styles["stay-details__dates"]}>
                             <div className={styles["stay-details__summary"]}>
                                 <p>
@@ -249,13 +281,7 @@ const StayDetails = () => {
                                     {bookingInfo.checkout} •{bookingInfo.guests}{" "}
                                     guest{bookingInfo.guests !== 1 ? "s" : ""}
                                 </p>
-                                <h3>
-                                    Total: ₹
-                                    {formatCurrency(
-                                        stayData.pricing.currentPrice *
-                                            bookingInfo.nights
-                                    )}
-                                </h3>
+                                <h3>Total: ₹{formatCurrency(totalPrice)}</h3>
                             </div>
                         </div>
                     </div>

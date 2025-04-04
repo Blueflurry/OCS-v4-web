@@ -84,6 +84,8 @@ export const createPayment = async (paymentDetails) => {
         return response.data || {};
     } catch (error) {
         console.error("Error creating payment:", error);
-        throw error;
+        throw new Error(
+            error.response?.data?.message || "Payment processing failed"
+        );
     }
 };
