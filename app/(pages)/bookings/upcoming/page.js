@@ -1,9 +1,48 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import styles from "./Upcoming.module.scss";
 import Image from "next/image";
 import Link from "next/link";
+import {
+    getUpcomingBookings,
+    formatBookingDate,
+    formatBookingAmount,
+} from "@/app/services/bookingService";
+import Loading from "@/app/loading";
 
 const Upcoming = () => {
+    const [bookings, setBookings] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchUpcomingBookings = async () => {
+            try {
+                setLoading(true);
+                const data = await getUpcomingBookings();
+                console.log("Upcoming bookings data:", data);
+                setBookings(data);
+            } catch (err) {
+                console.error("Error fetching upcoming bookings:", err);
+                setError(
+                    "Failed to load your upcoming bookings. Please try again later."
+                );
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUpcomingBookings();
+    }, []);
+
+    if (loading) {
+        return <Loading />;
+    }
+
+    if (error) {
+        return <div className={styles["error"]}>{error}</div>;
+    }
+
     return (
         <div className={styles["upcoming-bookings"]}>
             <div className={styles["upcoming-bookings__header"]}>
@@ -36,61 +75,110 @@ const Upcoming = () => {
             </div>
 
             <div className={styles["upcoming-bookings__details"]}>
-                <Link href={"/bookings/24"}>
-                    <div className={styles["upcoming-bookings__stay-details"]}>
-                        <div
-                            className={
-                                styles["upcoming-bookings__stay-details--image"]
-                            }
-                        >
-                            <Image
-                                src="/assets/images/villa-1.svg"
-                                width={100}
-                                height={100}
-                                alt="villa"
-                            ></Image>
-                        </div>
-                        <div
-                            className={
-                                styles[
-                                    "upcoming-bookings__stay-details--details"
-                                ]
-                            }
-                        >
-                            <h4>
-                                <span>Booking ID:</span>
-                                #OCSBK299024
-                            </h4>
-                            <h3>CEO’s Paradise - OneClick Exclusive</h3>
-                            {/* <p>₹ 4,000/night</p> */}
-                            <p>
-                                Mar 24, 2025 - Mar 30, 2025
-                                {/* • 12 Guests */}
-                            </p>
-
-                            <div
-                                className={
-                                    styles[
-                                        "upcoming-bookings__stay-details--location"
-                                    ]
-                                }
-                            >
-                                <Image
-                                    src="/assets/images/location-black.svg"
-                                    width={20}
-                                    height={20}
-                                    alt="Location"
-                                />
-                                <p>Asagao, Goa</p>
-                            </div>
-
-                            <h2>
-                                <span>₹1,15000</span>
-                                ₹98000
-                            </h2>
-                        </div>
+                {bookings.length === 0 ? (
+                    <div className={styles["no-bookings"]}>
+                        <p>You don't have any upcoming bookings</p>
+                        <Link href="/" className={styles["browse-link"]}>
+                            Browse stays
+                        </Link>
                     </div>
-                </Link>
+                ) : (
+                    bookings.map((booking) => {
+                        // Format dates for display
+                        const checkInDate = formatBookingDate(
+                            booking.dates?.checkIn
+                        );
+                        const checkOutDate = formatBookingDate(
+                            booking.dates?.checkOut
+                        );
+                        const dateRange = `${checkInDate} - ${checkOutDate}`;
+
+                        // Get stay details
+                        const stay = booking.stay || {};
+                        const location = stay.location?.name || "";
+
+                        // Get pricing details
+                        const originalPrice =
+                            booking.pricing?.originalPrice || 0;
+                        const currentPrice = booking.pricing?.stayTotal || 0;
+
+                        return (
+                            <Link
+                                href={`/bookings/${booking._id}`}
+                                key={booking._id}
+                            >
+                                <div
+                                    className={
+                                        styles[
+                                            "upcoming-bookings__stay-details"
+                                        ]
+                                    }
+                                >
+                                    <div
+                                        className={
+                                            styles[
+                                                "upcoming-bookings__stay-details--image"
+                                            ]
+                                        }
+                                    >
+                                        <Image
+                                            src={
+                                                stay.images?.[0] ||
+                                                "/assets/images/villa-1.svg"
+                                            }
+                                            width={100}
+                                            height={100}
+                                            alt={stay.name || "Stay"}
+                                        />
+                                    </div>
+                                    <div
+                                        className={
+                                            styles[
+                                                "upcoming-bookings__stay-details--details"
+                                            ]
+                                        }
+                                    >
+                                        <h4>
+                                            <span>Booking ID:</span>
+                                            {booking.bookingId ||
+                                                "#OCSBK299024"}
+                                        </h4>
+                                        <h3>{stay.name || "Luxury Stay"}</h3>
+                                        <p>{dateRange}</p>
+
+                                        <div
+                                            className={
+                                                styles[
+                                                    "upcoming-bookings__stay-details--location"
+                                                ]
+                                            }
+                                        >
+                                            <Image
+                                                src="/assets/images/location-black.svg"
+                                                width={20}
+                                                height={20}
+                                                alt="Location"
+                                            />
+                                            <p>{location}</p>
+                                        </div>
+
+                                        <h2>
+                                            {originalPrice > 0 && (
+                                                <span>
+                                                    ₹
+                                                    {formatBookingAmount(
+                                                        originalPrice
+                                                    )}
+                                                </span>
+                                            )}
+                                            ₹{formatBookingAmount(currentPrice)}
+                                        </h2>
+                                    </div>
+                                </div>
+                            </Link>
+                        );
+                    })
+                )}
             </div>
         </div>
     );

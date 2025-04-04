@@ -1062,3 +1062,265 @@ export const mockPaymentData = {
         igst: 18, // Integrated GST rate (%) - used for interstate transactions
     },
 };
+
+// Mock data for bookings
+export const bookingsData = [
+    {
+        _id: "booking1",
+        bookingId: "OCSBK299024",
+        userId: "user123",
+        stayId: "stay1",
+        status: "confirmed", // confirmed, cancelled, completed, pending
+        createdAt: "2025-03-20T10:30:00Z",
+        stay: {
+            name: "Sereno By The Sea",
+            location: {
+                name: "Asagao, Goa",
+                city: "Asagao",
+                state: "Goa",
+                country: "India",
+            },
+            images: [
+                "/assets/images/villa-1.svg",
+                "/assets/images/villa-2.svg",
+                "/assets/images/villa-3.png",
+            ],
+            partner: {
+                name: "elivaas",
+            },
+        },
+        dates: {
+            checkIn: "2025-03-24T14:00:00Z",
+            checkOut: "2025-03-30T11:00:00Z",
+            nights: 6,
+        },
+        guests: {
+            adults: 2,
+            children: 1,
+            infants: 0,
+            pets: 0,
+            total: 3,
+        },
+        pricing: {
+            basePrice: 45500,
+            nightlyRate: 45500,
+            stayTotal: 273000,
+            sgst: 24570, // 9% SGST
+            igst: 24570, // 9% IGST
+            cleaningFee: 0,
+            serviceFee: 0,
+            totalAmount: 322140,
+        },
+        payment: {
+            method: "razorpay",
+            transactionId: "pay_123456789",
+            paidAt: "2025-03-20T10:35:00Z",
+            status: "completed",
+        },
+        addOns: [
+            {
+                id: "addon1",
+                name: "Indian Starboy Festival",
+                description: "Exclusive access to the renowned music festival",
+                price: "Pay at property",
+                imgUrl: "/assets/images/activity-1.webp",
+                isSelected: true,
+            },
+            {
+                id: "addon2",
+                name: "Gourmet Meals",
+                description: "Daily chef-prepared meals",
+                price: "Pay at property",
+                imgUrl: "/assets/images/activity-2.webp",
+                isSelected: true,
+            },
+            {
+                id: "addon3",
+                name: "Airport Pickup",
+                description: "Luxury car airport transfer",
+                price: "Pay at property",
+                imgUrl: "/assets/images/activity-3.webp",
+                isSelected: true,
+            },
+            {
+                id: "addon4",
+                name: "Sea Food & Crabs",
+                description: "Fresh seafood dinner experience",
+                price: "Pay at property",
+                imgUrl: "/assets/images/activity-4.webp",
+                isSelected: true,
+            },
+        ],
+        earnedCoins: 50,
+        cancellationPolicy: {
+            type: "flexible",
+            refundPercentage: {
+                before7Days: 100,
+                before3Days: 50,
+                after3Days: 0,
+            },
+        },
+    },
+    {
+        _id: "booking2",
+        bookingId: "OCSBK299025",
+        userId: "user123",
+        stayId: "stay2",
+        status: "completed",
+        createdAt: "2025-01-15T09:20:00Z",
+        stay: {
+            name: "Himalayan Heights",
+            location: {
+                name: "Manali, Himachal Pradesh",
+                city: "Manali",
+                state: "Himachal Pradesh",
+                country: "India",
+            },
+            images: ["/assets/images/villa-1.svg"],
+            partner: {
+                name: "elivaas",
+            },
+        },
+        dates: {
+            checkIn: "2025-02-10T14:00:00Z",
+            checkOut: "2025-02-15T11:00:00Z",
+            nights: 5,
+        },
+        guests: {
+            adults: 4,
+            children: 2,
+            infants: 0,
+            pets: 0,
+            total: 6,
+        },
+        pricing: {
+            basePrice: 62000,
+            nightlyRate: 62000,
+            stayTotal: 310000,
+            sgst: 27900, // 9% SGST
+            igst: 27900, // 9% IGST
+            cleaningFee: 0,
+            serviceFee: 0,
+            totalAmount: 365800,
+        },
+        payment: {
+            method: "razorpay",
+            transactionId: "pay_987654321",
+            paidAt: "2025-01-15T09:25:00Z",
+            status: "completed",
+        },
+        addOns: [
+            {
+                id: "addon5",
+                name: "Guided Trek",
+                description: "Professional guide for mountain trekking",
+                price: "Pay at property",
+                imgUrl: "/assets/images/activity-3.webp",
+                isSelected: true,
+            },
+            {
+                id: "addon6",
+                name: "Bonfire Night",
+                description: "Evening bonfire with snacks and drinks",
+                price: "Pay at property",
+                imgUrl: "/assets/images/activity-1.webp",
+                isSelected: true,
+            },
+        ],
+        earnedCoins: 70,
+        cancellationPolicy: {
+            type: "moderate",
+            refundPercentage: {
+                before14Days: 100,
+                before7Days: 50,
+                after7Days: 0,
+            },
+        },
+    },
+    {
+        _id: "booking3",
+        bookingId: "OCSBK299026",
+        userId: "user123",
+        stayId: "stay3",
+        status: "upcoming",
+        createdAt: "2025-03-25T11:45:00Z",
+        stay: {
+            name: "Forest Haven",
+            location: {
+                name: "Coorg, Karnataka",
+                city: "Coorg",
+                state: "Karnataka",
+                country: "India",
+            },
+            images: ["/assets/images/villa-1.svg"],
+            partner: {
+                name: "elivaas",
+            },
+        },
+        dates: {
+            checkIn: "2025-05-15T14:00:00Z",
+            checkOut: "2025-05-20T11:00:00Z",
+            nights: 5,
+        },
+        guests: {
+            adults: 3,
+            children: 1,
+            infants: 0,
+            pets: 0,
+            total: 4,
+        },
+        pricing: {
+            basePrice: 45000,
+            nightlyRate: 45000,
+            stayTotal: 225000,
+            sgst: 20250, // 9% SGST
+            igst: 20250, // 9% IGST
+            cleaningFee: 0,
+            serviceFee: 0,
+            totalAmount: 265500,
+        },
+        payment: {
+            method: "razorpay",
+            transactionId: "pay_456789123",
+            paidAt: "2025-03-25T11:50:00Z",
+            status: "completed",
+        },
+        addOns: [
+            {
+                id: "addon7",
+                name: "Coffee Plantation Tour",
+                description: "Guided tour of the coffee estate",
+                price: "Pay at property",
+                imgUrl: "/assets/images/activity-2.webp",
+                isSelected: true,
+            },
+            {
+                id: "addon8",
+                name: "Bird Watching",
+                description: "Morning bird watching with expert guide",
+                price: "Pay at property",
+                imgUrl: "/assets/images/activity-4.webp",
+                isSelected: true,
+            },
+        ],
+        earnedCoins: 45,
+        cancellationPolicy: {
+            type: "flexible",
+            refundPercentage: {
+                before7Days: 100,
+                before3Days: 50,
+                after3Days: 0,
+            },
+        },
+    },
+];
+
+// Mock data for upcoming bookings (subset of bookingsData)
+export const upcomingBookings = bookingsData.filter(
+    (booking) => booking.status === "upcoming" || booking.status === "confirmed"
+);
+
+// Mock data for completed bookings (subset of bookingsData)
+export const completedBookings = bookingsData.filter(
+    (booking) => booking.status === "completed"
+);

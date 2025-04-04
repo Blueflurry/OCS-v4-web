@@ -3,7 +3,14 @@
  */
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { carouselData, allStays, addonServices } from "./mockData";
+import {
+    carouselData,
+    allStays,
+    addonServices,
+    bookingsData,
+    upcomingBookings,
+    completedBookings,
+} from "./mockData";
 
 // Create a new instance of axios
 const axiosInstance = axios.create({
@@ -224,6 +231,58 @@ mock.onPost("/create-payment").reply((config) => {
         console.error("Error in mock payment handler:", error);
         return [500, { error: "Internal server error" }];
     }
+});
+
+// BOOKING ENDPOINTS
+
+// Mock endpoint to get a specific booking by ID
+mock.onGet(/\/bookings\/\w+/).reply((config) => {
+    const bookingId = config.url.split("/").pop();
+
+    // Find the booking by ID (either _id or bookingId)
+    const booking = bookingsData.find(
+        (b) => b._id === bookingId || b.bookingId === bookingId
+    );
+
+    if (booking) {
+        // Add a random delay
+        const delay = getRandomDelay();
+
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve([200, booking]);
+            }, delay);
+        });
+    }
+
+    // Return 404 if booking not found
+    return [404, { error: "Booking not found" }];
+});
+
+// Mock endpoint to get all bookings for the current user
+mock.onGet("/bookings").reply((config) => {
+    // Extract status parameter if provided (upcoming or completed)
+    const status = config.params?.status;
+
+    let bookings;
+
+    if (status === "upcoming") {
+        bookings = upcomingBookings;
+    } else if (status === "completed") {
+        bookings = completedBookings;
+    } else {
+        // Return all bookings if no status filter is provided
+        bookings = bookingsData;
+    }
+
+    // Add a random delay
+    const delay = getRandomDelay();
+
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve([200, bookings]);
+        }, delay);
+    });
 });
 
 // Export the mocked axios instance

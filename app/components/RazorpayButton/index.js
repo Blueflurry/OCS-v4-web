@@ -319,11 +319,11 @@ const RazorpayButton = ({
                 </div>
             )}
 
-            {testMode && (
+            {/* {testMode && (
                 <div className={styles.testModeIndicator}>
                     Test Mode: Using test order ID
                 </div>
-            )}
+            )} */}
         </div>
     );
 };
