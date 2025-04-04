@@ -112,12 +112,42 @@ const Checkout = () => {
             <div className={styles["button-container"]}>
                 {paymentIntent && (
                     <RazorpayButton
-                        amount={paymentIntent.pricing.totalAmount}
-                        paymentIntentId={paymentIntent.id}
-                        stayId={stayId}
-                        onSuccess={handlePaymentSuccess}
-                        onError={handlePaymentError}
+                        amount="1000" // Amount in INR
+                        paymentIntentId="your_existing_id" // Will be ignored in test mode
+                        stayId="stay123"
+                        checkInDate="2025-04-10"
+                        checkOutDate="2025-04-15"
+                        guests={{ adults: 2, children: 1 }}
+                        onSuccess={(data) =>
+                            console.log("Payment successful", data)
+                        }
+                        onError={(error) =>
+                            console.error("Payment error", error)
+                        }
+                        testMode={true} // Make sure this is set to true for testing
                     />
+                    // <RazorpayButton
+                    //     amount={14999}
+                    //     paymentIntentId={paymentIntent.id} // This should come from your backend
+                    //     stayId="stay123"
+                    //     checkInDate="2025-05-01"
+                    //     checkOutDate="2025-05-03"
+                    //     guests={{ adults: 2, children: 1 }}
+                    //     onSuccess={(result) =>
+                    //         console.log("Payment successful:", result)
+                    //     }
+                    //     onError={(error) =>
+                    //         console.error("Payment error:", error)
+                    //     }
+                    // />
+
+                    // <RazorpayButton
+                    //     amount={paymentIntent.pricing.totalAmount}
+                    //     paymentIntentId={paymentIntent.id}
+                    //     stayId={stayId}
+                    //     onSuccess={handlePaymentSuccess}
+                    //     onError={handlePaymentError}
+                    // />
                 )}
             </div>
         </div>

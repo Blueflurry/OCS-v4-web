@@ -160,7 +160,7 @@ mock.onPost("/create-payment-intent").reply((config) => {
         const totalAmount = stayTotal + gst;
 
         const paymentIntent = {
-            id: `pi_${Math.random().toString(36).substring(2, 15)}`,
+            id: `order_${Math.random().toString(36).substring(2, 15)}`,
             stayId,
             stayName: stay.name,
             stayImage: stay.images[0],
