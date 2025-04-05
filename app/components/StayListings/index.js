@@ -4,22 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import StayCard from "@/app/components/StayCard";
 import styles from "./StayListings.module.scss";
 import { getFilteredStays } from "@/app/services/staysService";
-import { Loader, Search } from "lucide-react";
+import { Calendar, Loader, MapPin, Search, User, Heart } from "lucide-react";
+import { formatDate } from "@/app/utils/formatter";
 
 const ITEMS_PER_PAGE = 10;
 
-export default function StayListings({
-    initialStays = [],
-    title,
-    description,
-    icon = <Search />,
-    filters,
-}) {
-    // console.log(title);
-    // console.log(description);
-    // console.log(icon);
-
-    const [stays, setStays] = useState(initialStays);
+export default function StayListings({ initialStays = [], title, filters }) {
+    const [stays, setStays] = useState([...initialStays]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(
@@ -84,17 +75,70 @@ export default function StayListings({
         };
     }, [loading, hasMore]);
 
+    // Calculate total guests
+    const totalGuests =
+        Number(filters?.men || 0) +
+        Number(filters?.women || 0) +
+        Number(filters?.children || 0) +
+        Number(filters?.pets || 0);
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                {icon && <div className={styles.icon}>{icon}</div>}
+                <Search size={20} />
                 <div className={styles.titleWrapper}>
                     <h2 className={styles.title}>{title}</h2>
-                    {description && (
+                    {/* {description && (
                         <p className={styles.description}>{description}</p>
-                    )}
+                    )} */}
                 </div>
             </div>
+
+            {/* Search parameters display */}
+            {filters && Object.keys(filters).length > 0 && (
+                <div className={styles.searchParams}>
+                    {filters.location && (
+                        <div className={styles.searchParamItem}>
+                            <MapPin size={16} />
+                            <span>{filters.location}</span>
+                        </div>
+                    )}
+
+                    {filters.checkin && filters.checkout && (
+                        <div className={styles.searchParamItem}>
+                            <Calendar size={16} />
+                            <span>
+                                {formatDate(filters.checkin)} -{" "}
+                                {formatDate(filters.checkout)}
+                            </span>
+                        </div>
+                    )}
+
+                    {totalGuests > 0 && (
+                        <div className={styles.searchParamItem}>
+                            <User size={16} />
+                            <span>
+                                {totalGuests}{" "}
+                                {totalGuests === 1 ? "guest" : "guests"}
+                                {filters.men > 0 && ` (${filters.men} men)`}
+                                {filters.women > 0 &&
+                                    ` (${filters.women} women)`}
+                                {filters.children > 0 &&
+                                    ` (${filters.children} children)`}
+                            </span>
+                        </div>
+                    )}
+
+                    {filters.pets > 0 && (
+                        <div className={styles.searchParamItem}>
+                            <Heart size={16} />
+                            <span>
+                                {filters.pets}{" "}
+                                {filters.pets === 1 ? "pet" : "pets"}
+                            </span>
+                        </div>
+                    )}
+                </div>
+            )}
 
             {stays.length === 0 ? (
                 <div className={styles.emptyState}>

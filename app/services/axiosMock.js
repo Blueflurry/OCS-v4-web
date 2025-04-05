@@ -101,7 +101,9 @@ mock.onPost("/stays").reply((config) => {
         // Return the filtered results after the delay
         return new Promise((resolve) => {
             setTimeout(() => {
-                resolve([200, filteredStays]);
+                if (filteredStays.length === 0) {
+                    resolve([200, allStays]);
+                } else resolve([200, filteredStays]);
             }, delay);
         });
     } catch (error) {

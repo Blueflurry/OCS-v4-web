@@ -31,7 +31,7 @@ const StayCard = ({ stay }) => {
 
     // Format prices for display (with thousands separator)
     const formatPrice = (price) => {
-        return price.toLocaleString("en-IN");
+        return price.toLocaleString("en-US");
     };
 
     return (

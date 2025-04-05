@@ -16,7 +16,8 @@ import { formatDateRange, formatISODate } from "@/app/utils/formatter";
 import { GUESTS } from "@/app/data/dummy";
 import { useRouter } from "next/navigation";
 
-const MobileSearch = ({}) => {
+const MobileSearch = ({ searchTxt }) => {
+    const searchTxtRef = searchTxt || "Start your search";
     const router = useRouter();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -86,12 +87,27 @@ const MobileSearch = ({}) => {
 
     useEffect(() => {
         const totalGuests = guests.reduce((sum, guest) => sum + guest.count, 0);
-        if (totalGuests > 0) setIsSearchDisabled(false);
-        else setIsSearchDisabled(true);
-    }, [guests]);
+        if (totalGuests > 0 && dateRange[0] && dateRange[1]) {
+            // Check if both check-in and check-out dates are selected
+            // and at least one guest is selected
+            setIsSearchDisabled(false);
+        } else setIsSearchDisabled(true);
+    }, [guests, dateRange]);
 
     // Handle search button click
     const handleSearch = () => {
+        if (isSearchDisabled) {
+            alert("Please select the dates & atleast 1 guest");
+            return;
+        }
+
+        if (dateRange[0] - dateRange[1] == 1 || dateRange[0] >= dateRange[1]) {
+            alert(
+                "We are not taking bookings for 1 day, please select atleast 2 days"
+            );
+            return;
+        }
+
         // Extract guest counts by type
         const menCount = guests.find((g) => g.type === "Men")?.count || 0;
         const womenCount = guests.find((g) => g.type === "Women")?.count || 0;
@@ -175,7 +191,7 @@ const MobileSearch = ({}) => {
                     width={20}
                     height={20}
                 />
-                Start your search
+                {searchTxtRef}
             </Button>
             <div
                 className={`${styles["mobile-search"]} ${

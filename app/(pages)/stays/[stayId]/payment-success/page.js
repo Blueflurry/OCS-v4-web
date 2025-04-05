@@ -139,14 +139,14 @@ const PaymentSuccess = () => {
                                 <span>
                                     {new Date(
                                         booking.checkInDate
-                                    ).toLocaleDateString("en-IN", {
+                                    ).toLocaleDateString("en-US", {
                                         day: "numeric",
                                         month: "short",
                                     })}{" "}
                                     -{" "}
                                     {new Date(
                                         booking.checkOutDate
-                                    ).toLocaleDateString("en-IN", {
+                                    ).toLocaleDateString("en-US", {
                                         day: "numeric",
                                         month: "short",
                                     })}

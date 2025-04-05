@@ -1,7 +1,11 @@
 @import "../../styles/variables";
 
 .cta-section {
-    background: linear-gradient(155deg, lighten($color-primary, 40%) -10%, lighten($color-primary, 10%));
+    background: linear-gradient(
+        155deg,
+        lighten($color-primary, 40%) -10%,
+        lighten($color-primary, 10%)
+    );
     padding: 40px 20px 30px;
     display: flex;
     flex-direction: column;
@@ -31,5 +35,9 @@
 
     p {
         margin: 8px 0 16px 0;
+    }
+
+    &__search-wrapper {
+        color: #ffffff;
     }
 }

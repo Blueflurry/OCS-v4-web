@@ -84,7 +84,7 @@ export const formatCurrency = (amount) => {
     const numAmount = typeof amount === "string" ? parseFloat(amount) : amount;
 
     // Format with commas for thousands separator
-    return numAmount.toLocaleString("en-IN");
+    return numAmount.toLocaleString("en-US");
 };
 
 /**

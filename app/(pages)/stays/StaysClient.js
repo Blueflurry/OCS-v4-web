@@ -6,6 +6,7 @@ import styles from "./Stays.module.scss";
 import { getFilteredStays } from "@/app/services/staysService";
 import { Search } from "lucide-react";
 import StayListings from "@/app/components/StayListings";
+import FooterWithoutTabs from "@/app/modules/Footer/FooterWithoutTabs";
 
 // Client-side component that handles search parameters and saving to localStorage
 export default function StaysClient({ searchParams, initialStays }) {
@@ -85,6 +86,9 @@ export default function StaysClient({ searchParams, initialStays }) {
     if (searchParams?.checkin && searchParams?.checkout) {
         const checkInDate = new Date(searchParams.checkin);
         const checkOutDate = new Date(searchParams.checkout);
+        description += `${checkInDate.toLocaleDateString(
+            "en-US"
+        )} - ${checkOutDate.toLocaleDateString("en-US")}`;
         description += `${checkInDate.toLocaleDateString()} - ${checkOutDate.toLocaleDateString()}`;
     }
 
@@ -108,17 +112,18 @@ export default function StaysClient({ searchParams, initialStays }) {
     return (
         <>
             <Header />
-            <Hero />
+            <Hero searchTxt={"Edit your search"} />
             <div className={styles["main"]}>
                 <StayListings
                     initialStays={initialStays}
                     title={`Stays in ${
                         searchParams?.location || "All Destinations"
                     }`}
-                    description={description}
                     filters={searchParams}
                 />
+                {/* description={description} */}
             </div>
+            <FooterWithoutTabs />
         </>
     );
 }

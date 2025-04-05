@@ -73,14 +73,18 @@
     width: 100%;
     max-width: 1280px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 1rem 1rem;
 }
 
 .header {
     display: flex;
     align-items: center;
     margin-bottom: 1.5rem;
+    color: #000000;
 
+    svg {
+        margin-right: 0.5rem;
+    }
     .icon {
         margin-right: 0.75rem;
         display: flex;
@@ -107,6 +111,34 @@
     }
 }
 
+// New search parameters section
+.searchParams {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    background-color: lighten($color-bg-secondary, 5%);
+    color: #000000;
+    // padding: 12px 16px;
+    border-radius: 8px;
+}
+
+.searchParamItem {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #000000;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    svg {
+        margin-right: 6px;
+        color: $color-primary;
+    }
+}
+
 .staysGrid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
@@ -128,7 +160,7 @@
 .emptyState {
     text-align: center;
     padding: 3rem;
-    background: var(--background-secondary);
+    background: var(--color-bg-secondary);
     border-radius: 8px;
 
     p {
@@ -154,14 +186,14 @@
     }
 
     p {
-        color: var(--text-secondary);
+        color: var(--color-text-secondary);
     }
 }
 
 .endMessage {
     text-align: center;
     padding: 2rem 0;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
 }
 
 @keyframes spin {

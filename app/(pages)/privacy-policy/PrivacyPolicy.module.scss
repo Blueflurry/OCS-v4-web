@@ -1,0 +1,98 @@
+@import "../../styles/variables";
+
+.policyPage {
+    min-height: 100vh;
+    background-color: $color-bg-primary;
+    padding-bottom: 80px; // Space for the footer
+}
+
+.header {
+    background-color: $color-primary;
+    color: white;
+    padding: 60px 20px 30px;
+    position: relative;
+
+    h1 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .lastUpdated {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        text-align: center;
+        margin: 0;
+    }
+}
+
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+
+    section {
+        margin-bottom: 30px;
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: $color-primary;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: $color-text-primary;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: $color-text-primary;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+
+            li {
+                margin-bottom: 8px;
+                line-height: 1.5;
+            }
+        }
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    a {
+        color: $color-primary;
+        text-decoration: none;
+        font-weight: 500;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Animation for page load
+.content {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

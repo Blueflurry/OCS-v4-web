@@ -77,5 +77,5 @@ export const formatBookingDate = (dateString) => {
 export const formatBookingAmount = (amount) => {
     if (!amount && amount !== 0) return "";
 
-    return amount.toLocaleString("en-IN");
+    return amount.toLocaleString("en-US");
 };

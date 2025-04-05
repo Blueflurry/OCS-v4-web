@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Hero.module.scss";
 import MobileSearch from "@/app/components/MobileSearch";
 
-const Hero = () => {
+const Hero = ({ searchTxt }) => {
     return (
         <div className={`${styles["hero"]} container`}>
             <h1>
@@ -10,7 +10,7 @@ const Hero = () => {
                 At Half The Price
             </h1>
             <p>We redefine how you book your stays.</p>
-            <MobileSearch />
+            <MobileSearch searchTxt={searchTxt} />
         </div>
     );
 };
