@@ -12,12 +12,14 @@ import PartnerLogo from "@/app/components/PartnerLogo";
 import GoogleMapComponent from "@/app/components/GMap";
 import BackButton from "@/app/components/BackButton";
 import Footer from "@/app/modules/Footer";
+import BookingEditModal from "@/app/components/BookingEditModal";
 import {
     getStayDetails,
     createPaymentIntent,
 } from "@/app/services/stayDetailsService";
 import { formatCurrency } from "@/app/utils/formatter";
 import Loading from "../loading";
+import { Calendar, Moon, Pencil, Users } from "lucide-react";
 
 const StayDetails = () => {
     const params = useParams();
@@ -26,6 +28,7 @@ const StayDetails = () => {
     const [stayData, setStayData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     // Get booking info from localStorage if available
     const [bookingInfo, setBookingInfo] = useState(() => {
@@ -33,8 +36,14 @@ const StayDetails = () => {
         const defaultBooking = {
             checkin: "21 May, 2025",
             checkout: "28 May, 2025",
+            rawCheckin: "2025-05-21",
+            rawCheckout: "2025-05-28",
             nights: 7,
             guests: 2,
+            men: 1,
+            women: 1,
+            children: 0,
+            pets: 0,
         };
 
         // Try to get search parameters from localStorage
@@ -53,8 +62,14 @@ const StayDetails = () => {
                         return {
                             checkin: searchParams.formattedCheckin,
                             checkout: searchParams.formattedCheckout,
+                            rawCheckin: searchParams.checkin,
+                            rawCheckout: searchParams.checkout,
                             nights: searchParams.nights || 7,
                             guests: searchParams.totalGuests || 2,
+                            men: searchParams.men || 1,
+                            women: searchParams.women || 1,
+                            children: searchParams.children || 0,
+                            pets: searchParams.pets || 0,
                         };
                     }
                 } catch (e) {
@@ -114,27 +129,49 @@ const StayDetails = () => {
         }
     }, [stayId, bookingInfo]);
 
-    const handleProceedToCheckout = async () => {
-        try {
-            // Get search parameters for raw data if available
-            let checkinDate, checkoutDate, guestCount;
+    // Handle booking info update
+    const handleBookingUpdate = (updatedBookingInfo) => {
+        setBookingInfo((prevBookingInfo) => {
+            const newBookingInfo = {
+                ...prevBookingInfo,
+                ...updatedBookingInfo,
+            };
 
+            // Update localStorage with the new search parameters
             if (typeof window !== "undefined") {
-                const searchParamsStr = localStorage.getItem("searchParams");
-                if (searchParamsStr) {
-                    const searchParams = JSON.parse(searchParamsStr);
-                    checkinDate = searchParams.checkin; // ISO format for API
-                    checkoutDate = searchParams.checkout; // ISO format for API
-                    guestCount = searchParams.totalGuests;
-                }
+                const searchParams = {
+                    location: stayData?.location?.name || "",
+                    checkin: newBookingInfo.rawCheckin,
+                    checkout: newBookingInfo.rawCheckout,
+                    formattedCheckin: newBookingInfo.checkin,
+                    formattedCheckout: newBookingInfo.checkout,
+                    nights: newBookingInfo.nights,
+                    men: newBookingInfo.men,
+                    women: newBookingInfo.women,
+                    children: newBookingInfo.children,
+                    pets: newBookingInfo.pets,
+                    totalGuests: newBookingInfo.guests,
+                };
+
+                localStorage.setItem(
+                    "searchParams",
+                    JSON.stringify(searchParams)
+                );
+                console.log("Updated search parameters:", searchParams);
             }
 
+            return newBookingInfo;
+        });
+    };
+
+    const handleProceedToCheckout = async () => {
+        try {
             // Create a payment intent using stored data
             const paymentIntent = await createPaymentIntent({
                 stayId: stayData._id,
-                checkin: checkinDate || bookingInfo.checkin,
-                checkout: checkoutDate || bookingInfo.checkout,
-                guests: guestCount || bookingInfo.guests,
+                checkin: bookingInfo.rawCheckin,
+                checkout: bookingInfo.rawCheckout,
+                guests: bookingInfo.guests,
             });
 
             // Store the payment intent ID in localStorage
@@ -274,14 +311,151 @@ const StayDetails = () => {
 
                         {/* Display booking info from search parameters */}
                         <div className={styles["stay-details__dates"]}>
-                            <div className={styles["stay-details__summary"]}>
-                                <p>
-                                    <strong>{bookingInfo.nights} nights</strong>{" "}
-                                    •{bookingInfo.checkin} -{" "}
-                                    {bookingInfo.checkout} •{bookingInfo.guests}{" "}
-                                    guest{bookingInfo.guests !== 1 ? "s" : ""}
-                                </p>
-                                <h3>Total: ₹{formatCurrency(totalPrice)}</h3>
+                            <div
+                                className={styles["stay-details__booking-info"]}
+                            >
+                                <div
+                                    className={
+                                        styles["stay-details__booking-header"]
+                                    }
+                                >
+                                    <h3>Your Stay</h3>
+                                    <button
+                                        className={
+                                            styles["stay-details__edit-button"]
+                                        }
+                                        onClick={() => setIsEditModalOpen(true)}
+                                    >
+                                        <Pencil size={16} />
+                                        Edit
+                                    </button>
+                                </div>
+
+                                <div
+                                    className={
+                                        styles["stay-details__booking-details"]
+                                    }
+                                >
+                                    <div
+                                        className={
+                                            styles["stay-details__booking-row"]
+                                        }
+                                    >
+                                        <div
+                                            className={
+                                                styles[
+                                                    "stay-details__booking-label"
+                                                ]
+                                            }
+                                        >
+                                            <Calendar size={18} />
+                                            Dates
+                                        </div>
+                                        <div
+                                            className={
+                                                styles[
+                                                    "stay-details__booking-value"
+                                                ]
+                                            }
+                                        >
+                                            {bookingInfo.checkin} -{" "}
+                                            {bookingInfo.checkout}
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        className={
+                                            styles["stay-details__booking-row"]
+                                        }
+                                    >
+                                        <div
+                                            className={
+                                                styles[
+                                                    "stay-details__booking-label"
+                                                ]
+                                            }
+                                        >
+                                            <Moon size={18} />
+                                            Duration
+                                        </div>
+                                        <div
+                                            className={
+                                                styles[
+                                                    "stay-details__booking-value"
+                                                ]
+                                            }
+                                        >
+                                            {bookingInfo.nights} nights
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        className={
+                                            styles["stay-details__booking-row"]
+                                        }
+                                    >
+                                        <div
+                                            className={
+                                                styles[
+                                                    "stay-details__booking-label"
+                                                ]
+                                            }
+                                        >
+                                            <Users size={18} />
+                                            Guests
+                                        </div>
+                                        <div
+                                            className={
+                                                styles[
+                                                    "stay-details__booking-value"
+                                                ]
+                                            }
+                                        >
+                                            {bookingInfo.guests}{" "}
+                                            {bookingInfo.guests === 1
+                                                ? "guest"
+                                                : "guests"}
+                                            {bookingInfo.men > 0 &&
+                                                ` (${bookingInfo.men} men)`}
+                                            {bookingInfo.women > 0 &&
+                                                ` (${bookingInfo.women} women)`}
+                                            {bookingInfo.children > 0 &&
+                                                ` (${bookingInfo.children} children)`}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* <div
+                                    className={styles["stay-details__summary"]}
+                                >
+                                    <div
+                                        className={
+                                            styles["stay-details__pricing-row"]
+                                        }
+                                    >
+                                        <span>
+                                            ₹
+                                            {formatCurrency(
+                                                stayData.pricing.currentPrice
+                                            )}{" "}
+                                            × {bookingInfo.nights} nights
+                                        </span>
+                                        <span>
+                                            ₹{formatCurrency(totalPrice)}
+                                        </span>
+                                    </div>
+
+                                    <div
+                                        className={
+                                            styles[
+                                                "stay-details__pricing-total"
+                                            ]
+                                        }
+                                    >
+                                        <h3>Total</h3>
+                                        <h3>₹{formatCurrency(totalPrice)}</h3>
+                                    </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -310,6 +484,14 @@ const StayDetails = () => {
                     <div className={styles["padding"]}></div>
                 </div>
             </div>
+
+            {/* Booking Edit Modal */}
+            <BookingEditModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                onUpdate={handleBookingUpdate}
+                initialBookingInfo={bookingInfo}
+            />
 
             <Footer
                 btnText="Proceed to checkout"

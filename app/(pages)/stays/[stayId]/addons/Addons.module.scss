@@ -224,13 +224,13 @@
         bottom: 0;
         left: 0;
         display: flex;
-        justify-content: center;
+        // justify-content: center;
         width: 100%;
         margin-bottom: 72px;
         background-color: $color-bg-primary;
         color: $color-text-primary;
         border-radius: 20px 20px 0 0;
-        padding: 18px 5px 0px;
+        padding: 18px 18px 0px;
         z-index: 8;
 
         &--image {

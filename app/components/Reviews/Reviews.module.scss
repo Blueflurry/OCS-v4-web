@@ -126,7 +126,7 @@
     }
 
     &__comments {
-        margin-bottom: 40px;
+        // margin-bottom: 10px;
 
         &-title {
             display: flex;
@@ -165,9 +165,13 @@
         }
 
         &-description {
-            margin-bottom: 32px;
-            p {
-            }
+            margin-bottom: 20px;
         }
+
+        // &:last-of-type {
+        //     &-description {
+        //         margin-bottom: 0;
+        //     }
+        // }
     }
 }

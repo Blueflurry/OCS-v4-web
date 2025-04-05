@@ -11,28 +11,50 @@ const FooterWithoutTabs = () => {
             <div className="container">
                 <div className={styles["footer__brand"]}>
                     <Link href={"/"}>
-                        <Image src="/assets/images/logo.svg" alt="OneClick Stays" width={100} height={44} />
+                        <Image
+                            src="/assets/images/logo.svg"
+                            alt="OneClick Stays"
+                            width={100}
+                            height={44}
+                        />
                     </Link>
                     <div className={styles["footer__brand--social"]}>
-                        <Link href={"/terms-and-conditions"}>
-                            <Instagram />
+                        <Link
+                            href="https://www.instagram.com/oneclickstays?igsh=NnZwcmJycDh5a3Bq"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <Instagram size={24} />
+                            <span>Follow us on Instagram</span>
                         </Link>
-                        <Link href={"/terms-and-conditions"}>
+                        <Link
+                            href="https://www.linkedin.com/company/one-click-stays/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <Linkedin style={{ marginLeft: 6 }} />
                         </Link>
-                        <Link href={"/terms-and-conditions"}>
+                        <Link
+                            href="https://www.facebook.com/share/165u7p3Wvy/?mibextid=wwXIfr"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <Facebook />
                         </Link>
                     </div>
                 </div>
                 <div className={styles["footer__menu"]}>
-                    <Link href={"/terms-and-conditions"}>Terms & Conditions</Link>
+                    <Link href={"/terms-and-conditions"}>
+                        Terms & Conditions
+                    </Link>
                     <Link href={"/privacy-policy"}>Privacy Policy</Link>
                     <Link href={"/refund-policy"}>Refund Policy</Link>
                 </div>
                 <div className={styles["footer__copyright"]}>
                     Copyright &copy; {currentYear}. All Rights Reserved.
-                    <small>An entity of NurtureLuxe Experience Private Limited.</small>
+                    <small>
+                        An entity of NurtureLuxe Experience Private Limited.
+                    </small>
                 </div>
             </div>
         </div>

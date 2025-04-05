@@ -184,15 +184,17 @@ const MobileSearch = ({ searchTxt }) => {
 
     return (
         <>
-            <Button large onClick={() => setIsOpen(true)}>
-                <Image
-                    src="/assets/images/search.svg"
-                    alt="Search"
-                    width={20}
-                    height={20}
-                />
-                {searchTxtRef}
-            </Button>
+            <div style={{ padding: "0 16px" }}>
+                <Button large onClick={() => setIsOpen(true)}>
+                    <Image
+                        src="/assets/images/search.svg"
+                        alt="Search"
+                        width={20}
+                        height={20}
+                    />
+                    {searchTxtRef}
+                </Button>
+            </div>
             <div
                 className={`${styles["mobile-search"]} ${
                     isOpen ? styles["mobile-search--open"] : ""

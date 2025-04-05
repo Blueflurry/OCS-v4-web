@@ -7,9 +7,10 @@ import BackButton from "@/app/components/BackButton";
 import { CheckCheck } from "lucide-react";
 import { formatCurrency } from "@/app/utils/formatter";
 import RazorpayButton from "@/app/components/RazorpayButton";
-import { mockPaymentData } from "@/app/services/mockData";
+// import { mockPaymentData } from "@/app/services/mockData";
 import Loading from "../loading";
 import { useParams } from "next/navigation";
+import Header from "@/app/modules/Header";
 
 const Checkout = () => {
     const params = useParams();
@@ -126,28 +127,6 @@ const Checkout = () => {
                         }
                         testMode={true} // Make sure this is set to true for testing
                     />
-                    // <RazorpayButton
-                    //     amount={14999}
-                    //     paymentIntentId={paymentIntent.id} // This should come from your backend
-                    //     stayId="stay123"
-                    //     checkInDate="2025-05-01"
-                    //     checkOutDate="2025-05-03"
-                    //     guests={{ adults: 2, children: 1 }}
-                    //     onSuccess={(result) =>
-                    //         console.log("Payment successful:", result)
-                    //     }
-                    //     onError={(error) =>
-                    //         console.error("Payment error:", error)
-                    //     }
-                    // />
-
-                    // <RazorpayButton
-                    //     amount={paymentIntent.pricing.totalAmount}
-                    //     paymentIntentId={paymentIntent.id}
-                    //     stayId={stayId}
-                    //     onSuccess={handlePaymentSuccess}
-                    //     onError={handlePaymentError}
-                    // />
                 )}
             </div>
         </div>
@@ -168,86 +147,114 @@ const Checkout = () => {
     }
 
     return (
-        <div className={styles["checkout"]}>
-            <div className={styles["checkout__header"]}>
-                <h2>Checkout</h2>
-                <BackButton />
-            </div>
+        <>
+            {/* <Header /> */}
+            <div className={styles["checkout"]}>
+                <div className={styles["checkout__header"]}>
+                    <h2>Checkout</h2>
+                    <BackButton />
+                </div>
 
-            <div className={styles["checkout__details"]}>
-                <div className={styles["checkout__stay-details"]}>
-                    <div className={styles["checkout__stay-details--image"]}>
-                        <Image
-                            src={
-                                stayDetails.image ||
-                                "/assets/images/villa-1.svg"
+                <div className={styles["checkout__details"]}>
+                    <div className={styles["checkout__stay-details"]}>
+                        <div
+                            className={styles["checkout__stay-details--image"]}
+                        >
+                            <Image
+                                src={
+                                    stayDetails.image ||
+                                    "/assets/images/villa-1.svg"
+                                }
+                                width={100}
+                                height={100}
+                                alt={stayDetails.name}
+                            />
+                        </div>
+                        <div
+                            className={
+                                styles["checkout__stay-details--details"]
                             }
-                            width={100}
-                            height={100}
-                            alt={stayDetails.name}
-                        />
+                        >
+                            <h4>{stayDetails.name}</h4>
+                            <p>
+                                ₹{" "}
+                                {formatCurrency(
+                                    stayDetails.pricing.currentPrice
+                                )}
+                                /night
+                            </p>
+                            <p>
+                                {stayDetails.checkin} - {stayDetails.checkout}
+                            </p>
+                        </div>
                     </div>
-                    <div className={styles["checkout__stay-details--details"]}>
-                        <h4>{stayDetails.name}</h4>
-                        <p>
-                            ₹ {formatCurrency(stayDetails.pricing.currentPrice)}
-                            /night
-                        </p>
-                        <p>
-                            {stayDetails.checkin} - {stayDetails.checkout}
-                        </p>
+
+                    <div className={styles["checkout__price-breakup"]}>
+                        <h2>Stay Price Breakup</h2>
+                        <div
+                            className={styles["checkout__price-breakup--item"]}
+                        >
+                            <h4>
+                                {stayDetails.name} ({paymentIntent.nights}{" "}
+                                nights)
+                            </h4>
+                            <p>
+                                ₹
+                                {formatCurrency(
+                                    paymentIntent.pricing.stayPrice
+                                )}
+                            </p>
+                        </div>
+                        <div
+                            className={styles["checkout__price-breakup--item"]}
+                        >
+                            <h4>CGST ({taxRates.cgst}%)</h4>
+                            <p>₹{formatCurrency(paymentIntent.pricing.cgst)}</p>
+                        </div>
+                        <div
+                            className={styles["checkout__price-breakup--item"]}
+                        >
+                            <h4>SGST ({taxRates.sgst}%)</h4>
+                            <p>₹{formatCurrency(paymentIntent.pricing.sgst)}</p>
+                        </div>
+                        <div
+                            className={styles["checkout__price-breakup--item"]}
+                        >
+                            <h4>Grand Total</h4>
+                            <p>
+                                ₹
+                                {formatCurrency(
+                                    paymentIntent.pricing.totalAmount
+                                )}
+                            </p>
+                        </div>
                     </div>
+
+                    {selectedAddOns && selectedAddOns.length > 0 && (
+                        <div className={styles["checkout__addons"]}>
+                            <h2>Requested Add-ons</h2>
+                            <p>
+                                Our team will contact you to discuss these
+                                add-ons.
+                            </p>
+                            {selectedAddOns.map((addon, index) => (
+                                <div
+                                    key={index}
+                                    className={styles["checkout__addons--item"]}
+                                >
+                                    <CheckCheck />
+                                    <h4>{addon.name}</h4>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* <div className={styles["padding"]}></div> */}
                 </div>
 
-                <div className={styles["checkout__price-breakup"]}>
-                    <h2>Stay Price Breakup</h2>
-                    <div className={styles["checkout__price-breakup--item"]}>
-                        <h4>
-                            {stayDetails.name} ({paymentIntent.nights} nights)
-                        </h4>
-                        <p>
-                            ₹{formatCurrency(paymentIntent.pricing.stayPrice)}
-                        </p>
-                    </div>
-                    <div className={styles["checkout__price-breakup--item"]}>
-                        <h4>CGST ({taxRates.cgst}%)</h4>
-                        <p>₹{formatCurrency(paymentIntent.pricing.cgst)}</p>
-                    </div>
-                    <div className={styles["checkout__price-breakup--item"]}>
-                        <h4>SGST ({taxRates.sgst}%)</h4>
-                        <p>₹{formatCurrency(paymentIntent.pricing.sgst)}</p>
-                    </div>
-                    <div className={styles["checkout__price-breakup--item"]}>
-                        <h4>Grand Total</h4>
-                        <p>
-                            ₹{formatCurrency(paymentIntent.pricing.totalAmount)}
-                        </p>
-                    </div>
-                </div>
-
-                {selectedAddOns && selectedAddOns.length > 0 && (
-                    <div className={styles["checkout__addons"]}>
-                        <h2>Requested Add-ons</h2>
-                        <p>
-                            Our team will contact you to discuss these add-ons.
-                        </p>
-                        {selectedAddOns.map((addon, index) => (
-                            <div
-                                key={index}
-                                className={styles["checkout__addons--item"]}
-                            >
-                                <CheckCheck />
-                                <h4>{addon.name}</h4>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                <div className={styles["padding"]}></div>
+                <CustomFooter />
             </div>
-
-            <CustomFooter />
-        </div>
+        </>
     );
 };
 

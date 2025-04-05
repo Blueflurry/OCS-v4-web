@@ -47,7 +47,7 @@
 
     &__content {
         margin: 0;
-        padding: 30px 20px;
+        padding: 16px;
         overflow: hidden;
         width: 100%;
 
@@ -124,7 +124,7 @@
     &__rating {
         display: flex;
         align-items: center;
-        margin-bottom: 8px;
+        // margin-bottom: 8px;
         gap: 2px;
         b {
             font-weight: 500;
@@ -357,6 +357,122 @@
             line-height: 1.5;
             color: rgba(white, 0.8);
         }
+    }
+
+    // Booking Info
+    &__booking-info {
+        margin-top: 20px;
+        background-color: #ffffff;
+        color: #000000;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        overflow: hidden;
+    }
+
+    &__booking-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        color: #000000;
+
+        h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #000000;
+        }
+    }
+
+    &__edit-button {
+        background-color: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: $color-primary;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 20px;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: rgba($color-primary, 0.1);
+        }
+
+        svg {
+            color: inherit;
+        }
+    }
+
+    // &__booking-details {
+    // margin-bottom: 15px;
+    // }
+
+    &__booking-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+        color: #000000;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    &__booking-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        // color: $color-text-secondary;
+        font-size: 0.95rem;
+        color: #000000;
+
+        img {
+            opacity: 0.7;
+        }
+    }
+
+    &__booking-value {
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: #000000;
+        text-align: right;
+    }
+
+    &__pricing-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        // color: $color-text-secondary;
+        color: #000000;
+    }
+
+    &__pricing-total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        color: #000000;
+
+        h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #000000;
+        }
+    }
+
+    &__summary {
+        color: #000000;
+        margin-top: 15px;
     }
 }
 

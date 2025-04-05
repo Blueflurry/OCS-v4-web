@@ -6,7 +6,7 @@
     position: relative;
 
     &__header {
-        padding: 16px;
+        padding: 24px 24px 24px 70px;
         // padding: 24px 0 24px 64px; // with back button
 
         h2 {
@@ -182,9 +182,9 @@
     z-index: 9;
 
     .button-container {
-        flex: 1;
-        display: flex;
-        justify-content: flex-end;
+        // flex: 1;
+        // display: flex;
+        // justify-content: flex-end;
     }
 }
 
