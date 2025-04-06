@@ -19,7 +19,7 @@ import {
 } from "@/app/services/stayDetailsService";
 import { formatCurrency } from "@/app/utils/formatter";
 import Loading from "../loading";
-import { Calendar, Moon, Pencil, Users } from "lucide-react";
+import { Calendar, Moon, Pencil, Users, AlertTriangle } from "lucide-react";
 
 const StayDetails = () => {
     const params = useParams();
@@ -29,6 +29,8 @@ const StayDetails = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [bookingError, setBookingError] = useState(null);
+    const [isDefaultBooking, setIsDefaultBooking] = useState(true);
 
     // Get booking info from localStorage if available
     const [bookingInfo, setBookingInfo] = useState(() => {
@@ -59,6 +61,7 @@ const StayDetails = () => {
                         searchParams.formattedCheckin &&
                         searchParams.formattedCheckout
                     ) {
+                        setIsDefaultBooking(false); // User has explicitly set booking info
                         return {
                             checkin: searchParams.formattedCheckin,
                             checkout: searchParams.formattedCheckout,
@@ -160,25 +163,53 @@ const StayDetails = () => {
                 console.log("Updated search parameters:", searchParams);
             }
 
+            // Clear booking error since user has updated information
+            setBookingError(null);
+            setIsDefaultBooking(false);
+
             return newBookingInfo;
         });
     };
 
-    const handleProceedToCheckout = async () => {
+    const handleProceedToCheckout = () => {
+        // Validate booking info before proceeding
+        if (isDefaultBooking) {
+            setBookingError(
+                "Please confirm your stay details before proceeding"
+            );
+            setIsEditModalOpen(true);
+            return false;
+        }
+
         try {
             // Create a payment intent using stored data
-            const paymentIntent = await createPaymentIntent({
+            createPaymentIntent({
                 stayId: stayData._id,
                 checkin: bookingInfo.rawCheckin,
                 checkout: bookingInfo.rawCheckout,
                 guests: bookingInfo.guests,
-            });
+            })
+                .then((paymentIntent) => {
+                    // Store the payment intent ID in localStorage
+                    localStorage.setItem("paymentIntentId", paymentIntent.id);
+                    console.log("Payment intent created:", paymentIntent);
 
-            // Store the payment intent ID in localStorage
-            localStorage.setItem("paymentIntentId", paymentIntent.id);
-            console.log("Payment intent created:", paymentIntent);
+                    // Let the normal flow continue by returning undefined (not false)
+                    // The Footer component will handle navigation
+                })
+                .catch((err) => {
+                    console.error("Error creating payment intent:", err);
+                    setBookingError(
+                        "Unable to process your booking. Please try again."
+                    );
+                    return false; // Prevent navigation
+                });
         } catch (err) {
             console.error("Error creating payment intent:", err);
+            setBookingError(
+                "Unable to process your booking. Please try again."
+            );
+            return false; // Prevent navigation
         }
     };
 
@@ -331,6 +362,37 @@ const StayDetails = () => {
                                     </button>
                                 </div>
 
+                                {/* Error message */}
+                                {bookingError && (
+                                    <div
+                                        className={
+                                            styles[
+                                                "stay-details__booking-error"
+                                            ]
+                                        }
+                                    >
+                                        <AlertTriangle size={16} />
+                                        <span>{bookingError}</span>
+                                    </div>
+                                )}
+
+                                {/* Visual indicator for default booking */}
+                                {isDefaultBooking && !bookingError && (
+                                    <div
+                                        className={
+                                            styles[
+                                                "stay-details__booking-notice"
+                                            ]
+                                        }
+                                    >
+                                        <AlertTriangle size={16} />
+                                        <span>
+                                            Please confirm your stay details by
+                                            clicking Edit
+                                        </span>
+                                    </div>
+                                )}
+
                                 <div
                                     className={
                                         styles["stay-details__booking-details"]
@@ -424,38 +486,6 @@ const StayDetails = () => {
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* <div
-                                    className={styles["stay-details__summary"]}
-                                >
-                                    <div
-                                        className={
-                                            styles["stay-details__pricing-row"]
-                                        }
-                                    >
-                                        <span>
-                                            ₹
-                                            {formatCurrency(
-                                                stayData.pricing.currentPrice
-                                            )}{" "}
-                                            × {bookingInfo.nights} nights
-                                        </span>
-                                        <span>
-                                            ₹{formatCurrency(totalPrice)}
-                                        </span>
-                                    </div>
-
-                                    <div
-                                        className={
-                                            styles[
-                                                "stay-details__pricing-total"
-                                            ]
-                                        }
-                                    >
-                                        <h3>Total</h3>
-                                        <h3>₹{formatCurrency(totalPrice)}</h3>
-                                    </div>
-                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -494,7 +524,11 @@ const StayDetails = () => {
             />
 
             <Footer
-                btnText="Proceed to checkout"
+                btnText={
+                    isDefaultBooking
+                        ? "Confirm stay details"
+                        : "Proceed to checkout"
+                }
                 btnType="primary"
                 onClick={handleProceedToCheckout}
             />

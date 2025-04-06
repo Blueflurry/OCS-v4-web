@@ -228,7 +228,16 @@ const BookingDetails = () => {
                 <div className={styles["padding"]}></div>
             </div>
 
-            <Footer btnText="Customer Support" btnType="whatsapp"></Footer>
+            <Footer
+                btnText="Customer Support"
+                btnType="whatsapp"
+                onClick={() => {
+                    window.open(
+                        "https://api.whatsapp.com/send/?phone=919899992197&text=Hi%2C+I+need+support+with+my+OneClick+Stays+booking.&type=phone_number&app_absent=0",
+                        "_blank"
+                    );
+                }}
+            ></Footer>
         </div>
     );
 };

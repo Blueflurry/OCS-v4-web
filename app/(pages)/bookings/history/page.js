@@ -9,6 +9,7 @@ import {
     formatBookingAmount,
 } from "@/app/services/bookingService";
 import Loading from "@/app/loading";
+import Header from "@/app/modules/Header";
 
 const History = () => {
     const [bookings, setBookings] = useState([]);
@@ -44,147 +45,158 @@ const History = () => {
     }
 
     return (
-        <div className={styles["bookings-history"]}>
-            <div className={styles["bookings-history__header"]}>
-                <Image
-                    src="/assets/images/logo.svg"
-                    alt="OneClick Stays"
-                    width={100}
-                    height={100}
-                    style={{ width: "70px", marginBottom: "-4px" }}
-                />
-                <div
-                    className={styles["bookings-history__header-separator"]}
-                ></div>
-                <h2>Trip History</h2>
-            </div>
-
-            <div className={styles["bookings-history__pagenav"]}>
-                <div className={styles["bookings-history__pagenav-nav"]}>
-                    <Link href="/bookings/upcoming">
-                        <h3>Upcoming</h3>
-                    </Link>
+        <>
+            <Header />
+            <div className={styles["bookings-history"]}>
+                <div className={styles["bookings-history__header"]}>
+                    <Image
+                        src="/assets/images/logo.svg"
+                        alt="OneClick Stays"
+                        width={100}
+                        height={100}
+                        style={{ width: "70px", marginBottom: "-4px" }}
+                    />
+                    <div
+                        className={styles["bookings-history__header-separator"]}
+                    ></div>
+                    <h2>Trip History</h2>
                 </div>
-                <div
-                    className={`${styles["bookings-history__pagenav-nav"]} ${styles["selected"]}`}
-                >
-                    <Link href="/bookings/history">
-                        <h3>Completed</h3>
-                    </Link>
-                </div>
-            </div>
 
-            <div className={styles["bookings-history__details"]}>
-                {bookings.length === 0 ? (
-                    <div className={styles["no-bookings"]}>
-                        <p>You don't have any completed bookings yet</p>
-                        <Link href="/" className={styles["browse-link"]}>
-                            Browse stays
+                <div className={styles["bookings-history__pagenav"]}>
+                    <div className={styles["bookings-history__pagenav-nav"]}>
+                        <Link href="/bookings/upcoming">
+                            <h3>Upcoming</h3>
                         </Link>
                     </div>
-                ) : (
-                    bookings.map((booking) => {
-                        // Format dates for display
-                        const checkInDate = formatBookingDate(
-                            booking.dates?.checkIn
-                        );
-                        const checkOutDate = formatBookingDate(
-                            booking.dates?.checkOut
-                        );
-                        const dateRange = `${checkInDate} - ${checkOutDate}`;
+                    <div
+                        className={`${styles["bookings-history__pagenav-nav"]} ${styles["selected"]}`}
+                    >
+                        <Link href="/bookings/history">
+                            <h3>Completed</h3>
+                        </Link>
+                    </div>
+                </div>
 
-                        // Get stay details
-                        const stay = booking.stay || {};
-                        const location = stay.location?.name || "";
-                        const guestCount = booking.guests?.total || 0;
-                        const guestInfo =
-                            guestCount > 0 ? ` • ${guestCount} Guests` : "";
+                <div className={styles["bookings-history__details"]}>
+                    {bookings.length === 0 ? (
+                        <div className={styles["no-bookings"]}>
+                            <p>You don't have any completed bookings yet</p>
+                            <Link href="/" className={styles["browse-link"]}>
+                                Browse stays
+                            </Link>
+                        </div>
+                    ) : (
+                        bookings.map((booking) => {
+                            // Format dates for display
+                            const checkInDate = formatBookingDate(
+                                booking.dates?.checkIn
+                            );
+                            const checkOutDate = formatBookingDate(
+                                booking.dates?.checkOut
+                            );
+                            const dateRange = `${checkInDate} - ${checkOutDate}`;
 
-                        // Get pricing details
-                        const originalPrice =
-                            booking.pricing?.originalPrice || 0;
-                        const currentPrice = booking.pricing?.stayTotal || 0;
+                            // Get stay details
+                            const stay = booking.stay || {};
+                            const location = stay.location?.name || "";
+                            const guestCount = booking.guests?.total || 0;
+                            const guestInfo =
+                                guestCount > 0 ? ` • ${guestCount} Guests` : "";
 
-                        return (
-                            <Link
-                                href={`/bookings/${booking._id}`}
-                                key={booking._id}
-                            >
-                                <div
-                                    className={
-                                        styles["bookings-history__stay-details"]
-                                    }
+                            // Get pricing details
+                            const originalPrice =
+                                booking.pricing?.originalPrice || 0;
+                            const currentPrice =
+                                booking.pricing?.stayTotal || 0;
+
+                            return (
+                                <Link
+                                    href={`/bookings/${booking._id}`}
+                                    key={booking._id}
                                 >
                                     <div
                                         className={
                                             styles[
-                                                "bookings-history__stay-details--image"
+                                                "bookings-history__stay-details"
                                             ]
                                         }
                                     >
-                                        <Image
-                                            src={
-                                                stay.images?.[0] ||
-                                                "/assets/images/villa-1.svg"
-                                            }
-                                            width={100}
-                                            height={100}
-                                            alt={stay.name || "Stay"}
-                                        />
-                                    </div>
-                                    <div
-                                        className={
-                                            styles[
-                                                "bookings-history__stay-details--details"
-                                            ]
-                                        }
-                                    >
-                                        <h4>
-                                            <span>Booking ID:</span>
-                                            {booking.bookingId ||
-                                                "#OCSBK299024"}
-                                        </h4>
-                                        <h3>{stay.name || "Luxury Stay"}</h3>
-                                        <p>
-                                            {dateRange}
-                                            {guestInfo}
-                                        </p>
-
                                         <div
                                             className={
                                                 styles[
-                                                    "bookings-history__stay-details--location"
+                                                    "bookings-history__stay-details--image"
                                                 ]
                                             }
                                         >
                                             <Image
-                                                src="/assets/images/location-black.svg"
-                                                width={20}
-                                                height={20}
-                                                alt="Location"
+                                                src={
+                                                    stay.images?.[0] ||
+                                                    "/assets/images/villa-1.svg"
+                                                }
+                                                width={100}
+                                                height={100}
+                                                alt={stay.name || "Stay"}
                                             />
-                                            <p>{location}</p>
                                         </div>
+                                        <div
+                                            className={
+                                                styles[
+                                                    "bookings-history__stay-details--details"
+                                                ]
+                                            }
+                                        >
+                                            <h4>
+                                                <span>Booking ID:</span>
+                                                {booking.bookingId ||
+                                                    "#OCSBK299024"}
+                                            </h4>
+                                            <h3>
+                                                {stay.name || "Luxury Stay"}
+                                            </h3>
+                                            <p>
+                                                {dateRange}
+                                                {guestInfo}
+                                            </p>
 
-                                        <h2>
-                                            {originalPrice > 0 && (
-                                                <span>
-                                                    ₹
-                                                    {formatBookingAmount(
-                                                        originalPrice
-                                                    )}
-                                                </span>
-                                            )}
-                                            ₹{formatBookingAmount(currentPrice)}
-                                        </h2>
+                                            <div
+                                                className={
+                                                    styles[
+                                                        "bookings-history__stay-details--location"
+                                                    ]
+                                                }
+                                            >
+                                                <Image
+                                                    src="/assets/images/location-black.svg"
+                                                    width={20}
+                                                    height={20}
+                                                    alt="Location"
+                                                />
+                                                <p>{location}</p>
+                                            </div>
+
+                                            <h2>
+                                                {originalPrice > 0 && (
+                                                    <span>
+                                                        ₹
+                                                        {formatBookingAmount(
+                                                            originalPrice
+                                                        )}
+                                                    </span>
+                                                )}
+                                                ₹
+                                                {formatBookingAmount(
+                                                    currentPrice
+                                                )}
+                                            </h2>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                        );
-                    })
-                )}
+                                </Link>
+                            );
+                        })
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

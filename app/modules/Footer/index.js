@@ -31,32 +31,45 @@ const Footer = ({
     const stayId = params.stayId;
     const pathname = usePathname();
     const [currentPage, setCurrentPage] = useState(PAGES[0]);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     const handleCheckoutClick = () => {
+        // Temporarily disable button to prevent multiple clicks
+        setIsButtonDisabled(true);
+
         // If custom onClick is provided, call it first
         if (onClick) {
-            onClick();
-            // return;
-        }
+            // Try to execute onClick and see if it performs any actions
+            // that would indicate we should stop the flow (like showing an error)
+            const result = onClick();
 
-        // Otherwise, use the default navigation logic
-        for (let idx = 0; idx < PAGES.length; idx++) {
-            let page = PAGES[idx];
-            page.url = page.url?.replace("${stayId}", stayId);
-            page.nextUrl = page.nextUrl?.replace("${stayId}", stayId);
-
-            // console.log("pathname", pathname);
-            // console.log("page.url", page.url);
-            // console.log("page.nextUrl", page.nextUrl);
-            if (btnType === "razorpay") {
+            // If we get a explicit false, return early and keep button disabled
+            if (result === false) {
+                setTimeout(() => setIsButtonDisabled(false), 1500); // Re-enable after delay
                 return;
             }
-
-            if (pathname === page.url) {
-                router.push(page.nextUrl);
-                return; // Exit the loop
-            }
         }
+
+        // Allow a small delay for any onClick side effects to complete
+        setTimeout(() => {
+            // Otherwise, use the default navigation logic
+            for (let idx = 0; idx < PAGES.length; idx++) {
+                let page = PAGES[idx];
+                page.url = page.url?.replace("${stayId}", stayId);
+                page.nextUrl = page.nextUrl?.replace("${stayId}", stayId);
+
+                if (btnType === "razorpay") {
+                    setIsButtonDisabled(false);
+                    return;
+                }
+
+                if (pathname === page.url) {
+                    router.push(page.nextUrl);
+                    return; // Exit the loop
+                }
+            }
+            setIsButtonDisabled(false);
+        }, 300);
     };
 
     useEffect(() => {
@@ -79,21 +92,14 @@ const Footer = ({
 
     return (
         <div className={styles["footer"]}>
-            {/* {showTotalAmount && (
-                <div className={styles["total-amount"]}>
-                    <span>Total</span>
-                    <h4>₹{formatCurrency(totalAmount)}</h4>
-                </div>
-            )} */}
-
             <div
                 className={styles["button-container"]}
-                onClick={handleCheckoutClick}
+                onClick={!isButtonDisabled ? handleCheckoutClick : undefined}
             >
                 {btnType === "razorpay" ? (
                     <RazorpayButton />
                 ) : (
-                    <Button type={btnType} large>
+                    <Button type={btnType} large disabled={isButtonDisabled}>
                         {btnType === "whatsapp" ? (
                             <>
                                 <Image
