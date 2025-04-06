@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $color-primary: #ffb401;
 $color-progress1: #3dda52;
 $color-progress2: #ffb401;
@@ -15,7 +17,8 @@ $color-text-tertiary: #a9aaaa;
 $color-text-black: #000000;
 $color-text-muted: #ffffff80;
 $color-success: #1fa130;
-$color-info: lighten($color-primary, 45%);
+$color-info: color.adjust($color-primary, $lightness: 45%);
+// $color-info: lighten($color-primary, 45%);
 $color-danger: #ef4444;
 
 $z-index-content: 96;

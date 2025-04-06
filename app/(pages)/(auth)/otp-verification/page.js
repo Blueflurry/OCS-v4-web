@@ -215,7 +215,7 @@ const OtpVerification = () => {
 
             <div className={styles["otp-verification__container"]}>
                 <h1 className={styles["otp-verification__title"]}>
-                    Verification
+                    OTP Verification
                 </h1>
                 <p className={styles["otp-verification__description"]}>
                     Enter the 4-digit code sent to{" "}

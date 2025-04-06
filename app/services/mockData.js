@@ -1364,24 +1364,28 @@ export const managementTypes = [
         title: "OneClick Assured",
         description: "Premium experience guaranteed by OneClick Stays",
         icon: <Shield size={24} />,
+        iconLink: "/assets/images/ocs-assured-icon.png",
     },
     {
         id: "branded",
         title: "Branded Stays",
         description: "Stays from big brands and groups of properties",
         icon: <Building2 size={24} />,
+        iconLink: "/assets/images/branded-stays-icon.png",
     },
     {
         id: "private",
         title: "Private Stays",
         description: "Hand-picked home stays from private providers",
         icon: <Home size={24} />,
+        iconLink: "/assets/images/private-stays-icon.png",
     },
     {
         id: "everything",
         title: "Everything",
         description: "Let's provide you the best options based on your search",
         icon: <Search size={24} />,
+        iconLink: "/assets/images/everything-icon.png",
     },
 ];
 
@@ -1392,12 +1396,14 @@ export const propertyTypes = [
         title: "Villa",
         description: "Luxurious independent houses with private spaces",
         icon: <Home size={24} />,
+        iconLink: "/assets/images/villa-icon.png",
     },
     {
         id: "apartment",
         title: "Apartment",
         description: "Modern apartments in residential buildings",
         icon: <Building size={24} />,
+        iconLink: "/assets/images/apartment-icon.png",
     },
 ];
 

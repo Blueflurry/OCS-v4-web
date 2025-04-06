@@ -8,6 +8,7 @@ import {
     propertyTypes,
     numericOptions,
 } from "../../services/mockData";
+import Image from "next/image";
 
 const StaysFilter = ({
     isOpen,
@@ -62,6 +63,12 @@ const StaysFilter = ({
 
     // Toggle accordion sections
     const toggleSection = (section) => {
+        console.log("Toggling section:", section);
+        console.log("Current expanded sections:", expandedSections);
+        console.log(
+            "New expanded state for section:",
+            !expandedSections[section]
+        );
         setExpandedSections({
             ...expandedSections,
             [section]: !expandedSections[section],
@@ -238,6 +245,13 @@ const StaysFilter = ({
                                                 className={styles.boxOptionIcon}
                                             >
                                                 {type.icon}
+
+                                                {/* <Image
+                                                    src={type.iconLink}
+                                                    alt={type.title}
+                                                    width={24}
+                                                    height={24}
+                                                ></Image> */}
                                             </div>
                                             <div
                                                 className={
@@ -630,6 +644,12 @@ const StaysFilter = ({
                                                 className={styles.boxOptionIcon}
                                             >
                                                 {type.icon}
+                                                {/* <Image
+                                                    src={type.iconLink}
+                                                    alt={type.title}
+                                                    width={24}
+                                                    height={24}
+                                                ></Image> */}
                                             </div>
                                             <div
                                                 className={

@@ -49,7 +49,7 @@ const Upcoming = () => {
             <Header />
             <div className={styles["upcoming-bookings"]}>
                 <div className={styles["upcoming-bookings__header"]}>
-                    <Image
+                    {/* <Image
                         src="/assets/images/logo.svg"
                         alt="OneClick Stays"
                         width={100}
@@ -60,7 +60,7 @@ const Upcoming = () => {
                         className={
                             styles["upcoming-bookings__header-separator"]
                         }
-                    ></div>
+                    ></div> */}
                     <h2>Trip History</h2>
                 </div>
 

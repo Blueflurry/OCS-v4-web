@@ -49,7 +49,7 @@ const History = () => {
             <Header />
             <div className={styles["bookings-history"]}>
                 <div className={styles["bookings-history__header"]}>
-                    <Image
+                    {/* <Image
                         src="/assets/images/logo.svg"
                         alt="OneClick Stays"
                         width={100}
@@ -58,7 +58,7 @@ const History = () => {
                     />
                     <div
                         className={styles["bookings-history__header-separator"]}
-                    ></div>
+                    ></div> */}
                     <h2>Trip History</h2>
                 </div>
 

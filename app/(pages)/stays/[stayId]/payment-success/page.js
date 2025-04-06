@@ -105,7 +105,7 @@ const PaymentSuccess = () => {
                 {animationFlag ? (
                     <div className={styles["payment__content"]}>
                         <h2>Hurray!</h2>
-                        <p>Payment Completed Successfully.</p>
+                        <p>Payment Completed Successfully</p>
 
                         {/* Booking ID with copy button */}
                         {booking?.bookingId && (

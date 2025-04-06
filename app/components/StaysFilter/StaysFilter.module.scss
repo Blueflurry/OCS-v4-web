@@ -93,6 +93,7 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    color: #000000;
     padding: 8px 0;
 
     h3 {
@@ -240,6 +241,7 @@
     width: 100%;
     height: 40px;
     background: none;
+    appearance: none;
     -webkit-appearance: none;
     pointer-events: none;
     z-index: 3;
@@ -431,6 +433,7 @@
     padding: 16px 0;
     background-color: #fff;
     border-top: 1px solid #f0f0f0;
+    z-index: 10;
 }
 
 .resetButton {
