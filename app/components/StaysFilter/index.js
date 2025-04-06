@@ -1,25 +1,13 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./StaysFilter.module.scss";
+import { ChevronDown, ChevronUp, X, Bed, Bath, DoorOpen } from "lucide-react";
 import {
-    ChevronDown,
-    ChevronUp,
-    X,
-    Shield,
-    Building2,
-    Home,
-    Search,
-    Bed,
-    Bath,
-    DoorOpen,
-    Wifi,
-    UtensilsCrossed,
-    Shirt,
-    TvIcon,
-    Car,
-    Warehouse,
-    Building,
-} from "lucide-react";
+    amenitiesList,
+    managementTypes,
+    propertyTypes,
+    numericOptions,
+} from "../../services/mockData";
 
 const StaysFilter = ({
     isOpen,
@@ -65,90 +53,12 @@ const StaysFilter = ({
     // Show all amenities state
     const [showAllAmenities, setShowAllAmenities] = useState(false);
 
-    // Management types
-    const managementTypes = [
-        {
-            id: "oneclick",
-            title: "OneClick Assured",
-            description: "Premium experience guaranteed by OneClick Stays",
-            icon: <Shield size={24} />,
-        },
-        {
-            id: "branded",
-            title: "Branded Stays",
-            description: "Stays from big brands and groups of properties",
-            icon: <Building2 size={24} />,
-        },
-        {
-            id: "private",
-            title: "Private Stays",
-            description: "Hand-picked home stays from private providers",
-            icon: <Home size={24} />,
-        },
-        {
-            id: "everything",
-            title: "Everything",
-            description:
-                "Let's provide you the best options based on your search",
-            icon: <Search size={24} />,
-        },
-    ];
-
-    // Property types
-    const propertyTypes = [
-        {
-            id: "villa",
-            title: "Villa",
-            description: "Luxurious independent houses with private spaces",
-            icon: <Home size={24} />,
-        },
-        {
-            id: "apartment",
-            title: "Apartment",
-            description: "Modern apartments in residential buildings",
-            icon: <Building size={24} />,
-        },
-    ];
-
-    // Amenities list
-    const amenitiesList = [
-        { id: "wifi", name: "WiFi", icon: <Wifi size={16} /> },
-        { id: "kitchen", name: "Kitchen", icon: <UtensilsCrossed size={16} /> },
-        { id: "washer", name: "Washing Machine", icon: <Shirt size={16} /> },
-        { id: "tv", name: "TV", icon: <TvIcon size={16} /> },
-        { id: "parking", name: "Parking", icon: <Car size={16} /> },
-        {
-            id: "workspace",
-            name: "Dedicated workspace",
-            icon: <Warehouse size={16} />,
-        },
-        { id: "ac", name: "Air conditioning", icon: null },
-        { id: "heating", name: "Heating", icon: null },
-        { id: "pool", name: "Pool", icon: null },
-        { id: "hotTub", name: "Hot tub", icon: null },
-        { id: "bbq", name: "BBQ grill", icon: null },
-        { id: "fireplace", name: "Indoor fireplace", icon: null },
-        { id: "gym", name: "Exercise equipment", icon: null },
-        { id: "beachAccess", name: "Beach access", icon: null },
-        { id: "smokeAlarm", name: "Smoke alarm", icon: null },
-        { id: "firstAid", name: "First aid kit", icon: null },
-        { id: "fireExtinguisher", name: "Fire extinguisher", icon: null },
-        { id: "carbonAlarm", name: "Carbon monoxide alarm", icon: null },
-        { id: "petsAllowed", name: "Pets allowed", icon: null },
-        { id: "backyard", name: "Private backyard", icon: null },
-        { id: "breakfast", name: "Breakfast included", icon: null },
-        { id: "doorman", name: "Doorman", icon: null },
-        { id: "elevator", name: "Elevator", icon: null },
-        { id: "securityCameras", name: "Security cameras", icon: null },
-        { id: "babyFriendly", name: "Baby friendly", icon: null },
-        { id: "toddlerFriendly", name: "Toddler friendly", icon: null },
-    ];
-
-    // Numeric options for rooms
-    const numericOptions = ["Any", "1", "2", "3", "4", "5+"];
-
     // Handle drawer click outside to close
     const drawerRef = useRef(null);
+
+    // References for the price range sliders
+    const minPriceRangeRef = useRef(null);
+    const maxPriceRangeRef = useRef(null);
 
     // Toggle accordion sections
     const toggleSection = (section) => {
@@ -200,6 +110,13 @@ const StaysFilter = ({
                 [type]: newValue,
             },
         });
+
+        // Update slider positions visually
+        if (type === "min" && minPriceRangeRef.current) {
+            minPriceRangeRef.current.value = newValue;
+        } else if (type === "max" && maxPriceRangeRef.current) {
+            maxPriceRangeRef.current.value = newValue;
+        }
     };
 
     // Handle room selection
@@ -357,32 +274,64 @@ const StaysFilter = ({
                         {expandedSections.priceRange && (
                             <div className={styles.sectionContent}>
                                 <div className={styles.priceRange}>
-                                    <input
-                                        type="range"
-                                        min="0"
-                                        max="2500000"
-                                        value={filters.priceRange.min}
-                                        onChange={(e) =>
-                                            handlePriceRangeChange(
-                                                "min",
-                                                e.target.value
-                                            )
-                                        }
-                                        className={styles.priceSlider}
-                                    />
-                                    <input
-                                        type="range"
-                                        min="0"
-                                        max="2500000"
-                                        value={filters.priceRange.max}
-                                        onChange={(e) =>
-                                            handlePriceRangeChange(
-                                                "max",
-                                                e.target.value
-                                            )
-                                        }
-                                        className={styles.priceSlider}
-                                    />
+                                    {/* Single price range slider container */}
+                                    <div className={styles.sliderContainer}>
+                                        <div className={styles.sliderTrack}>
+                                            <div
+                                                className={
+                                                    styles.sliderProgress
+                                                }
+                                                style={{
+                                                    left: `${
+                                                        (filters.priceRange
+                                                            .min /
+                                                            2500000) *
+                                                        100
+                                                    }%`,
+                                                    width: `${
+                                                        ((filters.priceRange
+                                                            .max -
+                                                            filters.priceRange
+                                                                .min) /
+                                                            2500000) *
+                                                        100
+                                                    }%`,
+                                                }}
+                                            ></div>
+                                        </div>
+
+                                        <input
+                                            ref={minPriceRangeRef}
+                                            type="range"
+                                            min="0"
+                                            max="2500000"
+                                            step="10000"
+                                            value={filters.priceRange.min}
+                                            onChange={(e) =>
+                                                handlePriceRangeChange(
+                                                    "min",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className={`${styles.priceSlider} ${styles.minPriceSlider}`}
+                                        />
+
+                                        <input
+                                            ref={maxPriceRangeRef}
+                                            type="range"
+                                            min="0"
+                                            max="2500000"
+                                            step="10000"
+                                            value={filters.priceRange.max}
+                                            onChange={(e) =>
+                                                handlePriceRangeChange(
+                                                    "max",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className={`${styles.priceSlider} ${styles.maxPriceSlider}`}
+                                        />
+                                    </div>
 
                                     <div className={styles.priceInputs}>
                                         <div className={styles.priceInput}>

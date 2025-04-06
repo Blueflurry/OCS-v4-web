@@ -1,181 +1,142 @@
 "use client";
-
-import { useState, useEffect, useRef } from "react";
-import StayCard from "@/app/components/StayCard";
+import React, { useState, useEffect } from "react";
 import styles from "./StayListings.module.scss";
+import StayCard from "@/app/components/StayCard";
 import { getFilteredStays } from "@/app/services/staysService";
-import { Calendar, Loader, MapPin, Search, User, Heart } from "lucide-react";
-import { formatDate } from "@/app/utils/formatter";
+import { Loader, RefreshCw } from "lucide-react";
+import Image from "next/image";
 
-const ITEMS_PER_PAGE = 10;
-
-export default function StayListings({ initialStays = [], title, filters }) {
-    const [stays, setStays] = useState([...initialStays]);
+/**
+ * StayListings Component - Displays a list of stay cards with pagination
+ * @param {object} props - Component props
+ * @param {array} props.initialStays - Initial stays data
+ * @param {string} props.title - Title for the listings section
+ * @param {string} props.description - Optional description
+ * @param {object} props.filters - Filter parameters
+ * @param {boolean} props.loading - Whether data is currently loading
+ * @returns {JSX.Element} StayListings component
+ */
+const StayListings = ({
+    initialStays,
+    title,
+    description,
+    filters,
+    loading = false,
+}) => {
+    const [stays, setStays] = useState(initialStays || []);
     const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(
-        initialStays.length >= ITEMS_PER_PAGE
-    );
-    const observer = useRef();
-    const lastStayElementRef = useRef(null);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+
+    // Update stays when initialStays changes (e.g., when filters are applied)
+    useEffect(() => {
+        setStays(initialStays || []);
+        setPage(1);
+        setHasMore(true);
+    }, [initialStays]);
 
     // Function to load more stays
     const loadMoreStays = async () => {
-        if (loading || !hasMore) return;
+        if (isLoadingMore || !hasMore) return;
 
-        setLoading(true);
+        setIsLoadingMore(true);
         try {
-            // Add pagination parameters to the filters
+            // Prepare filters with updated page number
+            const nextPage = page + 1;
             const paginatedFilters = {
                 ...filters,
-                page: page + 1,
-                limit: ITEMS_PER_PAGE,
+                page: nextPage,
+                limit: 10,
             };
 
-            const newStays = await getFilteredStays(paginatedFilters);
+            // Fetch next batch of stays
+            const nextBatch = await getFilteredStays(paginatedFilters);
 
-            if (newStays.length < ITEMS_PER_PAGE) {
+            // If no more stays are returned, we've reached the end
+            if (!nextBatch || nextBatch.length === 0) {
                 setHasMore(false);
+            } else {
+                // Add new stays to existing stays
+                setStays((prevStays) => [...prevStays, ...nextBatch]);
+                setPage(nextPage);
             }
-
-            setStays((prevStays) => [...prevStays, ...newStays]);
-            setPage((prevPage) => prevPage + 1);
         } catch (error) {
             console.error("Error loading more stays:", error);
+            setHasMore(false);
         } finally {
-            setLoading(false);
+            setIsLoadingMore(false);
         }
     };
 
-    // Setup IntersectionObserver for infinite scrolling
-    useEffect(() => {
-        const currentObserver = observer.current;
-
-        if (loading) return;
-
-        if (lastStayElementRef.current) {
-            if (currentObserver) currentObserver.disconnect();
-
-            observer.current = new IntersectionObserver(
-                (entries) => {
-                    if (entries[0].isIntersecting && hasMore) {
-                        loadMoreStays();
-                    }
-                },
-                { threshold: 0.5 }
-            );
-
-            observer.current.observe(lastStayElementRef.current);
-        }
-
-        return () => {
-            if (currentObserver) {
-                currentObserver.disconnect();
-            }
-        };
-    }, [loading, hasMore]);
-
-    // Calculate total guests
-    const totalGuests =
-        Number(filters?.men || 0) +
-        Number(filters?.women || 0) +
-        Number(filters?.children || 0) +
-        Number(filters?.pets || 0);
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <Search size={20} />
-                <div className={styles.titleWrapper}>
-                    <h2 className={styles.title}>{title}</h2>
-                    {/* {description && (
-                        <p className={styles.description}>{description}</p>
-                    )} */}
-                </div>
+                <h2 className={styles.title}>{title}</h2>
+                {description && (
+                    <p className={styles.description}>{description}</p>
+                )}
             </div>
 
-            {/* Search parameters display */}
-            {filters && Object.keys(filters).length > 0 && (
-                <div className={styles.searchParams}>
-                    {filters.location && (
-                        <div className={styles.searchParamItem}>
-                            <MapPin size={16} />
-                            <span>{filters.location}</span>
-                        </div>
-                    )}
-
-                    {filters.checkin && filters.checkout && (
-                        <div className={styles.searchParamItem}>
-                            <Calendar size={16} />
-                            <span>
-                                {formatDate(filters.checkin)} -{" "}
-                                {formatDate(filters.checkout)}
-                            </span>
-                        </div>
-                    )}
-
-                    {totalGuests > 0 && (
-                        <div className={styles.searchParamItem}>
-                            <User size={16} />
-                            <span>
-                                {totalGuests}{" "}
-                                {totalGuests === 1 ? "guest" : "guests"}
-                                {filters.men > 0 && ` (${filters.men} men)`}
-                                {filters.women > 0 &&
-                                    ` (${filters.women} women)`}
-                                {filters.children > 0 &&
-                                    ` (${filters.children} children)`}
-                            </span>
-                        </div>
-                    )}
-
-                    {filters.pets > 0 && (
-                        <div className={styles.searchParamItem}>
-                            <Heart size={16} />
-                            <span>
-                                {filters.pets}{" "}
-                                {filters.pets === 1 ? "pet" : "pets"}
-                            </span>
-                        </div>
-                    )}
+            {/* Loading state */}
+            {loading && (
+                <div className={styles.loadingContainer}>
+                    <Loader className={styles.loadingIcon} />
+                    <p>Finding the perfect stays for you...</p>
                 </div>
             )}
 
-            {stays.length === 0 ? (
+            {/* Empty state when no stays match filters */}
+            {!loading && (!stays || stays.length === 0) && (
                 <div className={styles.emptyState}>
-                    <p>No stays found matching your criteria.</p>
-                    <p>Try adjusting your search filters.</p>
+                    <Image
+                        src="/assets/images/empty-results.svg"
+                        alt="No stays found"
+                        width={120}
+                        height={120}
+                    />
+                    <h3>No stays match your filters</h3>
+                    <p>
+                        Try adjusting your search filters or exploring a
+                        different location
+                    </p>
                 </div>
-            ) : (
+            )}
+
+            {/* Stays grid */}
+            {!loading && stays && stays.length > 0 && (
                 <>
-                    <div className={styles.staysGrid}>
-                        {stays.map((stay, index) => {
-                            // Apply ref to the last item for intersection observer
-                            const isLastItem = index === stays.length - 1;
-                            return (
-                                <div
-                                    key={index}
-                                    ref={isLastItem ? lastStayElementRef : null}
-                                >
-                                    <StayCard stay={stay} />
-                                </div>
-                            );
-                        })}
+                    <div className={styles.grid}>
+                        {stays.map((stay) => (
+                            <StayCard key={stay._id} stay={stay} />
+                        ))}
                     </div>
 
-                    {loading && (
-                        <div className={styles.loaderContainer}>
-                            <Loader className={styles.loader} />
-                            <p>Loading more stays...</p>
-                        </div>
-                    )}
-
-                    {!hasMore && stays.length > 0 && (
-                        <div className={styles.endMessage}>
-                            <p>You've seen all available stays</p>
+                    {/* Load more button */}
+                    {hasMore && (
+                        <div className={styles.loadMoreContainer}>
+                            <button
+                                className={styles.loadMoreButton}
+                                onClick={loadMoreStays}
+                                disabled={isLoadingMore}
+                            >
+                                {isLoadingMore ? (
+                                    <>
+                                        <RefreshCw
+                                            className={styles.spinIcon}
+                                            size={16}
+                                        />
+                                        Loading more stays...
+                                    </>
+                                ) : (
+                                    "Load more stays"
+                                )}
+                            </button>
                         </div>
                     )}
                 </>
             )}
         </div>
     );
-}
+};
+
+export default StayListings;

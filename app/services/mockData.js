@@ -1,3 +1,17 @@
+import {
+    Shield,
+    Building2,
+    Home,
+    Search,
+    Wifi,
+    UtensilsCrossed,
+    Shirt,
+    TvIcon,
+    Car,
+    Warehouse,
+    Building,
+} from "lucide-react";
+
 /**
  * Mock data for development and testing
  * Contains dummy data for various API endpoints
@@ -1342,3 +1356,84 @@ export const upcomingBookings = bookingsData.filter(
 export const completedBookings = bookingsData.filter(
     (booking) => booking.status === "completed"
 );
+
+// Management types
+export const managementTypes = [
+    {
+        id: "oneclick",
+        title: "OneClick Assured",
+        description: "Premium experience guaranteed by OneClick Stays",
+        icon: <Shield size={24} />,
+    },
+    {
+        id: "branded",
+        title: "Branded Stays",
+        description: "Stays from big brands and groups of properties",
+        icon: <Building2 size={24} />,
+    },
+    {
+        id: "private",
+        title: "Private Stays",
+        description: "Hand-picked home stays from private providers",
+        icon: <Home size={24} />,
+    },
+    {
+        id: "everything",
+        title: "Everything",
+        description: "Let's provide you the best options based on your search",
+        icon: <Search size={24} />,
+    },
+];
+
+// Property types
+export const propertyTypes = [
+    {
+        id: "villa",
+        title: "Villa",
+        description: "Luxurious independent houses with private spaces",
+        icon: <Home size={24} />,
+    },
+    {
+        id: "apartment",
+        title: "Apartment",
+        description: "Modern apartments in residential buildings",
+        icon: <Building size={24} />,
+    },
+];
+
+// Amenities list
+export const amenitiesList = [
+    { id: "wifi", name: "WiFi", icon: <Wifi size={16} /> },
+    { id: "kitchen", name: "Kitchen", icon: <UtensilsCrossed size={16} /> },
+    { id: "washer", name: "Washing Machine", icon: <Shirt size={16} /> },
+    { id: "tv", name: "TV", icon: <TvIcon size={16} /> },
+    { id: "parking", name: "Parking", icon: <Car size={16} /> },
+    {
+        id: "workspace",
+        name: "Dedicated workspace",
+        icon: <Warehouse size={16} />,
+    },
+    { id: "ac", name: "Air conditioning", icon: null },
+    { id: "heating", name: "Heating", icon: null },
+    { id: "pool", name: "Pool", icon: null },
+    { id: "hotTub", name: "Hot tub", icon: null },
+    { id: "bbq", name: "BBQ grill", icon: null },
+    { id: "fireplace", name: "Indoor fireplace", icon: null },
+    { id: "gym", name: "Exercise equipment", icon: null },
+    { id: "beachAccess", name: "Beach access", icon: null },
+    { id: "smokeAlarm", name: "Smoke alarm", icon: null },
+    { id: "firstAid", name: "First aid kit", icon: null },
+    { id: "fireExtinguisher", name: "Fire extinguisher", icon: null },
+    { id: "carbonAlarm", name: "Carbon monoxide alarm", icon: null },
+    { id: "petsAllowed", name: "Pets allowed", icon: null },
+    { id: "backyard", name: "Private backyard", icon: null },
+    { id: "breakfast", name: "Breakfast included", icon: null },
+    { id: "doorman", name: "Doorman", icon: null },
+    { id: "elevator", name: "Elevator", icon: null },
+    { id: "securityCameras", name: "Security cameras", icon: null },
+    { id: "babyFriendly", name: "Baby friendly", icon: null },
+    { id: "toddlerFriendly", name: "Toddler friendly", icon: null },
+];
+
+// Numeric options for rooms
+export const numericOptions = ["Any", "1", "2", "3", "4", "5+"];
