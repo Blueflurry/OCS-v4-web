@@ -3,6 +3,24 @@
  * Contains dummy data for various API endpoints
  */
 
+// Sample user data for testing
+export const mockUsers = [
+    {
+        id: "user1",
+        fullName: "John Doe",
+        email: "john.doe@example.com",
+        phoneNumber: "9876543210",
+        createdAt: "2023-01-15T10:30:00Z",
+    },
+    {
+        id: "user2",
+        fullName: "Jane Smith",
+        email: "jane.smith@example.com",
+        phoneNumber: "8765432109",
+        createdAt: "2023-02-20T14:15:00Z",
+    },
+];
+
 // Mock data for stay carousels by category
 export const carouselData = {
     trending: {

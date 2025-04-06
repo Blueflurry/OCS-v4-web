@@ -25,7 +25,7 @@ const FooterWithoutTabs = () => {
                             rel="noopener noreferrer"
                         >
                             <Instagram size={24} />
-                            <span>Follow us on Instagram</span>
+                            {/* <span>Follow us on Instagram</span> */}
                         </Link>
                         <Link
                             href="https://www.linkedin.com/company/one-click-stays/"

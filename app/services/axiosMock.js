@@ -4,6 +4,7 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import {
+    mockUsers,
     carouselData,
     allStays,
     addonServices,
@@ -23,6 +24,192 @@ const mock = new MockAdapter(axiosInstance, { delayResponse: true });
 
 // Generate random delay between 300-600ms
 const getRandomDelay = () => Math.floor(Math.random() * 300) + 300;
+
+// OTP storage for verification (in a real app, this would be server-side)
+const otpStore = new Map();
+
+/**
+ * Setup auth-related mock endpoints on the provided mock adapter
+ * @param {Object} mock - Axios mock adapter instance
+ */
+// export const setupAuthMocks = (mock) => {
+// Mock the login endpoint (send OTP)
+mock.onPost("/login").reply((config) => {
+    try {
+        const { phoneNumber } = JSON.parse(config.data);
+
+        if (!phoneNumber || phoneNumber.length !== 10) {
+            return [400, { error: "Invalid phone number" }];
+        }
+
+        // Generate a random 4-digit OTP
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+
+        // Store OTP for later verification (in a real app, this would be sent via SMS)
+        otpStore.set(phoneNumber, otp);
+
+        console.log(`[MOCK] OTP for ${phoneNumber}: ${otp}`);
+
+        return [
+            200,
+            {
+                success: true,
+                message: "OTP sent successfully",
+            },
+        ];
+    } catch (error) {
+        console.error("Error in mock login endpoint:", error);
+        return [500, { error: "Internal server error" }];
+    }
+});
+
+// Mock the resend OTP endpoint
+mock.onPost("/resend-otp").reply((config) => {
+    try {
+        const { phoneNumber } = JSON.parse(config.data);
+
+        if (!phoneNumber || phoneNumber.length !== 10) {
+            return [400, { error: "Invalid phone number" }];
+        }
+
+        // Generate a new random 4-digit OTP
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+
+        // Store the new OTP
+        otpStore.set(phoneNumber, otp);
+
+        console.log(`[MOCK] New OTP for ${phoneNumber}: ${otp}`);
+
+        return [
+            200,
+            {
+                success: true,
+                message: "OTP resent successfully",
+            },
+        ];
+    } catch (error) {
+        console.error("Error in mock resend OTP endpoint:", error);
+        return [500, { error: "Internal server error" }];
+    }
+});
+
+// Mock the OTP verification endpoint
+mock.onPost("/otp-verification").reply((config) => {
+    try {
+        const { phoneNumber, otp } = JSON.parse(config.data);
+
+        if (!phoneNumber || !otp) {
+            return [400, { error: "Phone number and OTP are required" }];
+        }
+
+        // Check if OTP matches (for testing, accept "1234" for all numbers)
+        const storedOtp = otpStore.get(phoneNumber);
+        const isValidOtp = storedOtp === otp || otp === "1234";
+
+        if (!isValidOtp) {
+            return [400, { error: "Invalid verification code" }];
+        }
+
+        // Clear OTP after successful verification
+        otpStore.delete(phoneNumber);
+
+        // Check if user exists
+        const existingUser = mockUsers.find(
+            (user) => user.phoneNumber === phoneNumber
+        );
+
+        if (existingUser) {
+            return [
+                200,
+                {
+                    success: true,
+                    userExists: true,
+                    user: { ...existingUser },
+                },
+            ];
+        } else {
+            return [
+                200,
+                {
+                    success: true,
+                    userExists: false,
+                },
+            ];
+        }
+    } catch (error) {
+        console.error("Error in mock OTP verification endpoint:", error);
+        return [500, { error: "Internal server error" }];
+    }
+});
+
+// Mock the signup endpoint
+mock.onPost("/signup").reply((config) => {
+    try {
+        const userData = JSON.parse(config.data);
+
+        if (!userData.fullName || !userData.email || !userData.phoneNumber) {
+            return [
+                400,
+                {
+                    error: "Missing required fields",
+                    errors: {
+                        fullName: !userData.fullName
+                            ? "Full name is required"
+                            : undefined,
+                        email: !userData.email
+                            ? "Email is required"
+                            : undefined,
+                        phoneNumber: !userData.phoneNumber
+                            ? "Phone number is required"
+                            : undefined,
+                    },
+                },
+            ];
+        }
+
+        // Check if email already exists
+        const emailExists = mockUsers.some(
+            (user) => user.email === userData.email
+        );
+        if (emailExists) {
+            return [
+                400,
+                {
+                    error: "Email already in use",
+                    errors: {
+                        email: "This email is already associated with an account",
+                    },
+                },
+            ];
+        }
+
+        // Create new user
+        const newUser = {
+            id: `user${mockUsers.length + 1}`,
+            fullName: userData.fullName,
+            email: userData.email,
+            phoneNumber: userData.phoneNumber,
+            createdAt: new Date().toISOString(),
+        };
+
+        // In a real app, we would save to database
+        // For mock, we'll just add to our array
+        mockUsers.push(newUser);
+
+        return [
+            201,
+            {
+                success: true,
+                message: "User created successfully",
+                user: { ...newUser },
+            },
+        ];
+    } catch (error) {
+        console.error("Error in mock signup endpoint:", error);
+        return [500, { error: "Internal server error" }];
+    }
+});
+// };
 
 // Setup mock endpoints
 mock.onGet(/\/stays\/carousel/).reply((config) => {

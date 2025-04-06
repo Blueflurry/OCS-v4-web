@@ -148,7 +148,7 @@ const Checkout = () => {
 
     return (
         <>
-            {/* <Header /> */}
+            <Header />
             <div className={styles["checkout"]}>
                 <div className={styles["checkout__header"]}>
                     <h2>Checkout</h2>

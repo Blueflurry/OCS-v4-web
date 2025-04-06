@@ -21,7 +21,7 @@ export const fetchStaysByCategory = async (category) => {
         });
     } catch (error) {
         console.error("Error in fetchStaysByCategory:", error);
-        throw error;
+        // throw error;
     }
 };
 

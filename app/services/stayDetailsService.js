@@ -48,7 +48,7 @@ export const createPaymentIntent = async (paymentDetails) => {
         return response.data || {};
     } catch (error) {
         console.error("Error creating payment intent:", error);
-        throw error;
+        // throw error;
     }
 };
 
@@ -68,7 +68,7 @@ export const updatePaymentIntentWithAddOns = async (addOnDetails) => {
         return response.data || {};
     } catch (error) {
         console.error("Error updating payment intent with add-ons:", error);
-        throw error;
+        // throw error;
     }
 };
 

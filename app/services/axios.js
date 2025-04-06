@@ -63,7 +63,7 @@ function createRealApi() {
             return await response.json();
         } catch (error) {
             console.error("API Error:", error);
-            throw error;
+            // throw error;
         }
     }
 
