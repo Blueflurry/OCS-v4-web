@@ -67,7 +67,7 @@ export default function RootLayout({ children }) {
                     />
                     <div>
                         <h1>
-                            Our website is currently only available in Mobile
+                            Our website is currently only available on Mobile
                             devices.
                         </h1>
                         <p>
