@@ -7,6 +7,9 @@ export const metadata = {
     title: "OneClick Stays | Luxury Villas and Apartment at lowest price guaranteed",
     description:
         "OneClick Stays provides Luxury Villas and Apartment at lowest price guaranteed",
+    icons: {
+        icon: "/favicon.ico",
+    },
     other: {
         "gtag-id": "G-WWB084J6BG", // Replace with your GA4 Measurement ID
         "hotjar-id": "5249346", // Replace with your Hotjar ID
@@ -18,6 +21,8 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <head>
+                <link rel="icon" href="/favicon.ico" />
+
                 {/* Google Analytics Script */}
                 <script
                     async
