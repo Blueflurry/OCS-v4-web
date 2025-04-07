@@ -101,7 +101,7 @@ const StayDetails = () => {
                     },
                     withCredentials: true,
                 });
-                console.log("Stay details response:", res.data.stay);
+                console.log("Stay details response:", res);
                 const data = res.data.stay;
                 setStayData(data);
 
