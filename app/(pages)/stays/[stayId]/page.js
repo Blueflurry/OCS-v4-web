@@ -55,7 +55,7 @@ const StayDetails = () => {
             if (searchParamsStr) {
                 try {
                     const searchParams = JSON.parse(searchParamsStr);
-                    console.log("Retrieved search parameters:", searchParams);
+                    // console.log("Retrieved search parameters:", searchParams);
 
                     // If we have search parameters with dates and guests, use them
                     if (
@@ -104,7 +104,7 @@ const StayDetails = () => {
                         withCredentials: true,
                     }
                 );
-                console.log("Stay details response:", res);
+                console.log("Stay details response:", res.data.stay);
                 const data = res.data.stay;
                 setStayData(data);
 
@@ -278,7 +278,10 @@ const StayDetails = () => {
                                     height={20}
                                     alt="Rating"
                                 />
-                                <p>({stayData.reviewCount} Reviews)</p>
+
+                                {stayData.reviewCount > 0 && (
+                                    <p>({stayData.reviewCount} Reviews)</p>
+                                )}
                             </div>
                         </div>
                         <div className={styles["stay-details__title"]}>
@@ -464,7 +467,10 @@ const StayDetails = () => {
                                                 ]
                                             }
                                         >
-                                            {bookingInfo.nights} nights
+                                            {bookingInfo.nights}{" "}
+                                            {bookingInfo.nights > 1
+                                                ? "nights"
+                                                : "night"}
                                         </div>
                                     </div>
 
@@ -511,6 +517,21 @@ const StayDetails = () => {
                     <div className={styles["stay-details__map"]}>
                         <GoogleMapComponent location={stayData.location} />
                     </div>
+                    {/* 
+                    <div>
+                        <iframe
+                            src={
+                                "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d28011.676449949693!2d77.1879552!3d28.6459555!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d029ea9c0b709%3A0x7cae20c190b1766f!2sHotel%20Emperor%20Palms%20Karol%20Bagh!5e0!3m2!1sen!2sin!4v1733312409536!5m2!1sen!2sin"
+                            }
+                            width="100%"
+                            height={400}
+                            style={{ border: 0 }}
+                            allowFullScreen=""
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title={"Google Maps"}
+                        ></iframe>
+                    </div> */}
 
                     {/* amenities */}
                     <Amenities amenities={stayData.amenities} />
@@ -520,13 +541,13 @@ const StayDetails = () => {
                     {/* policy */}
                     <ReturnPolicy />
 
-                    <div className={styles["stay-details__separator-2"]}></div>
+                    {/* <div className={styles["stay-details__separator-2"]}></div> */}
 
                     {/* reviews & ratings */}
-                    <Reviews
+                    {/* <Reviews
                         rating={stayData.rating}
                         reviewCount={stayData.reviewCount}
-                    />
+                    /> */}
 
                     <div className={styles["padding"]}></div>
                 </div>

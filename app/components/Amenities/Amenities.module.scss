@@ -53,4 +53,29 @@
             padding-right: 10px;
         }
     }
+
+    &__show-more {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 24px;
+        padding-bottom: 8px;
+
+        div {
+            color: #000000;
+        }
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .amenities {
+        &__show-more {
+            margin-top: 16px;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
 }

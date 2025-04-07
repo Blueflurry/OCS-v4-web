@@ -1,51 +1,157 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { MAPS_API_KEY } from "@/app/data/config";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
     width: "100%",
     height: "300px",
+    borderRadius: "8px",
 };
 
-const center = {
-    lat: -3.745,
-    lng: -38.523,
+// Default center in case coordinates aren't provided
+const defaultCenter = {
+    lat: 28.6139, // Default to New Delhi, India
+    lng: 77.209,
 };
 
-function MyComponent() {
-    const { isLoaded } = useJsApiLoader({
+function GoogleMapComponent({ location }) {
+    // Load the Google Maps JS API
+    const { isLoaded, loadError } = useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: MAPS_API_KEY,
     });
 
-    const [map, setMap] = React.useState(null);
+    // State for the map instance
+    const [map, setMap] = useState(null);
+    // State for the map center/coordinates
+    const [mapCenter, setMapCenter] = useState(defaultCenter);
+    // Track if the component has mounted (for NextJS hydration)
+    const [isMounted, setIsMounted] = useState(false);
 
-    const onLoad = React.useCallback(function callback(map) {
-        const bounds = new window.google.maps.LatLngBounds(center);
-        map.fitBounds(bounds);
-
-        setMap(map);
+    // Handle client-side mounting in Next.js
+    useEffect(() => {
+        setIsMounted(true);
     }, []);
 
-    const onUnmount = React.useCallback(function callback(map) {
+    // Update coordinates whenever location prop changes
+    useEffect(() => {
+        if (!location) return;
+
+        // Handle the specific location structure:
+        // { coordinates: { lat: 20.5937, lng: 78.9629 } }
+        if (
+            location.coordinates &&
+            location.coordinates.lat !== undefined &&
+            location.coordinates.lng !== undefined
+        ) {
+            setMapCenter({
+                lat: parseFloat(location.coordinates.lat),
+                lng: parseFloat(location.coordinates.lng),
+            });
+        }
+    }, [location]);
+
+    // Handle map load
+    const onLoad = useCallback(
+        function callback(map) {
+            // Set appropriate zoom level for the location
+            if (window.google) {
+                const bounds = new window.google.maps.LatLngBounds();
+
+                // Create a small area around the point to ensure proper zoom
+                bounds.extend(
+                    new window.google.maps.LatLng(
+                        mapCenter.lat - 0.01,
+                        mapCenter.lng - 0.01
+                    )
+                );
+                bounds.extend(
+                    new window.google.maps.LatLng(
+                        mapCenter.lat + 0.01,
+                        mapCenter.lng + 0.01
+                    )
+                );
+
+                map.fitBounds(bounds);
+
+                // Set a consistent zoom level after bounds calculation
+                setTimeout(() => {
+                    map.setZoom(15);
+                }, 100);
+            }
+
+            setMap(map);
+        },
+        [mapCenter]
+    );
+
+    const onUnmount = useCallback(function callback() {
         setMap(null);
     }, []);
 
-    return isLoaded ? (
+    // Handle loading and error states
+    if (loadError) {
+        return (
+            <div
+                style={{
+                    height: "300px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#666",
+                }}
+            >
+                Error loading maps
+            </div>
+        );
+    }
+
+    if (!isLoaded || !isMounted) {
+        return (
+            <div
+                style={{
+                    height: "300px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#f5f5f5",
+                }}
+            >
+                Loading map...
+            </div>
+        );
+    }
+
+    return (
         <GoogleMap
             mapContainerStyle={containerStyle}
-            center={center}
+            center={mapCenter}
             zoom={15}
             onLoad={onLoad}
             onUnmount={onUnmount}
+            options={{
+                streetViewControl: false,
+                mapTypeControl: false,
+                fullscreenControl: true,
+                zoomControl: true,
+            }}
         >
-            <></>
-            {/* <Marker position={center} /> */}
+            {/* Add a marker at the specified location */}
+            <Marker position={mapCenter} />
         </GoogleMap>
-    ) : (
-        <></>
     );
 }
 
-export default React.memo(MyComponent);
+// Set default props
+GoogleMapComponent.defaultProps = {
+    location: {
+        coordinates: {
+            lat: defaultCenter.lat,
+            lng: defaultCenter.lng,
+        },
+        name: "Default Location",
+    },
+};
+
+export default React.memo(GoogleMapComponent);

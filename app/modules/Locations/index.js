@@ -46,7 +46,7 @@ const Locations = () => {
                             <React.Fragment key={i}>
                                 <Link href="/">
                                     <Image
-                                        src="/assets/images/himachal.png"
+                                        src="/assets/images/location-carousel-1.png"
                                         width={120}
                                         height={120}
                                         alt="Goa"
@@ -55,7 +55,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/">
                                     <Image
-                                        src="/assets/images/himachal.png"
+                                        src="/assets/images/location-carousel-2.png"
                                         width={120}
                                         height={120}
                                         alt="Goa"
@@ -64,7 +64,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/">
                                     <Image
-                                        src="/assets/images/himachal.png"
+                                        src="/assets/images/location-carousel-3.png"
                                         width={120}
                                         height={120}
                                         alt="Goa"
@@ -73,7 +73,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/">
                                     <Image
-                                        src="/assets/images/himachal.png"
+                                        src="/assets/images/location-carousel-4.png"
                                         width={120}
                                         height={120}
                                         alt="Goa"
@@ -82,7 +82,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/">
                                     <Image
-                                        src="/assets/images/himachal.png"
+                                        src="/assets/images/location-carousel-5.png"
                                         width={120}
                                         height={120}
                                         alt="Goa"

@@ -24,6 +24,7 @@ export const getStayDetails = async (stayId, options = {}) => {
 export const getStayAddons = async (stayId) => {
     try {
         const response = await api.get(`/stay/${stayId}/addons`);
+        console.log("Add-ons response:", response);
         return response.data || [];
     } catch (error) {
         console.error(`Error fetching add-ons for stay ${stayId}:`, error);

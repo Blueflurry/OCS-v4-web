@@ -36,11 +36,15 @@ const Login = () => {
             // Call login API to send OTP
             const response = await sendLoginOtp(phoneNumber);
 
-            // Store phone number in session storage for OTP verification
-            sessionStorage.setItem("phoneNumber", phoneNumber);
+            console.log("OTP sent response:", response);
 
-            // Navigate to OTP verification page
-            router.push("/otp-verification");
+            if (response.success) {
+                // Store phone number in session storage for OTP verification
+                sessionStorage.setItem("phoneNumber", phoneNumber);
+
+                // Navigate to OTP verification page
+                router.push("/otp-verification");
+            }
         } catch (error) {
             console.error("Login error:", error);
             setError("Failed to send verification code. Please try again.");
