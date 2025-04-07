@@ -15,7 +15,7 @@
 }
 
 .svg {
-    width: 80px;
+    width: 90px;
     height: auto;
 }
 
@@ -52,5 +52,6 @@
 }
 
 .svg-elem-1 {
-    animation: animate-svg-stroke-1 1.5s cubic-bezier(0.445, 0.05, 0.55, 0.95) 0s infinite alternate;
+    animation: animate-svg-stroke-1 1.5s cubic-bezier(0.445, 0.05, 0.55, 0.95)
+        0s infinite alternate;
 }
