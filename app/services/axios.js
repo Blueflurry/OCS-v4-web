@@ -5,7 +5,7 @@
 import mockApi from "./axiosMock";
 
 // Check if running in development mode
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = process.env.NODE_ENV === "production";
 
 // Use mock API in development, real API in production
 const api = isDevelopment ? mockApi : createRealApi();
@@ -22,7 +22,11 @@ function createRealApi() {
         } = options;
 
         // Build URL with params
-        const url = new URL(`https://api.oneclickstays.com/api${endpoint}`);
+        // const url = new URL(`https://api.oneclickstays.com/api${endpoint}`);
+        const url = new URL(
+            `https://sharing-sponge-forcibly.ngrok-free.app/api${endpoint}`
+        );
+        // https://sharing-sponge-forcibly.ngrok-free.app
 
         // Add query parameters
         if (params && Object.keys(params).length > 0) {
@@ -41,6 +45,7 @@ function createRealApi() {
                 Accept: "application/json",
                 ...headers,
             },
+            credentials: "include", // Include cookies in requests
         };
 
         // Add body if it exists (for POST, PUT, etc.)
@@ -52,6 +57,7 @@ function createRealApi() {
         }
 
         try {
+            console.log(url.toString(), fetchOptions);
             const response = await fetch(url.toString(), fetchOptions);
 
             if (!response.ok) {
@@ -60,7 +66,11 @@ function createRealApi() {
                 );
             }
 
-            return await response.json();
+            // console.log("API response:", response);
+
+            const data = await response.json();
+            console.log("API data:", data);
+            return data;
         } catch (error) {
             console.error("API Error:", error);
             // throw error;
@@ -69,8 +79,8 @@ function createRealApi() {
 
     // Create common methods that work in both server and client components
     return {
-        get: (endpoint, options = {}) =>
-            fetchAPI(endpoint, { ...options, method: "GET" }),
+        get: async (endpoint, options = {}) =>
+            await fetchAPI(endpoint, { ...options, method: "GET" }),
         post: (endpoint, body, options = {}) =>
             fetchAPI(endpoint, { ...options, body, method: "POST" }),
         put: (endpoint, body, options = {}) =>

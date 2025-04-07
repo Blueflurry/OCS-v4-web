@@ -15,7 +15,8 @@ import {
 
 // Create a new instance of axios
 const axiosInstance = axios.create({
-    baseURL: "https://api.oneclickstays.com/api",
+    // baseURL: "https://api.oneclickstays.com/api",
+    baseURL: "https://sharing-sponge-forcibly.ngrok-free.app",
     timeout: 10000,
 });
 

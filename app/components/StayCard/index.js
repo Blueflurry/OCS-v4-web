@@ -21,6 +21,7 @@ const StayCard = ({ stay }) => {
         maxGuests,
         partner,
         pricing,
+        popularity,
     } = stay;
 
     // console.log("stay", stay);
@@ -45,11 +46,17 @@ const StayCard = ({ stay }) => {
                     className={styles["stay-card__image"]}
                 />
 
-                <span className={styles["stay-card__indicator"]}>
+                <span
+                    className={styles["stay-card__indicator"]}
+                    style={{ left: `${300 * (popularity / 100) - 45}px` }}
+                >
                     {available ? "available" : "unavailable"}
                 </span>
                 <div className={styles["stay-card__content"]}>
-                    <div className={styles["stay-card__progress"]} />
+                    <div
+                        className={styles["stay-card__progress"]}
+                        style={{ width: `${popularity}%` }}
+                    />
                     <div className={styles["stay-card__header"]}>
                         <div className={styles["stay-card__location"]}>
                             <Image
@@ -69,7 +76,7 @@ const StayCard = ({ stay }) => {
                                 height={20}
                                 alt="Rating"
                             />
-                            <p>({reviewCount || 0} Reviews)</p>
+                            {reviewCount > 0 && <p>({reviewCount} Reviews)</p>}
                         </div>
                     </div>
                     <div className={styles["stay-card__title"]}>

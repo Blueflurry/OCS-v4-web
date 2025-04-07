@@ -5,10 +5,11 @@ import api from "@/app/services/axios";
  * @param {string} stayId - The ID of the stay to fetch
  * @returns {Promise<Object>} - Stay details object
  */
-export const getStayDetails = async (stayId) => {
+export const getStayDetails = async (stayId, options = {}) => {
     try {
-        const response = await api.get(`/stay/${stayId}`);
-        return response.data || {};
+        const response = await api.get(`/stay/${stayId}`, options);
+        console.log("Stay details response:", response);
+        return response.stay || {};
     } catch (error) {
         console.error(`Error fetching stay details for ${stayId}:`, error);
         return {};

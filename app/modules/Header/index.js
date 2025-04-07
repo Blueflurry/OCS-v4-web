@@ -19,8 +19,9 @@ const Header = () => {
                 <Image
                     src="/assets/images/logo.svg"
                     alt="OneClick Stays"
-                    width={100}
-                    height={44}
+                    width={200}
+                    height={88}
+                    className={styles["header__logo"]}
                 />
             </Link>
             <div className={`${styles["header__actions"]}`}>
