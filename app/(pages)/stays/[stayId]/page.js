@@ -20,7 +20,7 @@ import {
 import { formatCurrency } from "@/app/utils/formatter";
 import Loading from "../loading";
 import { Calendar, Moon, Pencil, Users, AlertTriangle } from "lucide-react";
-import axios from "axios";
+import axios from "@/app/services/axios";
 
 const StayDetails = () => {
     const params = useParams();
@@ -89,21 +89,18 @@ const StayDetails = () => {
         const fetchStayDetails = async () => {
             try {
                 setIsLoading(true);
-                const res = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_URL}/stay/${stayId}`,
-                    {
-                        params: {
-                            checkIn: bookingInfo.rawCheckin,
-                            checkOut: bookingInfo.rawCheckout,
-                            guests: bookingInfo.guests,
-                        },
-                        headers: {
-                            "Content-Type": "application/json",
-                            Accept: "application/json",
-                        },
-                        withCredentials: true,
-                    }
-                );
+                const res = await axios.get(`/stay/${stayId}`, {
+                    params: {
+                        checkIn: bookingInfo.rawCheckin,
+                        checkOut: bookingInfo.rawCheckout,
+                        guests: bookingInfo.guests,
+                    },
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                    withCredentials: true,
+                });
                 console.log("Stay details response:", res.data.stay);
                 const data = res.data.stay;
                 setStayData(data);
