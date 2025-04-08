@@ -13,7 +13,6 @@ const StayCard = ({ stay }) => {
         _id,
         name,
         location,
-        images,
         rating,
         reviewCount,
         available,
@@ -22,14 +21,17 @@ const StayCard = ({ stay }) => {
         partner,
         pricing,
         popularity,
+        featuredImage,
     } = stay;
 
     // console.log("stay", stay);
 
     // Get the first image or use a placeholder
     // ADD FEATURED IMAGE HERE #pending
-    const imageUrl =
-        images && images.length > 0 ? images[0] : "/assets/images/banner.webp";
+    // @todo BACKUP IMG #pending
+    const imageUrl = featuredImage
+        ? featuredImage
+        : "/assets/images/banner.webp";
 
     // Format prices for display (with thousands separator)
     const formatPrice = (price) => {
