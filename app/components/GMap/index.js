@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
-import { MAPS_API_KEY } from "@/app/data/config";
+// import { MAPS_API_KEY } from "@/app/data/config";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
@@ -19,7 +19,7 @@ function GoogleMapComponent({ location }) {
     // Load the Google Maps JS API
     const { isLoaded, loadError } = useJsApiLoader({
         id: "google-map-script",
-        googleMapsApiKey: MAPS_API_KEY,
+        googleMapsApiKey: process.env.MAPS_API_KEY,
     });
 
     // State for the map instance

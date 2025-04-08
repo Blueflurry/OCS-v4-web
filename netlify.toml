@@ -1,0 +1,7 @@
+[build.environment] 
+    RAZORPAY_KEY_ID = "rzp_test_MP79gF1qGW3n84"
+    RAZORPAY_KEY_SECRET = "E9nSHsZfdIeoPM7NnsMZJMbY"
+    NEXT_PUBLIC_RAZORPAY_KEY_ID = "rzp_test_MP79gF1qGW3n84"
+    NEXT_PUBLIC_API_URL = "https://api.oneclickstays.com/api"
+    BASEURL = "https://api.oneclickstays.com/api"
+    MAPS_API_KEY = "AIzaSyAZ1mEJoQz5Dh3C7P8DTaQnt0sInmi0dlo"
