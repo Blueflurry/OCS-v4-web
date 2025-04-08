@@ -3,6 +3,7 @@ import React from "react";
 import styles from "./Reviews.module.scss";
 import Image from "next/image";
 import { REVIEWS } from "@/app/data/dummy";
+import { Star } from "lucide-react";
 
 const Reviews = () => {
     const reviews = REVIEWS;
@@ -14,12 +15,13 @@ const Reviews = () => {
             <div className={styles["reviews__ratings"]}>
                 <div className={styles["reviews__ratings-overall"]}>
                     <h2>4.5</h2>
-                    <Image
+                    {/* <Image
                         src="/assets/images/ratings.svg"
                         width={100}
                         height={30}
                         alt="Star Rating"
-                    />
+                    /> */}
+                    <Star size={16} />
                     <p>
                         Based on 563
                         <br />

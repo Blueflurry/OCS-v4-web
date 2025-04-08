@@ -3,6 +3,7 @@ import React from "react";
 import styles from "./BackButton.module.scss";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { ArrowLeft } from "lucide-react";
 
 const BackButton = ({ className, link, ...props }) => {
     const router = useRouter();
@@ -24,12 +25,7 @@ const BackButton = ({ className, link, ...props }) => {
             {...props}
         >
             <span className={styles["back-button--icon"]}>
-                <Image
-                    src="/assets/images/arrow-backward.svg"
-                    width={20}
-                    height={20}
-                    alt="Back"
-                ></Image>
+                <ArrowLeft size={24} />
             </span>
         </div>
     );

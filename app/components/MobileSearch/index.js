@@ -5,6 +5,7 @@ import Button from "../Button";
 import DateRangePicker from "../DateRangePicker";
 import styles from "./MobileSearch.module.scss";
 import {
+    ArrowLeft,
     ArrowRight,
     Calendar,
     MapPin,
@@ -207,12 +208,7 @@ const MobileSearch = ({ searchTxt }) => {
                     onClick={() => setIsOpen(false)}
                 >
                     <span className={styles["back-button--icon"]}>
-                        <Image
-                            src="/assets/images/arrow-backward.svg"
-                            width={20}
-                            height={20}
-                            alt="Back"
-                        ></Image>
+                        <ArrowLeft size={18} />
                     </span>
 
                     <h3>Search</h3>

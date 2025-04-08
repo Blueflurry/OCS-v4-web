@@ -3,6 +3,7 @@ import React from "react";
 import styles from "./StayCard.module.scss";
 import PartnerLogo from "../PartnerLogo";
 import Link from "next/link";
+import { Star } from "lucide-react";
 
 const StayCard = ({ stay }) => {
     // If stay data is not provided, don't render
@@ -73,12 +74,13 @@ const StayCard = ({ stay }) => {
                         <span className={styles["stay-card__separator"]} />
                         <div className={styles["stay-card__rating"]}>
                             <b>{rating?.toFixed(1) || "N/A"}</b>
-                            <Image
+                            {/* <Image
                                 src="/assets/images/ratings.svg"
                                 width={20}
                                 height={20}
                                 alt="Rating"
-                            />
+                            /> */}
+                            <Star size={16} />
                             {reviewCount > 0 && <p>({reviewCount} Reviews)</p>}
                         </div>
                     </div>

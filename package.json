@@ -21,7 +21,8 @@
         "razorpay": "^2.9.6",
         "react": "^19.0.0",
         "react-datepicker": "^8.1.0",
-        "react-dom": "^19.0.0"
+        "react-dom": "^19.0.0",
+        "swr": "^2.3.3"
     },
     "devDependencies": {
         "sass": "^1.83.4"

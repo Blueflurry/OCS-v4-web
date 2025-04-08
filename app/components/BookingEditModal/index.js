@@ -4,7 +4,7 @@ import Image from "next/image";
 import Button from "../Button";
 import DateRangePicker from "../DateRangePicker";
 import styles from "./BookingEditModal.module.scss";
-import { ArrowRight, Calendar, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, UserRound } from "lucide-react";
 import { formatDateRange, formatISODate } from "@/app/utils/formatter";
 import { GUESTS } from "@/app/data/dummy";
 
@@ -190,12 +190,7 @@ const BookingEditModal = ({
                 onClick={onClose}
             >
                 <span className={styles["back-button--icon"]}>
-                    <Image
-                        src="/assets/images/arrow-backward.svg"
-                        width={20}
-                        height={20}
-                        alt="Back"
-                    ></Image>
+                    <ArrowLeft size={24} />
                 </span>
 
                 <h3>Edit Booking</h3>

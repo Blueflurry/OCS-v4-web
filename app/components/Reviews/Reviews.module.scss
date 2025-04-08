@@ -29,6 +29,11 @@
                 font-weight: 500;
                 // padding-bottom: 10px;
             }
+
+            svg {
+                fill: $color-primary;
+                stroke: $color-primary;
+            }
         }
 
         &-distribution {

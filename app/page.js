@@ -11,14 +11,17 @@ export default async function Home() {
     let availableCategories = [];
 
     try {
-        const response = await fetch(`${process.env.BASEURL}/search/home`, {
-            next: { revalidate: 3600 },
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-        });
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BASEURL}/search/home`,
+            {
+                next: { revalidate: 3600 },
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+            }
+        );
 
         const result = await response.json();
         console.log("Response from server:", result);

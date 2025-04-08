@@ -1,5 +1,5 @@
 import Image from "next/image";
-import FooterWithoutTabs from "./modules/Footer/FooterWithoutTabs";
+// import FooterWithoutTabs from "./modules/Footer/FooterWithoutTabs";
 import "./styles/main.scss";
 import Link from "next/link";
 

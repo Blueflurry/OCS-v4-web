@@ -3,7 +3,8 @@
 .hero {
     text-align: center;
     // background: $color-bg-primary;
-    padding: 10px 0 40px;
+    padding: 10px 0 0 !important;
+    margin-bottom: 40px !important;
 
     h1 {
         margin: 0;

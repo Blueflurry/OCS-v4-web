@@ -159,8 +159,10 @@
         margin-bottom: 8px;
         gap: 2px;
 
-        img {
-            margin-left: -4px;
+        svg {
+            fill: $color-primary;
+            stroke: $color-primary;
+            // margin-left: -4px;
         }
 
         p {
