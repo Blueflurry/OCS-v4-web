@@ -64,11 +64,19 @@ export const getFilteredStays = async (filters) => {
             processedFilters.bathrooms = "5+";
 
         // Make API request with pagination parameters
-        const response = await api.post("/stays", {
-            ...processedFilters,
-            page,
-            limit,
+        const temp = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/stays`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                ...processedFilters,
+                page,
+                limit,
+            }),
         });
+
+        const response = await temp.json();
 
         console.log(
             "Filtered stays API response:",
