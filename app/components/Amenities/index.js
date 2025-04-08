@@ -2,13 +2,12 @@
 import React, { useState } from "react";
 import styles from "./Amenities.module.scss";
 import SecondaryImageCarousel from "../SecondaryImageCarousel";
-import { VILLA_IMAGES } from "@/app/data/dummy";
 import Button from "../Button";
-import { ChefHat } from "lucide-react";
 import Image from "next/image";
 
-const Amenities = ({ amenities }) => {
+const Amenities = ({ amenities, amenityImages }) => {
     const AMENITIES = amenities;
+    const VILLA_IMAGES = amenityImages;
     // State to track if we're showing all amenities or just the first 6
     const [showAll, setShowAll] = useState(false);
 

@@ -112,7 +112,7 @@ const EmblaCarousel = (props) => {
                             <img
                                 id={`${"embla__slide__number" + index}`}
                                 className={styles["embla__slide__img"]}
-                                src={images[index].imgUrl}
+                                src={images[index]}
                                 alt="villa image"
                             />
                         </div>

@@ -623,7 +623,10 @@ const StayDetails = () => {
                         )}
 
                         {/* amenities */}
-                        <Amenities amenities={stayData.amenities} />
+                        <Amenities
+                            amenities={stayData.amenities}
+                            amenityImages={stayData.amenityImages}
+                        />
 
                         <div
                             className={styles["stay-details__separator-2"]}
