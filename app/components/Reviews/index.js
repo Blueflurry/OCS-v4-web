@@ -22,6 +22,10 @@ const Reviews = () => {
                         alt="Star Rating"
                     /> */}
                     <Star size={16} />
+                    <Star size={16} />
+                    <Star size={16} />
+                    <Star size={16} />
+                    <Star size={16} />
                     <p>
                         Based on 563
                         <br />

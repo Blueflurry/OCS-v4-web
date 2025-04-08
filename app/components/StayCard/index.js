@@ -81,6 +81,10 @@ const StayCard = ({ stay }) => {
                                 alt="Rating"
                             /> */}
                             <Star size={16} />
+                            <Star size={16} />
+                            <Star size={16} />
+                            <Star size={16} />
+                            <Star size={16} />
                             {reviewCount > 0 && <p>({reviewCount} Reviews)</p>}
                         </div>
                     </div>

@@ -326,6 +326,10 @@ const StayDetails = () => {
                                     /> */}
 
                                     <Star size={16} />
+                                    <Star size={16} />
+                                    <Star size={16} />
+                                    <Star size={16} />
+                                    <Star size={16} />
                                     {/* <StarHalf /> */}
 
                                     {stayData.reviewCount > 0 && (
