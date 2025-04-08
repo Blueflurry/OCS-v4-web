@@ -51,25 +51,25 @@ const Footer = ({
         }
 
         // Allow a small delay for any onClick side effects to complete
-        setTimeout(() => {
-            // Otherwise, use the default navigation logic
-            for (let idx = 0; idx < PAGES.length; idx++) {
-                let page = PAGES[idx];
-                page.url = page.url?.replace("${stayId}", stayId);
-                page.nextUrl = page.nextUrl?.replace("${stayId}", stayId);
+        // setTimeout(() => {
+        // Otherwise, use the default navigation logic
+        for (let idx = 0; idx < PAGES.length; idx++) {
+            let page = PAGES[idx];
+            page.url = page.url?.replace("${stayId}", stayId);
+            page.nextUrl = page.nextUrl?.replace("${stayId}", stayId);
 
-                if (btnType === "razorpay") {
-                    setIsButtonDisabled(false);
-                    return;
-                }
-
-                if (pathname === page.url) {
-                    router.push(page.nextUrl);
-                    return; // Exit the loop
-                }
+            if (btnType === "razorpay") {
+                setIsButtonDisabled(false);
+                return;
             }
-            setIsButtonDisabled(false);
-        }, 300);
+
+            if (pathname === page.url) {
+                router.push(page.nextUrl);
+                return; // Exit the loop
+            }
+        }
+        setIsButtonDisabled(false);
+        // }, 300);
     };
 
     useEffect(() => {

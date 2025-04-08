@@ -17,8 +17,8 @@ const Addons = () => {
     const params = useParams();
     const { stayId } = params;
 
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    // const [isLoading, setIsLoading] = useState(true);
+    // const [error, setError] = useState(null);
     const [stayDetails, setStayDetails] = useState(null);
     const [services, setServices] = useState([]);
     const [paymentIntentId, setPaymentIntentId] = useState(null);
@@ -27,32 +27,32 @@ const Addons = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setIsLoading(true);
+                // setIsLoading(true);
 
                 // Get the payment intent ID from localStorage
                 const savedPaymentIntentId =
                     localStorage.getItem("paymentIntentId");
                 if (!savedPaymentIntentId) {
-                    throw new Error(
+                    console.log(
                         "No payment intent found. Please start booking process again."
                     );
-                }
-                setPaymentIntentId(savedPaymentIntentId);
+                } else setPaymentIntentId(savedPaymentIntentId);
 
                 // Get stay basics from localStorage
                 const stayBasics = localStorage.getItem("stayBasics");
                 if (!stayBasics) {
-                    throw new Error(
+                    console.log(
                         "Stay details not found. Please return to stay details page."
                     );
+                } else {
+                    const parsedStayDetails = JSON.parse(stayBasics);
+                    setStayDetails(parsedStayDetails);
                 }
 
-                const parsedStayDetails = JSON.parse(stayBasics);
-                setStayDetails(parsedStayDetails);
-
                 // Fetch add-on services for this stay
-                const addons = await getStayAddons(stayId);
-
+                const addonsData = await getStayAddons(stayId);
+                const addons = addonsData?.addOns;
+                console.log("Add-ons data:", addons);
                 if (Array.isArray(addons) && addons.length > 0) {
                     setServices(addons);
                 } else {
@@ -67,7 +67,7 @@ const Addons = () => {
                 console.error("Error in Addons page:", err);
                 setError(err.message || "Something went wrong");
             } finally {
-                setIsLoading(false);
+                // setIsLoading(false);
             }
         };
 
@@ -80,7 +80,7 @@ const Addons = () => {
 
         setServices((prev) => {
             return prev.map((service) =>
-                service.id === value
+                service._id === value
                     ? { ...service, isChecked: checked }
                     : service
             );
@@ -94,9 +94,9 @@ const Addons = () => {
             const selectedAddOns = services
                 .filter((service) => service.isChecked)
                 .map((service) => ({
-                    id: service.id,
-                    name: service.serviceName,
-                    price: service.pricePerNight,
+                    id: service._id,
+                    name: service.name,
+                    price: service.pricing.basePrice,
                 }));
 
             // Update payment intent with selected addons
@@ -158,20 +158,20 @@ const Addons = () => {
                 {services.map((service) => (
                     <div
                         className={styles["addons__listing--row"]}
-                        key={service.id}
+                        key={service._id}
                     >
                         <label
-                            htmlFor={service.id}
+                            htmlFor={service._id}
                             className={
                                 styles["addons__listing--row-checkLabel"]
                             }
                         >
                             <input
                                 type="checkbox"
-                                value={service.id}
+                                value={service._id}
                                 name="isSelected"
                                 onChange={onChangeCheckBox}
-                                id={service.id}
+                                id={service._id}
                                 checked={service.isChecked}
                             />
                         </label>
@@ -186,17 +186,20 @@ const Addons = () => {
                             onClick={() =>
                                 onChangeCheckBox({
                                     target: {
-                                        value: service.id,
+                                        value: service._id,
                                         checked: !service.isChecked,
                                     },
                                 })
                             }
                         >
                             <Image
-                                src={service.imgUrl}
+                                src={
+                                    service.catalogId.image ||
+                                    "/assets/images/addons-1.svg"
+                                }
                                 width={200}
                                 height={200}
-                                alt={service.serviceName}
+                                alt={service.name}
                                 className={
                                     styles["addons__listing--item-image"]
                                 }
@@ -206,11 +209,13 @@ const Addons = () => {
                                     styles["addons__listing--item-details"]
                                 }
                             >
-                                <h2>{service.serviceName}</h2>
+                                <h2>{service.name}</h2>
                                 <h4>
-                                    <span>{service.pricePerNight}</span>
+                                    <span>
+                                        ₹ {service.pricing?.basePrice}/day
+                                    </span>
                                 </h4>
-                                <p>{service.description}</p>
+                                <p>{service.catalogId.description}</p>
                             </div>
                         </div>
                     </div>

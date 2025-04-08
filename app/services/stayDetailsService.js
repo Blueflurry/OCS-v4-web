@@ -23,9 +23,20 @@ export const getStayDetails = async (stayId, options = {}) => {
  */
 export const getStayAddons = async (stayId) => {
     try {
-        const response = await api.get(`/stay/${stayId}/addons`);
+        const temp = await fetch(
+            `${process.env.NEXT_PUBLIC_BASEURL}/stay/${stayId}/addons`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                credentials: "include",
+            }
+        );
+        const response = await temp.json();
         console.log("Add-ons response:", response);
-        return response.data || [];
+        return response || [];
     } catch (error) {
         console.error(`Error fetching add-ons for stay ${stayId}:`, error);
         return [];
@@ -43,11 +54,21 @@ export const getStayAddons = async (stayId) => {
  */
 export const createPaymentIntent = async (paymentDetails) => {
     try {
-        const response = await api.post(
-            "/create-payment-intent",
-            paymentDetails
+        const temp = await fetch(
+            `${process.env.NEXT_PUBLIC_BASEURL}/bookings`,
+            {
+                body: JSON.stringify(paymentDetails),
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                credentials: "include",
+            }
         );
-        return response.data || {};
+
+        const response = await temp.json();
+        return response || {};
     } catch (error) {
         console.error("Error creating payment intent:", error);
         // throw error;

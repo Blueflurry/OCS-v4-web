@@ -46,11 +46,15 @@ const StayDetails = () => {
     const [bookingInfo, setBookingInfo] = useState(() => {
         // Default booking info if none is available
         const defaultBooking = {
-            checkin: "21 May, 2025",
-            checkout: "28 May, 2025",
-            rawCheckin: "2025-05-21",
-            rawCheckout: "2025-05-28",
-            nights: 7,
+            checkin: new Date().toLocaleDateString(),
+            checkout: new Date(
+                Date.now() + 5 * 24 * 60 * 60 * 1000
+            ).toLocaleDateString(),
+            rawCheckin: new Date().toISOString().split("T")[0],
+            rawCheckout: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
+                .toISOString()
+                .split("T")[0],
+            nights: 5,
             guests: 2,
             men: 1,
             women: 1,
@@ -94,6 +98,7 @@ const StayDetails = () => {
         return defaultBooking;
     });
 
+    console.log("Booking info:", bookingInfo);
     const {
         data: stayData,
         error,
@@ -108,9 +113,42 @@ const StayDetails = () => {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
+                method: "GET",
+                credentials: "include",
+                withCredentials: true,
             })
                 .then((res) => res.json())
-                .then((data) => data.stay),
+                .then((result) => {
+                    const data = result.stay;
+                    if (data && data._id) {
+                        const stayBasics = {
+                            id: data._id,
+                            name: data.name,
+                            description: data.description,
+                            image: data.featuredImage,
+                            location: data.location?.name,
+                            rating: data.rating,
+                            reviewCount: data.reviewCount,
+                            bhk: data.bhk,
+                            maxGuests: data.maxGuests,
+                            partner: data.partner,
+                            pricing: {
+                                currentPrice: data.pricing.currentPrice,
+                                originalPrice: data.pricing.originalPrice,
+                                perPerson: data.pricing.perPerson,
+                            },
+                            ...bookingInfo, // Include the booking info
+                        };
+
+                        localStorage.setItem(
+                            "stayBasics",
+                            JSON.stringify(stayBasics)
+                        );
+                    }
+
+                    return data;
+                }),
+
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: false,
@@ -118,71 +156,6 @@ const StayDetails = () => {
     );
 
     console.log("Stay data:", stayData);
-
-    // useEffect(() => {
-    //     const fetchStayDetails = async () => {
-    //         try {
-    //             setIsLoading(true);
-    //             const response = await fetch(
-    //                 `${process.env.BASEURL}/stay/${stayId}`,
-    //                 {
-    //                     params: {
-    //                         checkIn: bookingInfo.rawCheckin,
-    //                         checkOut: bookingInfo.rawCheckout,
-    //                         guests: bookingInfo.guests,
-    //                     },
-    //                     headers: {
-    //                         "Content-Type": "application/json",
-    //                         Accept: "application/json",
-    //                     },
-    //                 }
-    //             );
-
-    //             const res = await response.json();
-    //             console.log("Stay details response:", res);
-    //             const data = res.data.stay;
-    //             setStayData(data);
-
-    //             // Save essential stay details to localStorage
-    //             if (data && data._id) {
-    //                 const stayBasics = {
-    //                     id: data._id,
-    //                     name: data.name,
-    //                     description: data.description,
-    //                     image: data.images[0],
-    //                     location: data.location?.name,
-    //                     rating: data.rating,
-    //                     reviewCount: data.reviewCount,
-    //                     bhk: data.bhk,
-    //                     maxGuests: data.maxGuests,
-    //                     partner: data.partner,
-    //                     pricing: {
-    //                         currentPrice: data.pricing.currentPrice,
-    //                         originalPrice: data.pricing.originalPrice,
-    //                         perPerson: data.pricing.perPerson,
-    //                     },
-    //                     ...bookingInfo, // Include the booking info
-    //                 };
-
-    //                 localStorage.setItem(
-    //                     "stayBasics",
-    //                     JSON.stringify(stayBasics)
-    //                 );
-    //             }
-    //         } catch (err) {
-    //             console.error("Error fetching stay details:", err);
-    //             setError(
-    //                 "Failed to load stay details. Please try again later."
-    //             );
-    //         } finally {
-    //             setIsLoading(false);
-    //         }
-    //     };
-
-    //     if (stayId) {
-    //         fetchStayDetails();
-    //     }
-    // }, [stayId, bookingInfo]);
 
     // Handle booking info update
     const handleBookingUpdate = (updatedBookingInfo) => {
@@ -223,7 +196,38 @@ const StayDetails = () => {
         });
     };
 
-    const handleProceedToCheckout = () => {
+    const hasGeolocationPermission = async () => {
+        if (!navigator.permissions || !navigator.permissions.query) {
+            // Permissions API not supported, assume false (needs prompt or unavailable)
+            return false;
+        }
+
+        try {
+            const permissionStatus = await navigator.permissions.query({
+                name: "geolocation",
+            });
+            return permissionStatus.state === "granted";
+        } catch (error) {
+            console.error("Error checking geolocation permission:", error);
+            return false;
+        }
+    };
+
+    const getLocationFromIP = async () => {
+        try {
+            const response = await fetch("https://ipapi.co/json/");
+            const data = await response.json();
+            // console.log(
+            //     `Location: ${data.city}, ${data.region}, ${data.country_name}`
+            // );
+            return data;
+        } catch (error) {
+            console.error("Error fetching location:", error);
+            return null;
+        }
+    };
+
+    const handleProceedToCheckout = async () => {
         // Validate booking info before proceeding
         if (isDefaultBooking) {
             setBookingError(
@@ -234,16 +238,41 @@ const StayDetails = () => {
         }
 
         try {
+            const geoLocationPermission = await hasGeolocationPermission();
+            const ipLocation = await getLocationFromIP();
+
             // Create a payment intent using stored data
             createPaymentIntent({
                 stayId: stayData._id,
-                checkin: bookingInfo.rawCheckin,
-                checkout: bookingInfo.rawCheckout,
-                guests: bookingInfo.guests,
+                checkIn: bookingInfo.rawCheckin,
+                checkOut: bookingInfo.rawCheckout,
+                guests: {
+                    men: bookingInfo.men,
+                    women: bookingInfo.women,
+                    children: bookingInfo.children,
+                    pets: bookingInfo.pets,
+                },
+                pricing: {
+                    ...stayData.pricing,
+                },
+                device: {
+                    timeSpent: performance.now(),
+                    connectionType: navigator.connection,
+                    geoLocation: geoLocationPermission
+                        ? navigator.geolocation.getCurrentPosition()
+                        : null,
+                    ipLocation: ipLocation,
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                },
             })
                 .then((paymentIntent) => {
                     // Store the payment intent ID in localStorage
-                    localStorage.setItem("paymentIntentId", paymentIntent.id);
+                    localStorage.setItem(
+                        "paymentIntentId",
+                        paymentIntent.bookingId
+                    );
                     console.log("Payment intent created:", paymentIntent);
 
                     // Let the normal flow continue by returning undefined (not false)
@@ -278,7 +307,7 @@ const StayDetails = () => {
     }
 
     // Calculate total price based on nights
-    const totalPrice = stayData.pricing.currentPrice * bookingInfo.nights;
+    // const totalPrice = stayData.pricing.currentPrice * bookingInfo.nights;
 
     return (
         stayData && (

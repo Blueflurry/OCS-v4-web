@@ -15,6 +15,11 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "*.googleusercontent.com",
             },
+            {
+                protocol: "https",
+                hostname: "*.cloudinary.com",
+            },
+
             // Add other patterns as needed
         ],
     },
