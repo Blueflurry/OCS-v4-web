@@ -45,7 +45,7 @@ function createRealApi() {
                 Accept: "application/json",
                 ...headers,
             },
-            credentials: "include", // Include cookies in requests
+            // credentials: "include", // Include cookies in requests
         };
 
         // Add body if it exists (for POST, PUT, etc.)

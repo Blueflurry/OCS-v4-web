@@ -31,7 +31,7 @@ export const getStayAddons = async (stayId) => {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                credentials: "include",
+                // // credentials: "include",
             }
         );
         const response = await temp.json();
@@ -63,7 +63,7 @@ export const createPaymentIntent = async (paymentDetails) => {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                credentials: "include",
+                // credentials: "include",
             }
         );
 
@@ -97,8 +97,8 @@ export const updatePaymentIntentWithAddOns = async (
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                credentials: "include",
-                withCredentials: true,
+                // credentials: "include",
+                // withCredentials: true,
             }
         );
         const response = await data.json();
@@ -118,12 +118,25 @@ export const updatePaymentIntentWithAddOns = async (
  */
 export const createPayment = async (paymentDetails) => {
     try {
-        const response = await api.post("/create-payment", paymentDetails);
-        return response.data || {};
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BASEURL}/bookings/${bookingId}/payment`,
+
+            {
+                method: "POST",
+                body: JSON.stringify(paymentDetails),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                // credentials: "include",
+                // withCredentials: true,
+            }
+        );
+        const data = await response.json();
+        console.log("Payment response:", data);
+        return data || {};
     } catch (error) {
         console.error("Error creating payment:", error);
-        throw new Error(
-            error.response?.data?.message || "Payment processing failed"
-        );
+        throw new Error(error.response?.message || "Payment processing failed");
     }
 };

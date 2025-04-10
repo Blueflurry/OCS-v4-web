@@ -95,8 +95,8 @@ export const getFilteredStays = async (filters) => {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            credentials: "include",
-            withCredentials: true,
+            // credentials: "include",
+            // withCredentials: true,
 
             body: JSON.stringify({
                 ...processedFilters,
