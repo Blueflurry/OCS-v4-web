@@ -23,12 +23,30 @@ export default async function Stays({ searchParams }) {
         women,
         children,
         pets,
+
         page: 1,
         limit: 10,
+
+        // Optional filters with default values
+        managementType: "everything",
+        amenities: [],
+        propertyType: "villa",
+        bathrooms: "0",
+        bedrooms: "0",
+        beds: "0",
+        priceRange: {
+            min: 0,
+            max: 2500000,
+        },
     };
 
     // Fetch initial batch of filtered stays data (first 10 items)
     const initialStays = await getFilteredStays(filters);
+
+    // console.log("Search Parameters:", searchParams);
+    console.log("Resolved Search Parameters:", resolvedSearchParams);
+    console.log("Filters:", filters);
+    console.log("Initial Stays:", initialStays);
 
     // Pass both the search parameters and initial stays to the client component
     return (

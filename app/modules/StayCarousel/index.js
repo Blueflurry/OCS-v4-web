@@ -20,7 +20,7 @@ async function StayCarousel({ category }) {
             <p className={styles["stay-carousel__desc"]}>{description}</p>
             <div className={`${styles["stay-carousel"]}`}>
                 {stays && stays.length > 0 ? (
-                    stays.map((stay) => <StayCard key={stay.id} stay={stay} />)
+                    stays.map((stay) => <StayCard key={stay._id} stay={stay} />)
                 ) : (
                     <p>No stays available in this category.</p>
                 )}

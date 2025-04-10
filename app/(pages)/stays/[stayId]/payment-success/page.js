@@ -102,7 +102,7 @@ const PaymentSuccess = () => {
                     onEnterFrame={handleAnimationEnterFrame}
                 />
 
-                {animationFlag ? (
+                {animationFlag && (
                     <div className={styles["payment__content"]}>
                         <h2>Hurray!</h2>
                         <p>Payment Completed Successfully</p>
@@ -183,8 +183,6 @@ const PaymentSuccess = () => {
                             </Button>
                         </Link>
                     </div>
-                ) : (
-                    <></>
                 )}
             </div>
 

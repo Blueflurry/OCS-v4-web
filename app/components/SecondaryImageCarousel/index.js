@@ -3,11 +3,17 @@ import React from "react";
 import EmblaCarousel from "./EmblaCarousel";
 
 const OPTIONS = { loop: true };
-const SLIDE_COUNT = 5;
-const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
 const SecondaryImageCarousel = (props) => {
-    const { images } = props;
+    var { images = [] } = props;
+
+    if (images.length < 3) {
+        images = [...images, ...images];
+    }
+
+    const SLIDES = Array.from(Array(images.length).keys());
+    // Don't render carousel if no images are available
+    if (!images.length) return null;
     return (
         <div>
             <EmblaCarousel slides={SLIDES} options={OPTIONS} images={images} />

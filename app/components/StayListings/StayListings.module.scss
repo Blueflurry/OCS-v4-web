@@ -176,7 +176,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 0;
+    // padding: 60px 0;
     text-align: center;
 
     h3 {
@@ -189,8 +189,31 @@
     p {
         max-width: 320px;
         margin: 0 auto;
-        color: $color-text-secondary;
+        color: $color-text-black;
         font-size: 14px;
         line-height: 1.5;
     }
+}
+
+.lastItem {
+    scroll-margin-bottom: 300px;
+}
+
+.debugSection {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.debugButton {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.debugButton:hover {
+    background-color: #e5e7eb;
 }

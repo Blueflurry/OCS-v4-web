@@ -50,11 +50,35 @@ export const fetchStaysByCategory = async (category) => {
 export const getFilteredStays = async (filters) => {
     try {
         // Set default pagination values if not provided
-        const page = filters.page || 1;
-        const limit = filters.limit || 10;
 
         // Pre-process special filter fields if needed
-        const processedFilters = { ...filters };
+        const processedFilters = {
+            location: filters.location || "",
+            checkIn: filters.checkin || new Date().toISOString().split("T")[0],
+            checkOut:
+                filters.checkout ||
+                new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
+                    .toISOString()
+                    .split("T")[0],
+            guests:
+                filters.men + filters.women + filters.children + filters.pets ||
+                2,
+
+            page: filters.page || 1,
+            limit: filters.limit || 10,
+
+            // Optional filters with default values
+            managementType: filters.managementType || "everything",
+            amenities: filters.amenities || [],
+            propertyType: filters.propertyType || "",
+            bathrooms: filters.bathrooms || "0",
+            bedrooms: filters.bedrooms || "0",
+            beds: filters.beds || "0",
+            priceRange: {
+                min: 0,
+                max: 2500000,
+            },
+        };
 
         // Handle "5+" value for room filters
         if (processedFilters.bedrooms === "5+")
@@ -63,27 +87,27 @@ export const getFilteredStays = async (filters) => {
         if (processedFilters.bathrooms === "5+")
             processedFilters.bathrooms = "5+";
 
+        console.log("processedFilters", processedFilters);
         // Make API request with pagination parameters
-        const temp = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/stays`, {
+        const temp = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/search`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Accept: "application/json",
             },
+            credentials: "include",
+            withCredentials: true,
+
             body: JSON.stringify({
                 ...processedFilters,
-                page,
-                limit,
             }),
         });
 
         const response = await temp.json();
 
-        console.log(
-            "Filtered stays API response:",
-            response.data.length,
-            "results"
-        );
-        return response.data || [];
+        console.log("Filtered stays API response:", response);
+        console.log("Pagination:", response.pagination);
+        return response.results || [];
     } catch (error) {
         console.error("Error fetching filtered stays:", error);
         return [];
