@@ -1,4 +1,57 @@
-import api from "@/app/services/axios";
+/**
+ * Booking service for handling all booking-related API operations
+ */
+
+const API_BASE_URL =
+    process.env.NEXT_PUBLIC_BASEURL || "https://api.oneclickstays.com/api";
+
+/**
+ * Helper function for making API requests
+ * @param {string} endpoint - API endpoint
+ * @param {Object} options - Fetch options
+ * @returns {Promise<any>} - API response
+ */
+const fetchAPI = async (endpoint, options = {}) => {
+    // Build the full URL with query parameters if provided
+    let url = `${API_BASE_URL}${endpoint}`;
+
+    // Handle query parameters
+    if (options.params && Object.keys(options.params).length > 0) {
+        const queryParams = new URLSearchParams();
+        Object.entries(options.params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+                queryParams.append(key, value);
+            }
+        });
+        url += `?${queryParams.toString()}`;
+    }
+
+    const fetchOptions = {
+        method: options.method || "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            ...(options.headers || {}),
+        },
+        credentials: "include",
+        ...(options.body && { body: JSON.stringify(options.body) }),
+    };
+
+    try {
+        const response = await fetch(url, fetchOptions);
+
+        if (!response.ok) {
+            throw new Error(
+                `API error: ${response.status} ${response.statusText}`
+            );
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`Error in API request to ${endpoint}:`, error);
+        throw error;
+    }
+};
 
 /**
  * Get details for a specific booking
@@ -8,9 +61,9 @@ import api from "@/app/services/axios";
 export const getBookingDetails = async (bookingId) => {
     try {
         // console.log("Fetching booking details for ID:", bookingId);
-        const response = await api.get(`/bookings/${bookingId}`);
-        console.log("Booking details response:", response.data);
-        return response.data || {};
+        const response = await fetchAPI(`/bookings/${bookingId}`);
+        console.log("Booking details response:", response);
+        return response || {};
     } catch (error) {
         console.error(
             `Error fetching booking details for ${bookingId}:`,
@@ -27,10 +80,10 @@ export const getBookingDetails = async (bookingId) => {
  */
 export const getUserBookings = async (status) => {
     try {
-        const response = await api.get("/bookings", {
+        const response = await fetchAPI("/bookings", {
             params: status ? { status } : {},
         });
-        return response.data || [];
+        return response || [];
     } catch (error) {
         console.error(`Error fetching user bookings:`, error);
         return [];

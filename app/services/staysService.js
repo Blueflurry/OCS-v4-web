@@ -1,24 +1,24 @@
 /**
- * Service file for handling all stay-related API calls
- */
-import axios from "@/app/services/axios";
-import api from "@/app/services/axios";
-
-/**
  * Fetches stays by category for carousel display
  * @param {string} category - The category of stays to fetch
  * @returns {Promise<Object>} - Object containing stays array and carousel metadata
  */
-export const fetchStaysByCategory = async (category) => {
+export const fetchHomePageStays = async () => {
     try {
-        if (!category) {
-            throw new Error("Category is required");
-        }
+        const data = await fetch(
+            `${process.env.NEXT_PUBLIC_BASEURL}/search/home`,
+            {
+                next: { revalidate: 3600 },
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+            }
+        );
 
-        // The axios instance already has the base URL and will automatically return response.data
-        return await axios.get(`/stays/carousel`, {
-            params: { category },
-        });
+        const response = data.json();
+        return response || [];
     } catch (error) {
         console.error("Error in fetchStaysByCategory:", error);
         // throw error;
@@ -95,8 +95,8 @@ export const getFilteredStays = async (filters) => {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            // credentials: "include",
-            // withCredentials: true,
+            credentials: "include",
+            withCredentials: true,
 
             body: JSON.stringify({
                 ...processedFilters,

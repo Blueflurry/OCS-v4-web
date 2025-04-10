@@ -1,5 +1,3 @@
-import api from "@/app/services/axios";
-
 /**
  * Get details for a specific stay
  * @param {string} stayId - The ID of the stay to fetch
@@ -7,7 +5,16 @@ import api from "@/app/services/axios";
  */
 export const getStayDetails = async (stayId, options = {}) => {
     try {
-        const response = await api.get(`/stay/${stayId}`, options);
+        const data = await fetch(`/stay/${stayId}`, {
+            method: "GET",
+            // params: { ...options },
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            credentials: "include",
+        });
+        const response = await data.json();
         console.log("Stay details response:", response);
         return response.stay || {};
     } catch (error) {
@@ -31,7 +38,7 @@ export const getStayAddons = async (stayId) => {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                // // credentials: "include",
+                credentials: "include",
             }
         );
         const response = await temp.json();
@@ -63,7 +70,8 @@ export const createPaymentIntent = async (paymentDetails) => {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                // credentials: "include",
+                credentials: "include",
+                withCredentials: true,
             }
         );
 
@@ -71,7 +79,7 @@ export const createPaymentIntent = async (paymentDetails) => {
         return response.booking || {};
     } catch (error) {
         console.error("Error creating payment intent:", error);
-        // throw error;
+        throw error;
     }
 };
 
@@ -97,8 +105,8 @@ export const updatePaymentIntentWithAddOns = async (
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                // credentials: "include",
-                // withCredentials: true,
+                credentials: "include",
+                withCredentials: true,
             }
         );
         const response = await data.json();
@@ -106,37 +114,82 @@ export const updatePaymentIntentWithAddOns = async (
         return response.booking || {};
     } catch (error) {
         console.error("Error updating payment intent with add-ons:", error);
-        // throw error;
+        throw error;
     }
 };
 
 /**
- * Create payment for a payment intent
+ * Create payment order for Razorpay
+ * @param {string} bookingId - The booking ID
  * @param {Object} paymentDetails - Payment details
- * @param {string} paymentDetails.paymentIntentId - The payment intent ID
- * @returns {Promise<Object>} - Payment response
+ * @returns {Promise<Object>} - Order details including Razorpay order ID
  */
-export const createPayment = async (paymentDetails) => {
+export const createPaymentOrder = async (bookingId, paymentDetails) => {
     try {
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_BASEURL}/bookings/${bookingId}/payment`,
-
             {
                 method: "POST",
-                body: JSON.stringify(paymentDetails),
                 headers: {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                // credentials: "include",
-                // withCredentials: true,
+                credentials: "include",
+                withCredentials: true,
+                body: JSON.stringify(paymentDetails),
             }
         );
+
+        if (!response.ok) {
+            throw new Error(
+                `Payment order creation failed with status: ${response.status}`
+            );
+        }
+
         const data = await response.json();
-        console.log("Payment response:", data);
-        return data || {};
+        console.log("Payment order created:", data);
+        return data;
     } catch (error) {
-        console.error("Error creating payment:", error);
-        throw new Error(error.response?.message || "Payment processing failed");
+        console.error("Error creating payment order:", error);
+        throw error;
+    }
+};
+
+/**
+ * Verify payment with backend
+ * @param {Object} paymentData - Payment verification data
+ * @param {string} paymentData.bookingId - The booking ID
+ * @param {string} paymentData.razorpay_payment_id - Razorpay payment ID
+ * @param {string} paymentData.razorpay_order_id - Razorpay order ID
+ * @param {string} paymentData.razorpay_signature - Razorpay signature
+ * @returns {Promise<Object>} - Verification result
+ */
+export const verifyPayment = async (paymentData) => {
+    try {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BASEURL}/verify-payment`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                credentials: "include",
+                withCredentials: true,
+                body: JSON.stringify(paymentData),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `Payment verification failed with status: ${response.status}`
+            );
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Payment verification error:", error);
+        throw error;
     }
 };

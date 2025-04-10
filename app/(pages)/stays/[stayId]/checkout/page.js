@@ -7,13 +7,18 @@ import BackButton from "@/app/components/BackButton";
 import { CheckCheck } from "lucide-react";
 import { formatCurrency } from "@/app/utils/formatter";
 import RazorpayButton from "@/app/components/RazorpayButton";
-// import { mockPaymentData } from "@/app/services/mockData";
 import Loading from "../loading";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Header from "@/app/modules/Header";
+import { isAuthenticated } from "@/app/services/authService";
+
+// Flag to control whether login is required for checkout
+// Set to false to allow payments without login, true to require login
+const REQUIRE_LOGIN_FOR_CHECKOUT = false;
 
 const Checkout = () => {
     const params = useParams();
+    const router = useRouter();
     const { stayId } = params;
 
     const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +34,13 @@ const Checkout = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Check if login is required
+                if (REQUIRE_LOGIN_FOR_CHECKOUT && !isAuthenticated()) {
+                    // Redirect to login page
+                    router.push(`/login?redirect=/stays/${stayId}/checkout`);
+                    return;
+                }
+
                 setIsLoading(true);
 
                 // Get stay basics from localStorage
@@ -95,7 +107,7 @@ const Checkout = () => {
         };
 
         fetchData();
-    }, [stayId, taxRates]);
+    }, [stayId, taxRates, router]);
 
     const handlePaymentSuccess = (response) => {
         console.log("Payment successful:", response);
@@ -113,19 +125,17 @@ const Checkout = () => {
             <div className={styles["button-container"]}>
                 {paymentIntent && (
                     <RazorpayButton
-                        amount="1000" // Amount in INR
-                        paymentIntentId="your_existing_id" // Will be ignored in test mode
-                        stayId="stay123"
-                        checkInDate="2025-04-10"
-                        checkOutDate="2025-04-15"
-                        guests={{ adults: 2, children: 1 }}
-                        onSuccess={(data) =>
-                            console.log("Payment successful", data)
-                        }
-                        onError={(error) =>
-                            console.error("Payment error", error)
-                        }
-                        testMode={true} // Make sure this is set to true for testing
+                        amount={paymentIntent.pricing.totalAmount.toString()}
+                        paymentIntentId={paymentIntent.id}
+                        stayId={paymentIntent.stayId}
+                        checkInDate={paymentIntent.checkin}
+                        checkOutDate={paymentIntent.checkout}
+                        guests={{
+                            adults: paymentIntent.guests,
+                            children: 0,
+                        }}
+                        onSuccess={handlePaymentSuccess}
+                        onError={handlePaymentError}
                     />
                 )}
             </div>
@@ -248,8 +258,6 @@ const Checkout = () => {
                             ))}
                         </div>
                     )}
-
-                    {/* <div className={styles["padding"]}></div> */}
                 </div>
 
                 <CustomFooter />

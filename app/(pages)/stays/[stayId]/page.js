@@ -114,8 +114,8 @@ const StayDetails = () => {
                     Accept: "application/json",
                 },
                 method: "GET",
-                // credentials: "include",
-                // withCredentials: true,
+                credentials: "include",
+                withCredentials: true,
             })
                 .then((res) => res.json())
                 .then((result) => {

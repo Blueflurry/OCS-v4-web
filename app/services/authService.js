@@ -1,5 +1,3 @@
-import api from "./axios";
-
 /**
  * Standard response object structure for API calls
  * @typedef {Object} ServiceResponse
@@ -7,6 +5,43 @@ import api from "./axios";
  * @property {Object|null} data - Response data (null if error)
  * @property {string|null} error - Error message (null if success)
  */
+
+const API_BASE_URL =
+    process.env.NEXT_PUBLIC_BASEURL || "https://api.oneclickstays.com/api";
+
+/**
+ * Helper function for making API requests
+ * @param {string} endpoint - API endpoint
+ * @param {Object} options - Fetch options
+ * @returns {Promise<any>} - API response
+ */
+const fetchAPI = async (endpoint, options = {}) => {
+    const url = `${API_BASE_URL}${endpoint}`;
+
+    const fetchOptions = {
+        method: options.method || "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            ...(options.headers || {}),
+        },
+        credentials: "include",
+        ...(options.body && { body: JSON.stringify(options.body) }),
+    };
+
+    const response = await fetch(url, fetchOptions);
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw {
+            status: response.status,
+            message: errorData.error || response.statusText,
+            response: { data: errorData },
+        };
+    }
+
+    return response.json();
+};
 
 /**
  * Handles API errors consistently
@@ -40,11 +75,14 @@ const handleApiError = (error, context) => {
  */
 export const sendLoginOtp = async (phoneNumber) => {
     try {
-        const response = await api.post("/login", { phoneNumber });
+        const response = await fetchAPI("/login", {
+            method: "POST",
+            body: { phoneNumber },
+        });
 
         return {
             success: true,
-            data: response.data,
+            data: response,
             error: null,
         };
     } catch (error) {
@@ -59,11 +97,14 @@ export const sendLoginOtp = async (phoneNumber) => {
  */
 export const resendOtp = async (phoneNumber) => {
     try {
-        const response = await api.post("/resend-otp", { phoneNumber });
+        const response = await fetchAPI("/resend-otp", {
+            method: "POST",
+            body: { phoneNumber },
+        });
 
         return {
             success: true,
-            data: response.data,
+            data: response,
             error: null,
         };
     } catch (error) {
@@ -79,14 +120,14 @@ export const resendOtp = async (phoneNumber) => {
  */
 export const verifyOtp = async (phoneNumber, otp) => {
     try {
-        const response = await api.post("/otp-verification", {
-            phoneNumber,
-            otp,
+        const response = await fetchAPI("/otp-verification", {
+            method: "POST",
+            body: { phoneNumber, otp },
         });
 
         return {
             success: true,
-            data: response.data,
+            data: response,
             error: null,
         };
     } catch (error) {
@@ -104,11 +145,14 @@ export const verifyOtp = async (phoneNumber, otp) => {
  */
 export const createUser = async (userData) => {
     try {
-        const response = await api.post("/signup", userData);
+        const response = await fetchAPI("/signup", {
+            method: "POST",
+            body: userData,
+        });
 
         return {
             success: true,
-            data: response.data,
+            data: response,
             error: null,
         };
     } catch (error) {
