@@ -11,7 +11,6 @@ import {
     updatePaymentIntentWithAddOns,
 } from "@/app/services/stayDetailsService";
 import { formatCurrency } from "@/app/utils/formatter";
-import Loading from "../loading";
 
 const Addons = () => {
     const params = useParams();
@@ -21,22 +20,12 @@ const Addons = () => {
     // const [error, setError] = useState(null);
     const [stayDetails, setStayDetails] = useState(null);
     const [services, setServices] = useState([]);
-    const [paymentIntentId, setPaymentIntentId] = useState(null);
 
     // Get stay details from localStorage and fetch add-ons from API
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // setIsLoading(true);
-
-                // Get the payment intent ID from localStorage
-                const savedPaymentIntentId =
-                    localStorage.getItem("paymentIntentId");
-                if (!savedPaymentIntentId) {
-                    console.log(
-                        "No payment intent found. Please start booking process again."
-                    );
-                } else setPaymentIntentId(savedPaymentIntentId);
 
                 // Get stay basics from localStorage
                 const stayBasics = localStorage.getItem("stayBasics");
@@ -54,7 +43,12 @@ const Addons = () => {
                 const addons = addonsData?.addOns;
                 console.log("Add-ons data:", addons);
                 if (Array.isArray(addons) && addons.length > 0) {
-                    setServices(addons);
+                    // Initialize isChecked property to fix uncontrolled to controlled issue
+                    const servicesWithChecked = addons.map((addon) => ({
+                        ...addon,
+                        isChecked: false,
+                    }));
+                    setServices(servicesWithChecked);
                 } else {
                     console.warn(
                         "No add-ons found or invalid format. Using default add-ons."
@@ -65,7 +59,7 @@ const Addons = () => {
                 }
             } catch (err) {
                 console.error("Error in Addons page:", err);
-                setError(err.message || "Something went wrong");
+                // setError(err.message || "Something went wrong");
             } finally {
                 // setIsLoading(false);
             }
@@ -97,26 +91,43 @@ const Addons = () => {
                     id: service._id,
                     name: service.name,
                     price: service.pricing.basePrice,
+                    catalogId: service.catalogId._id,
+                    code: service.code,
                 }));
+
+            // Get the payment intent ID from localStorage
+            const paymentIntentId = localStorage.getItem("paymentIntentId");
+
+            if (!paymentIntentId) {
+                console.log(
+                    "No payment intent found. Please start booking process again."
+                );
+                return;
+            }
 
             // Update payment intent with selected addons
             if (paymentIntentId) {
-                await updatePaymentIntentWithAddOns({
+                const updatedBooking = await updatePaymentIntentWithAddOns(
                     paymentIntentId,
-                    addOns: selectedAddOns,
-                });
+                    selectedAddOns
+                );
 
+                console.log("Updated booking:", updatedBooking);
                 // Store selected addons for checkout page
                 localStorage.setItem(
                     "selectedAddOns",
-                    JSON.stringify(selectedAddOns)
+                    JSON.stringify(
+                        updatedBooking.addOns
+                            ? updatedBooking.addOns
+                            : selectedAddOns
+                    )
                 );
 
                 // The Footer component will handle the navigation
             }
         } catch (err) {
             console.error("Error updating payment intent:", err);
-            setError("Failed to update add-ons. Please try again.");
+            // setError("Failed to update add-ons. Please try again.");
         }
     };
 
@@ -172,7 +183,7 @@ const Addons = () => {
                                 name="isSelected"
                                 onChange={onChangeCheckBox}
                                 id={service._id}
-                                checked={service.isChecked}
+                                checked={service.isChecked || false}
                             />
                         </label>
 

@@ -68,7 +68,7 @@ export const createPaymentIntent = async (paymentDetails) => {
         );
 
         const response = await temp.json();
-        return response || {};
+        return response.booking || {};
     } catch (error) {
         console.error("Error creating payment intent:", error);
         // throw error;
@@ -82,13 +82,28 @@ export const createPaymentIntent = async (paymentDetails) => {
  * @param {Array} addOnDetails.addOns - Selected add-ons
  * @returns {Promise<Object>} - Updated payment intent object
  */
-export const updatePaymentIntentWithAddOns = async (addOnDetails) => {
+export const updatePaymentIntentWithAddOns = async (
+    bookingId,
+    addOnDetails
+) => {
     try {
-        const response = await api.patch(
-            "/payment-intent-addons",
-            addOnDetails
+        console.log(bookingId);
+        const data = await fetch(
+            `${process.env.NEXT_PUBLIC_BASEURL}/bookings/${bookingId}`,
+            {
+                method: "PATCH",
+                body: JSON.stringify({ addOns: addOnDetails }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                credentials: "include",
+                withCredentials: true,
+            }
         );
-        return response.data || {};
+        const response = await data.json();
+        console.log("Update payment intent response:", response);
+        return response.booking || {};
     } catch (error) {
         console.error("Error updating payment intent with add-ons:", error);
         // throw error;
