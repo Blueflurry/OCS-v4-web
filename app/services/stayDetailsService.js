@@ -13,6 +13,7 @@ export const getStayDetails = async (stayId, options = {}) => {
                 Accept: "application/json",
             },
             credentials: "include",
+            withCredentials: true,
         });
         const response = await data.json();
         console.log("Stay details response:", response);

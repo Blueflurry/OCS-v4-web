@@ -318,13 +318,17 @@ const StayDetails = () => {
                 <div className={`${styles["stay-details"]} container`}>
                     <div className={styles["stay-details__carousel"]}>
                         <HeroImageCarousel
-                            images={Object.values(stayData.images).reduce(
-                                (a, b) => {
-                                    a.push(...b);
-                                    return a;
-                                },
-                                []
-                            )}
+                            images={[
+                                stayData.featuredImage,
+
+                                ...Object.values(stayData.images).reduce(
+                                    (a, b) => {
+                                        a.push(...b);
+                                        return a;
+                                    },
+                                    []
+                                ),
+                            ]}
                         />
                         <BackButton />
 

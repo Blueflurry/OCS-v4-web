@@ -43,7 +43,7 @@
     justify-content: flex-end;
     margin: 16px 16px 0;
     position: relative;
-    z-index: 1000;
+    z-index: $z-index-filter;
 }
 
 .filter-button {

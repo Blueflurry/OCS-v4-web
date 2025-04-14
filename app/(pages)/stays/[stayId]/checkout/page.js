@@ -11,10 +11,11 @@ import Loading from "../loading";
 import { useParams, useRouter } from "next/navigation";
 import Header from "@/app/modules/Header";
 import { isAuthenticated } from "@/app/services/authService";
+import { REQUIRE_LOGIN_FOR_CHECKOUT } from "@/app/data/config";
 
 // Flag to control whether login is required for checkout
 // Set to false to allow payments without login, true to require login
-const REQUIRE_LOGIN_FOR_CHECKOUT = false;
+const REQUIRE_LOGIN_FOR_CHECKOUT = REQUIRE_LOGIN_FOR_CHECKOUT;
 
 const Checkout = () => {
     const params = useParams();
@@ -109,22 +110,13 @@ const Checkout = () => {
         fetchData();
     }, [stayId, taxRates, router]);
 
-    const handlePaymentSuccess = (response) => {
-        console.log("Payment successful:", response);
-        // Additional success handling if needed
-    };
-
-    const handlePaymentError = (error) => {
-        console.error("Payment error:", error);
-        setError("Payment failed. Please try again.");
-    };
-
     // Custom Footer with Razorpay button
     const CustomFooter = () => (
         <div className={styles["footer"]}>
             <div className={styles["button-container"]}>
                 {paymentIntent && (
                     <RazorpayButton
+                        paymentIntent={paymentIntent}
                         amount={paymentIntent.pricing.totalAmount.toString()}
                         paymentIntentId={paymentIntent.id}
                         stayId={paymentIntent.stayId}
@@ -134,8 +126,6 @@ const Checkout = () => {
                             adults: paymentIntent.guests,
                             children: 0,
                         }}
-                        onSuccess={handlePaymentSuccess}
-                        onError={handlePaymentError}
                     />
                 )}
             </div>

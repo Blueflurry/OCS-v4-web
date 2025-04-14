@@ -21,6 +21,7 @@ $color-info: color.adjust($color-primary, $lightness: 45%);
 // $color-info: lighten($color-primary, 45%);
 $color-danger: #ef4444;
 
+$z-index-filter: 95;
 $z-index-content: 96;
 $z-index-layout: 97;
 $z-index-overlay: 98;

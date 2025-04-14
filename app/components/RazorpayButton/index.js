@@ -7,10 +7,11 @@ import {
     createPaymentOrder,
     verifyPayment,
 } from "@/app/services/stayDetailsService";
+import { REQUIRE_LOGIN_FOR_CHECKOUT } from "@/app/data/config";
 
 // Flag to control whether login is required for checkout
 // Set to false to allow payments without login, true to require login
-const REQUIRE_LOGIN_FOR_CHECKOUT = false;
+const REQUIRE_LOGIN_FOR_CHECKOUT = REQUIRE_LOGIN_FOR_CHECKOUT;
 
 /**
  * RazorpayButton Component - Handles payment processing via Razorpay
@@ -22,19 +23,16 @@ const REQUIRE_LOGIN_FOR_CHECKOUT = false;
  * @param {string} props.checkInDate - Check-in date
  * @param {string} props.checkOutDate - Check-out date
  * @param {Object} props.guests - Guest information
- * @param {Function} props.onSuccess - Callback for successful payment
- * @param {Function} props.onError - Callback for failed payment
  * @returns {JSX.Element}
  */
 const RazorpayButton = ({
     amount,
+    paymentIntent,
     paymentIntentId,
     stayId,
     checkInDate,
     checkOutDate,
     guests,
-    onSuccess,
-    onError,
 }) => {
     const [loading, setLoading] = useState(false);
     const [razorpayLoaded, setRazorpayLoaded] = useState(false);
@@ -42,6 +40,7 @@ const RazorpayButton = ({
     const razorpayInstance = useRef(null);
     const router = useRouter();
 
+    console.log("paymentIntent", paymentIntent);
     // Load Razorpay script only once
     useEffect(() => {
         // Check if script is already loaded
@@ -65,7 +64,6 @@ const RazorpayButton = ({
         script.onerror = (error) => {
             console.error("Error loading Razorpay script:", error);
             setError("Failed to load payment gateway. Please try again later.");
-            if (onError) onError("Failed to load payment gateway");
         };
 
         document.body.appendChild(script);
@@ -81,13 +79,52 @@ const RazorpayButton = ({
                 }
             }
         };
-    }, [onError]);
+    }, []);
+
+    const handlePaymentSuccess = async (response) => {
+        // Create payment data for verification
+        const paymentData = {
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+        };
+        console.log("Payment Success:", paymentData);
+
+        // Verify payment with backend after success
+        const verificationResult = await verifyPayment(paymentData);
+
+        console.log(verificationResult);
+
+        if (verificationResult.success) {
+            // Payment verified successfully
+
+            // Update localStorage with booking ID and payment ID
+            const updatedBooking = {
+                ...bookingInfo,
+                paymentId: razorpay_payment_id,
+                bookingId: verificationResult.bookingId || paymentIntentId,
+            };
+
+            localStorage.setItem("booking", JSON.stringify(updatedBooking));
+
+            return verificationResult;
+        } else {
+            // Payment verification failed
+            throw new Error(
+                verificationResult.message || "Payment verification failed"
+            );
+        }
+    };
+
+    const handlePaymentError = (error) => {
+        console.error("Payment error:", error);
+        setError("Payment failed. Please try again.");
+    };
 
     // Handle the payment process
     const handlePayment = async () => {
         if (!razorpayLoaded) {
-            if (onError)
-                onError("Payment gateway is still loading. Please wait.");
+            console.log("Payment gateway is still loading. Please wait.");
             return;
         }
 
@@ -126,14 +163,19 @@ const RazorpayButton = ({
                 checkOutDate,
                 guests,
                 amount: Number(amount),
+                // order_id: paymentIntent.razorpayOrderId,
             };
+
+            console.log("payment details", paymentDetails);
 
             const orderData = await createPaymentOrder(
                 paymentIntentId,
                 paymentDetails
             );
 
-            if (!orderData || !orderData.orderId) {
+            console.log("orderData", orderData);
+
+            if (!orderData || !orderData.razorpayOrderId) {
                 throw new Error("Failed to create payment order");
             }
 
@@ -160,63 +202,19 @@ const RazorpayButton = ({
                 name: "OneClick Stays",
                 description: "Luxury Accommodation",
                 image: "/assets/images/icon.svg", // Your brand logo
-                order_id: orderData.orderId, // Using order ID from API
+                order_id: orderData.razorpayOrderId, // Using order ID from API
                 handler: async function (response) {
                     try {
                         console.log("Payment Success:", response);
 
-                        // Extract payment verification details
-                        const {
-                            razorpay_payment_id,
-                            razorpay_order_id,
-                            razorpay_signature,
-                        } = response;
+                        // get backend verification on the payment received
+                        const result = await handlePaymentSuccess(response);
 
-                        // Create payment data for verification
-                        const paymentData = {
-                            bookingId: paymentIntentId,
-                            stayId,
-                            amount: Number(amount),
-                            razorpay_payment_id,
-                            razorpay_order_id,
-                            razorpay_signature,
-                        };
-
-                        // Verify payment with backend
-                        const verificationResult = await verifyPayment(
-                            paymentData
-                        );
-
-                        if (verificationResult.success) {
-                            // Payment verified successfully
-
-                            // Update localStorage with booking ID and payment ID
-                            const updatedBooking = {
-                                ...bookingInfo,
-                                paymentId: razorpay_payment_id,
-                                bookingId:
-                                    verificationResult.bookingId ||
-                                    paymentIntentId,
-                            };
-
-                            localStorage.setItem(
-                                "booking",
-                                JSON.stringify(updatedBooking)
-                            );
-
-                            // Call success callback if provided
-                            if (onSuccess) {
-                                onSuccess(verificationResult);
-                            }
-
+                        console.log("result: ------> ", result);
+                        // Call success callback if provided
+                        if (result) {
                             // Navigate to success page
                             router.push(`/stays/${stayId}/payment-success`);
-                        } else {
-                            // Payment verification failed
-                            throw new Error(
-                                verificationResult.message ||
-                                    "Payment verification failed"
-                            );
                         }
                     } catch (error) {
                         console.error("Payment verification failed:", error);
@@ -225,10 +223,6 @@ const RazorpayButton = ({
                                 "Payment verification failed. Please try again."
                         );
                         setLoading(false);
-                        if (onError)
-                            onError(
-                                error.message || "Payment processing failed"
-                            );
 
                         // Redirect back to checkout page
                         router.push(`/stays/${stayId}/checkout`);
@@ -238,7 +232,10 @@ const RazorpayButton = ({
                     name: "",
                     email: "",
                     contact: "",
+                    vpa: "", // Explicitly set empty VPA
                 },
+                remember_customer: false,
+
                 notes: {
                     stayId: stayId,
                     checkInDate: checkInDate,
@@ -267,11 +264,6 @@ const RazorpayButton = ({
                         "Payment failed. Please try again."
                 );
                 setLoading(false);
-                if (onError)
-                    onError(
-                        response.error?.description ||
-                            "Payment failed. Please try again."
-                    );
 
                 // Redirect back to checkout page
                 router.push(`/stays/${stayId}/checkout`);
@@ -283,7 +275,6 @@ const RazorpayButton = ({
             console.error("Payment initialization error:", error);
             setError("Failed to initialize payment. Please try again.");
             setLoading(false);
-            if (onError) onError(error.message || "Payment process failed.");
         }
     };
 
