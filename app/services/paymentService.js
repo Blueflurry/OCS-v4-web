@@ -1,4 +1,3 @@
-// api/services/paymentService.js
 import { fetchAPI } from "./config";
 
 /**

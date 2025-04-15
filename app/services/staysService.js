@@ -1,4 +1,3 @@
-// api/services/staysService.js
 import { fetchAPI } from "./config";
 
 /**

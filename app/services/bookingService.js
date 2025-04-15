@@ -1,4 +1,3 @@
-// api/services/bookingService.js
 import { fetchAPI } from "./config";
 
 /**
@@ -27,9 +26,7 @@ export const getBookingDetails = async (bookingId) => {
  */
 export const getUserBookings = async (status) => {
     try {
-        const response = await fetchAPI("/bookings", {
-            params: status ? { status } : {},
-        });
+        const response = await fetchAPI(`/bookings/${status}`);
         return response || [];
     } catch (error) {
         console.error(`Error fetching user bookings:`, error);

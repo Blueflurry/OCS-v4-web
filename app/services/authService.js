@@ -1,24 +1,15 @@
-// api/services/authService.js
 import { fetchAPI, handleApiError } from "./config";
-
-/**
- * Standard response object structure for API calls
- * @typedef {Object} ServiceResponse
- * @property {boolean} success - Whether the call was successful
- * @property {Object|null} data - Response data (null if error)
- * @property {string|null} error - Error message (null if success)
- */
 
 /**
  * Send login OTP to the provided phone number
  * @param {string} phoneNumber - User's phone number
  * @returns {Promise<ServiceResponse>} - Standardized response
  */
-export const sendLoginOtp = async (phoneNumber) => {
+export const sendLoginOtp = async (phone) => {
     try {
-        const response = await fetchAPI("/login", {
+        const response = await fetchAPI("/auth/send-otp", {
             method: "POST",
-            body: { phoneNumber },
+            body: { phone, countryCode: "+91" },
         });
 
         return {
@@ -36,11 +27,11 @@ export const sendLoginOtp = async (phoneNumber) => {
  * @param {string} phoneNumber - User's phone number
  * @returns {Promise<ServiceResponse>} - Standardized response
  */
-export const resendOtp = async (phoneNumber) => {
+export const resendOtp = async (phone) => {
     try {
-        const response = await fetchAPI("/resend-otp", {
+        const response = await fetchAPI("/auth/send-otp", {
             method: "POST",
-            body: { phoneNumber },
+            body: { phone, countryCode: "+91" },
         });
 
         return {
@@ -59,11 +50,11 @@ export const resendOtp = async (phoneNumber) => {
  * @param {string} otp - OTP entered by user
  * @returns {Promise<ServiceResponse>} - Standardized response
  */
-export const verifyOtp = async (phoneNumber, otp) => {
+export const verifyOtp = async (phone, otp) => {
     try {
-        const response = await fetchAPI("/otp-verification", {
+        const response = await fetchAPI("/auth/verify-otp", {
             method: "POST",
-            body: { phoneNumber, otp },
+            body: { phone, otp, countryCode: "+91" },
         });
 
         return {
@@ -86,14 +77,14 @@ export const verifyOtp = async (phoneNumber, otp) => {
  */
 export const createUser = async (userData) => {
     try {
-        const response = await fetchAPI("/signup", {
+        const response = await fetchAPI("/auth/register", {
             method: "POST",
-            body: userData,
+            body: { ...userData, countryCode: "+91" },
         });
 
         return {
             success: true,
-            data: response,
+            data: response.data,
             error: null,
         };
     } catch (error) {

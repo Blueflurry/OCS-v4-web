@@ -68,16 +68,26 @@ const Signup = () => {
         try {
             // Call API to create user
             const response = await createUser({
-                fullName: formData.fullName,
+                firstName: formData.fullName.split(" ")[0],
+                lastName: formData.fullName.split(" ")[1] || " ",
                 email: formData.email,
-                phoneNumber: formData.phoneNumber,
+                phone: formData.phoneNumber,
             });
 
-            // Store user data in local storage
-            localStorage.setItem("user", JSON.stringify(response.user));
+            console.log("User created successfully", response);
 
-            // Redirect to home page
-            router.push("/");
+            if (response.success) {
+                // Store user data in local storage
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify({ ...response.user, token: response.token })
+                );
+
+                // Redirect to home page
+                router.push("/");
+            } else {
+                throw new Error(response.message || "User already exists!!");
+            }
         } catch (error) {
             console.error("Signup error:", error);
 

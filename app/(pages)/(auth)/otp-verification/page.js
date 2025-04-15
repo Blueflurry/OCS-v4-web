@@ -115,15 +115,13 @@ const OtpVerification = () => {
         if (response.success) {
             try {
                 // Get user data from response
-                const userData = response.data;
+                const userData = response;
 
-                // Check if user exists
-                if (userData.userExists) {
+                // Check if user exists: #pending
+                if (userData.user) {
+                    const user = { ...userData.user, token: response.token };
                     // Store user data in local storage
-                    localStorage.setItem(
-                        "user",
-                        JSON.stringify(userData.user || {})
-                    );
+                    localStorage.setItem("user", JSON.stringify(user || {}));
 
                     // Redirect to home page if user exists
                     router.push("/");
@@ -134,7 +132,7 @@ const OtpVerification = () => {
             } catch (storageError) {
                 console.error("Error storing user data:", storageError);
                 // Try to navigate anyway
-                router.push(userData?.userExists ? "/" : "/signup");
+                router.push(userData?.user ? "/" : "/signup");
             }
         } else {
             // Handle verification failure
