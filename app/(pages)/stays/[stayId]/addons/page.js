@@ -6,18 +6,16 @@ import Footer from "@/app/modules/Footer";
 import BackButton from "@/app/components/BackButton";
 import PartnerLogo from "@/app/components/PartnerLogo";
 import { useParams, useRouter } from "next/navigation";
-import {
-    getStayAddons,
-    updatePaymentIntentWithAddOns,
-} from "@/app/services/stayDetailsService";
+import { getStayAddons } from "@/app/services/staysService";
+
+import { updatePaymentIntentWithAddOns } from "@/app/services/paymentService";
 import { formatCurrency } from "@/app/utils/formatter";
 
 const Addons = () => {
     const params = useParams();
     const { stayId } = params;
+    const router = useRouter();
 
-    // const [isLoading, setIsLoading] = useState(true);
-    // const [error, setError] = useState(null);
     const [stayDetails, setStayDetails] = useState(null);
     const [services, setServices] = useState([]);
 
@@ -123,7 +121,7 @@ const Addons = () => {
                     )
                 );
 
-                // The Footer component will handle the navigation
+                router.push(`/stays/${stayId}/checkout`);
             }
         } catch (err) {
             console.error("Error updating payment intent:", err);

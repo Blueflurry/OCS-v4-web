@@ -19,13 +19,7 @@ import { formatCurrency } from "@/app/utils/formatter";
  * @param {number} props.totalAmount - Total amount to display
  * @returns {JSX.Element} Footer component
  */
-const Footer = ({
-    btnText,
-    btnType = "primary",
-    onClick,
-    showTotalAmount = false,
-    totalAmount = 0,
-}) => {
+const Footer = ({ btnText, btnType = "primary", onClick }) => {
     const router = useRouter();
     const params = useParams();
     const stayId = params.stayId;
@@ -43,16 +37,12 @@ const Footer = ({
             // that would indicate we should stop the flow (like showing an error)
             const result = onClick();
 
-            // If we get a explicit false, return early and keep button disabled
             if (result === false) {
                 setTimeout(() => setIsButtonDisabled(false), 1500); // Re-enable after delay
                 return;
             }
         }
 
-        // Allow a small delay for any onClick side effects to complete
-        // setTimeout(() => {
-        // Otherwise, use the default navigation logic
         for (let idx = 0; idx < PAGES.length; idx++) {
             let page = PAGES[idx];
             page.url = page.url?.replace("${stayId}", stayId);
@@ -63,13 +53,12 @@ const Footer = ({
                 return;
             }
 
-            if (pathname === page.url) {
-                router.push(page.nextUrl);
-                return; // Exit the loop
-            }
+            // if (pathname === page.url) {
+            //     router.push(page.nextUrl);
+            //     return;
+            // }
         }
         setIsButtonDisabled(false);
-        // }, 300);
     };
 
     useEffect(() => {

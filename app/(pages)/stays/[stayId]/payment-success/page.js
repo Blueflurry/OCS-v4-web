@@ -111,7 +111,7 @@ const PaymentSuccess = () => {
                         {booking?.bookingId && (
                             <div className={styles["bookingId"]}>
                                 Booking ID: <span>{booking.bookingId}</span>
-                                {/* <div
+                                <div
                                     className={styles["copyIcon"]}
                                     onClick={copyToClipboard}
                                     title="Copy Booking ID"
@@ -122,7 +122,7 @@ const PaymentSuccess = () => {
                                             Copied!
                                         </span>
                                     )}
-                                </div> */}
+                                </div>
                             </div>
                         )}
 

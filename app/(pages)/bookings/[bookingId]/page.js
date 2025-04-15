@@ -14,6 +14,7 @@ import {
 } from "@/app/services/bookingService";
 import Loading from "./loading";
 import { useParams } from "next/navigation";
+import { WHATSAPP_SUPPORT_LINK } from "@/app/data/config";
 
 const BookingDetails = () => {
     const params = useParams();
@@ -51,12 +52,15 @@ const BookingDetails = () => {
         }
     }, [bookingId]);
 
-    const copyBookingIdToClipboard = () => {
-        const id = booking?.bookingId;
-        if (id) {
-            navigator.clipboard.writeText(id);
+    const copyBookingIdToClipboard = async () => {
+        if (!booking?.bookingId) return;
+
+        try {
+            await navigator.clipboard.writeText(booking.bookingId);
             setCopiedBookingId(true);
             setTimeout(() => setCopiedBookingId(false), 2000);
+        } catch (error) {
+            console.error("Failed to copy booking ID:", error);
         }
     };
 
@@ -71,12 +75,6 @@ const BookingDetails = () => {
     if (!booking) {
         return <div className={styles["error"]}>Booking not found</div>;
     }
-
-    // Get the booking ID (for display and copy)
-    const displayBookingId = booking.bookingId || "OCSBK299024"; // Fallback to hardcoded ID if missing
-
-    // Calculate total amount
-    const { pricing } = booking;
 
     // Format date ranges for display
     const checkInDate = formatBookingDate(booking.dates?.checkIn);
@@ -95,20 +93,31 @@ const BookingDetails = () => {
                         height={100}
                         style={{ width: "70px", marginBottom: "-4px" }}
                     />
-                    <span className={styles[""]}>x</span>
-                    <PartnerLogo
-                        name={booking.stay?.partner?.name || "elivaas"}
-                        color="white"
-                    />
+                    {booking.stays &&
+                        booking.stays[0]?.stay?.business?.name && (
+                            <>
+                                <span className={styles[""]}>x</span>
+                                <PartnerLogo
+                                    name={
+                                        booking.stays[0]?.stay?.business?.name
+                                    }
+                                    color="white"
+                                />
+                            </>
+                        )}
                 </div>
                 <h2>Booking Details</h2>
                 <p>
                     <span>Booking Id:</span>
-                    {displayBookingId}
+                    {booking?.bookingId}
                     <Copy
                         className={copiedBookingId ? styles["copied"] : ""}
                         onClick={copyBookingIdToClipboard}
                     />
+
+                    {copiedBookingId && (
+                        <span className={styles["copied"]}>Copied!</span>
+                    )}
                 </p>
                 <p>
                     <span>Created at:</span>
@@ -122,10 +131,7 @@ const BookingDetails = () => {
                             styles[booking.status?.toLowerCase() || "confirmed"]
                         }
                     >
-                        {booking.status
-                            ? booking.status.charAt(0).toUpperCase() +
-                              booking.status.slice(1)
-                            : "Confirmed"}
+                        {booking.status.toUpperCase()}
                     </span>
                     <CircleCheckBig style={{ stroke: "lightgreen" }} />
                 </p>
@@ -156,7 +162,9 @@ const BookingDetails = () => {
                         </h4>
                         <p>
                             ₹{" "}
-                            {formatBookingAmount(pricing?.nightlyRate || 45500)}
+                            {formatBookingAmount(
+                                booking?.pricing?.currentPrice
+                            )}
                             /night
                         </p>
                         <p>{dateRange}</p>
@@ -171,24 +179,38 @@ const BookingDetails = () => {
                                 "CEO's Paradise - OneClick Exclusive"}
                         </h4>
                         <p>
-                            ₹{formatBookingAmount(pricing?.stayTotal || 98000)}
+                            ₹
+                            {formatBookingAmount(
+                                booking?.pricing?.breakdown?.basePrice
+                            )}
                         </p>
                     </div>
                     <div className={styles["booking__price-breakup--item"]}>
-                        <h4>SGST (9%)</h4>
-                        <p>₹{formatBookingAmount(pricing?.sgst || 12000)}</p>
+                        <h4>
+                            CGST ({booking?.pricing?.breakdown?.gst_perc / 2}%)
+                        </h4>
+                        <p>
+                            ₹
+                            {formatBookingAmount(
+                                booking?.pricing?.breakdown?.cgst
+                            )}
+                        </p>
                     </div>
                     <div className={styles["booking__price-breakup--item"]}>
-                        <h4>IGST (9%)</h4>
-                        <p>₹{formatBookingAmount(pricing?.igst || 12000)}</p>
+                        <h4>
+                            SGST ({booking?.pricing?.breakdown?.gst_perc / 2}%)
+                        </h4>
+                        <p>
+                            ₹
+                            {formatBookingAmount(
+                                booking?.pricing?.breakdown?.sgst
+                            )}
+                        </p>
                     </div>
                     <div className={styles["booking__price-breakup--item"]}>
                         <h4>Grand Total</h4>
                         <p>
-                            ₹
-                            {formatBookingAmount(
-                                pricing?.totalAmount || 124000
-                            )}
+                            ₹{formatBookingAmount(booking?.pricing?.totalPrice)}
                         </p>
                     </div>
                 </div>
@@ -215,7 +237,7 @@ const BookingDetails = () => {
                         <p>You had requested these add-ons while booking.</p>
                         {booking.addOns.map((addon) => (
                             <div
-                                key={addon.id}
+                                key={addon._id}
                                 className={styles["booking__addons--item"]}
                             >
                                 <CheckCheck />
@@ -232,10 +254,7 @@ const BookingDetails = () => {
                 btnText="Customer Support"
                 btnType="whatsapp"
                 onClick={() => {
-                    window.open(
-                        "https://api.whatsapp.com/send/?phone=919899992197&text=Hi%2C+I+need+support+with+my+OneClick+Stays+booking.&type=phone_number&app_absent=0",
-                        "_blank"
-                    );
+                    window.open(WHATSAPP_SUPPORT_LINK, "_blank");
                 }}
             ></Footer>
         </div>

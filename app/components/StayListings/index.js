@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import styles from "./StayListings.module.scss";
 import StayCard from "@/app/components/StayCard";
 import { getFilteredStays } from "@/app/services/staysService";
-import { Loader } from "lucide-react";
 import dynamic from "next/dynamic";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import emptyStateAnimation from "@/public/assets/animations/empty-state.json";

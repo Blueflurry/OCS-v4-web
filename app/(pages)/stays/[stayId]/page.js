@@ -1,23 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import React, { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import styles from "./StayDetails.module.scss";
 import HeroImageCarousel from "@/app/components/HeroImageCarousel";
-import Image from "next/image";
+// import Image from "next/image";
 import Amenities from "@/app/components/Amenities";
 import ReturnPolicy from "@/app/components/ReturnPolicy";
-import Reviews from "@/app/components/Reviews";
+// import Reviews from "@/app/components/Reviews";
 import Header from "@/app/modules/Header";
 import PartnerLogo from "@/app/components/PartnerLogo";
 import GoogleMapComponent from "@/app/components/GMap";
 import BackButton from "@/app/components/BackButton";
 import Footer from "@/app/modules/Footer";
 import BookingEditModal from "@/app/components/BookingEditModal";
-import {
-    getStayDetails,
-    createPaymentIntent,
-} from "@/app/services/stayDetailsService";
+import { createPaymentIntent } from "@/app/services/paymentService";
 import { formatCurrency } from "@/app/utils/formatter";
 import Loading from "../loading";
 import {
@@ -34,10 +31,7 @@ import useSWR from "swr";
 const StayDetails = () => {
     const params = useParams();
     const { stayId } = params;
-
-    // const [stayData, setStayData] = useState(null);
-    // const [isLoading, setIsLoading] = useState(true);
-    // const [error, setError] = useState(null);
+    const router = useRouter();
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [bookingError, setBookingError] = useState(null);
     const [isDefaultBooking, setIsDefaultBooking] = useState(true);
@@ -227,6 +221,31 @@ const StayDetails = () => {
         }
     };
 
+    const updateStayInfo = (paymentIntentData) => {
+        // First, retrieve the current staydetails object from localStorage
+        let stayDetails = JSON.parse(localStorage.getItem("stayBasics"));
+
+        // Check if staydetails exists
+        if (stayDetails && paymentIntentData) {
+            stayDetails.pricing = {
+                basePrice: paymentIntentData.pricing.breakdown.basePrice,
+                cgst: paymentIntentData.pricing.breakdown.cgst,
+                sgst: paymentIntentData.pricing.breakdown.sgst,
+                gstPerc: paymentIntentData.pricing.breakdown.gst_perc,
+
+                currentPrice: paymentIntentData.pricing.currentPrice,
+                originalPrice: paymentIntentData.pricing.originalPrice,
+                perPerson: paymentIntentData.pricing.perPerson,
+                totalPrice: paymentIntentData.pricing.totalPrice,
+            };
+
+            localStorage.setItem("stayBasics", JSON.stringify(stayDetails));
+            console.log("Pricing updated successfully");
+        } else {
+            console.error("staydetails not found in localStorage");
+        }
+    };
+
     const handleProceedToCheckout = async () => {
         // Validate booking info before proceeding
         if (isDefaultBooking) {
@@ -275,8 +294,10 @@ const StayDetails = () => {
                     );
                     console.log("Payment intent created:", paymentIntent);
 
-                    // Let the normal flow continue by returning undefined (not false)
-                    // The Footer component will handle navigation
+                    // update stay Details in localstorage
+                    updateStayInfo(paymentIntent);
+
+                    router.push(`/stays/${stayId}/addons`);
                 })
                 .catch((err) => {
                     console.error("Error creating payment intent:", err);
@@ -305,9 +326,6 @@ const StayDetails = () => {
     if (!stayData) {
         return <div className={styles["error"]}>Stay not found</div>;
     }
-
-    // Calculate total price based on nights
-    // const totalPrice = stayData.pricing.currentPrice * bookingInfo.nights;
 
     return (
         stayData && (
@@ -631,22 +649,7 @@ const StayDetails = () => {
                             </div>
                         </div>
 
-                        {/* map */}
-                        {/* {stayData.location.googleMapEmbedLink && (
-                        <div>
-                            <iframe
-                                src={stayData.location.googleMapEmbedLink}
-                                width="100%"
-                                height={300}
-                                style={{ border: 0 }}
-                                allowFullScreen=""
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                title={"Google Maps"}
-                            ></iframe>
-                        </div>
-                    )} */}
-
+                        {/* Map */}
                         {stayData.location.coordinates && (
                             <div className={styles["stay-details__map"]}>
                                 <GoogleMapComponent

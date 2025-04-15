@@ -42,21 +42,6 @@ export function formatDateRange(dateRange) {
     return "Select dates";
 }
 
-// /**
-//  * Format date range as a string
-//  * @param {Date|string} checkIn - Check-in date
-//  * @param {Date|string} checkOut - Check-out date
-//  * @returns {string} - Formatted date range
-//  */
-// export const formatDateRange = (checkIn, checkOut) => {
-//     if (!checkIn || !checkOut) return "";
-
-//     const formattedCheckIn = formatDate(checkIn);
-//     const formattedCheckOut = formatDate(checkOut);
-
-//     return `${formattedCheckIn} - ${formattedCheckOut}`;
-// };
-
 /**
  * Format a date as ISO string (YYYY-MM-DD)
  * @param {Date} date - Date object

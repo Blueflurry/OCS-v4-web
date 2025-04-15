@@ -1,3 +1,6 @@
+// api/services/authService.js
+import { fetchAPI, handleApiError } from "./config";
+
 /**
  * Standard response object structure for API calls
  * @typedef {Object} ServiceResponse
@@ -5,68 +8,6 @@
  * @property {Object|null} data - Response data (null if error)
  * @property {string|null} error - Error message (null if success)
  */
-
-const API_BASE_URL =
-    process.env.NEXT_PUBLIC_BASEURL || "https://api.oneclickstays.com/api";
-
-/**
- * Helper function for making API requests
- * @param {string} endpoint - API endpoint
- * @param {Object} options - Fetch options
- * @returns {Promise<any>} - API response
- */
-const fetchAPI = async (endpoint, options = {}) => {
-    const url = `${API_BASE_URL}${endpoint}`;
-
-    const fetchOptions = {
-        method: options.method || "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            ...(options.headers || {}),
-        },
-        credentials: "include",
-        ...(options.body && { body: JSON.stringify(options.body) }),
-    };
-
-    const response = await fetch(url, fetchOptions);
-
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw {
-            status: response.status,
-            message: errorData.error || response.statusText,
-            response: { data: errorData },
-        };
-    }
-
-    return response.json();
-};
-
-/**
- * Handles API errors consistently
- * @param {Error} error - The error object
- * @param {string} context - Context where the error occurred
- * @returns {ServiceResponse} - Standardized error response
- */
-const handleApiError = (error, context) => {
-    console.error(`Error in ${context}:`, error);
-
-    let errorMessage = "Something went wrong. Please try again.";
-
-    // Extract more specific error message if available
-    if (error.response && error.response.data && error.response.data.error) {
-        errorMessage = error.response.data.error;
-    } else if (error.message) {
-        errorMessage = error.message;
-    }
-
-    return {
-        success: false,
-        data: null,
-        error: errorMessage,
-    };
-};
 
 /**
  * Send login OTP to the provided phone number

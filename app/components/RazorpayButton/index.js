@@ -6,12 +6,8 @@ import { isAuthenticated } from "@/app/services/authService";
 import {
     createPaymentOrder,
     verifyPayment,
-} from "@/app/services/stayDetailsService";
+} from "@/app/services/paymentService";
 import { REQUIRE_LOGIN_FOR_CHECKOUT } from "@/app/data/config";
-
-// Flag to control whether login is required for checkout
-// Set to false to allow payments without login, true to require login
-const REQUIRE_LOGIN_FOR_CHECKOUT = REQUIRE_LOGIN_FOR_CHECKOUT;
 
 /**
  * RazorpayButton Component - Handles payment processing via Razorpay
@@ -81,7 +77,7 @@ const RazorpayButton = ({
         };
     }, []);
 
-    const handlePaymentSuccess = async (response) => {
+    const handlePaymentSuccess = async (response, bookingInfo) => {
         // Create payment data for verification
         const paymentData = {
             razorpayPaymentId: response.razorpay_payment_id,
@@ -101,8 +97,8 @@ const RazorpayButton = ({
             // Update localStorage with booking ID and payment ID
             const updatedBooking = {
                 ...bookingInfo,
-                paymentId: razorpay_payment_id,
-                bookingId: verificationResult.bookingId || paymentIntentId,
+                paymentId: response.razorpay_payment_id,
+                bookingId: verificationResult.bookingId,
             };
 
             localStorage.setItem("booking", JSON.stringify(updatedBooking));
@@ -116,10 +112,10 @@ const RazorpayButton = ({
         }
     };
 
-    const handlePaymentError = (error) => {
-        console.error("Payment error:", error);
-        setError("Payment failed. Please try again.");
-    };
+    // const handlePaymentError = (error) => {
+    //     console.error("Payment error:", error);
+    //     setError("Payment failed. Please try again.");
+    // };
 
     // Handle the payment process
     const handlePayment = async () => {
@@ -208,7 +204,10 @@ const RazorpayButton = ({
                         console.log("Payment Success:", response);
 
                         // get backend verification on the payment received
-                        const result = await handlePaymentSuccess(response);
+                        const result = await handlePaymentSuccess(
+                            response,
+                            bookingInfo
+                        );
 
                         console.log("result: ------> ", result);
                         // Call success callback if provided

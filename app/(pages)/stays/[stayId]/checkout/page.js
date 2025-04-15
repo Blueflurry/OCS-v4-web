@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./Checkout.module.scss";
-import Footer from "@/app/modules/Footer";
+// import Footer from "@/app/modules/Footer";
 import Image from "next/image";
 import BackButton from "@/app/components/BackButton";
 import { CheckCheck } from "lucide-react";
@@ -13,10 +13,6 @@ import Header from "@/app/modules/Header";
 import { isAuthenticated } from "@/app/services/authService";
 import { REQUIRE_LOGIN_FOR_CHECKOUT } from "@/app/data/config";
 
-// Flag to control whether login is required for checkout
-// Set to false to allow payments without login, true to require login
-const REQUIRE_LOGIN_FOR_CHECKOUT = REQUIRE_LOGIN_FOR_CHECKOUT;
-
 const Checkout = () => {
     const params = useParams();
     const router = useRouter();
@@ -27,10 +23,6 @@ const Checkout = () => {
     const [stayDetails, setStayDetails] = useState(null);
     const [selectedAddOns, setSelectedAddOns] = useState([]);
     const [paymentIntent, setPaymentIntent] = useState(null);
-    const [taxRates, setTaxRates] = useState({
-        sgst: 9, // 9% State GST
-        cgst: 9, // 9% Central GST
-    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -67,16 +59,9 @@ const Checkout = () => {
                     setSelectedAddOns(JSON.parse(addons));
                 }
 
-                // In a real app, you would fetch the payment intent from the API
-                // For this demo, we're using the mock data and simulating a fetch
-                // Simulate API fetch delay
-                await new Promise((resolve) => setTimeout(resolve, 500));
-
                 // Use mock payment data or construct from stayBasics
                 const stayBasicsObj = JSON.parse(stayBasics);
                 const nights = stayBasicsObj.nights || 7;
-                const stayPrice = stayBasicsObj.pricing.currentPrice * nights;
-                const gstAmount = Math.round(stayPrice * 0.18); // 18% GST
 
                 const paymentIntentData = {
                     id: paymentIntentId,
@@ -88,10 +73,7 @@ const Checkout = () => {
                     nights: nights,
                     guests: stayBasicsObj.guests || 2,
                     pricing: {
-                        stayPrice: stayPrice,
-                        sgst: Math.round(stayPrice * (taxRates.sgst / 100)),
-                        cgst: Math.round(stayPrice * (taxRates.cgst / 100)),
-                        totalAmount: stayPrice + gstAmount,
+                        ...stayBasicsObj.pricing,
                     },
                     addOns: addons ? JSON.parse(addons) : [],
                     createdAt: new Date().toISOString(),
@@ -108,7 +90,7 @@ const Checkout = () => {
         };
 
         fetchData();
-    }, [stayId, taxRates, router]);
+    }, [stayId, router]);
 
     // Custom Footer with Razorpay button
     const CustomFooter = () => (
@@ -117,7 +99,7 @@ const Checkout = () => {
                 {paymentIntent && (
                     <RazorpayButton
                         paymentIntent={paymentIntent}
-                        amount={paymentIntent.pricing.totalAmount.toString()}
+                        amount={paymentIntent.pricing.totalPrice.toString()}
                         paymentIntentId={paymentIntent.id}
                         stayId={paymentIntent.stayId}
                         checkInDate={paymentIntent.checkin}
@@ -201,20 +183,20 @@ const Checkout = () => {
                             <p>
                                 ₹
                                 {formatCurrency(
-                                    paymentIntent.pricing.stayPrice
+                                    paymentIntent.pricing.basePrice
                                 )}
                             </p>
                         </div>
                         <div
                             className={styles["checkout__price-breakup--item"]}
                         >
-                            <h4>CGST ({taxRates.cgst}%)</h4>
+                            <h4>CGST ({paymentIntent.pricing.gstPerc / 2}%)</h4>
                             <p>₹{formatCurrency(paymentIntent.pricing.cgst)}</p>
                         </div>
                         <div
                             className={styles["checkout__price-breakup--item"]}
                         >
-                            <h4>SGST ({taxRates.sgst}%)</h4>
+                            <h4>SGST ({paymentIntent.pricing.gstPerc / 2}%)</h4>
                             <p>₹{formatCurrency(paymentIntent.pricing.sgst)}</p>
                         </div>
                         <div
@@ -224,7 +206,7 @@ const Checkout = () => {
                             <p>
                                 ₹
                                 {formatCurrency(
-                                    paymentIntent.pricing.totalAmount
+                                    paymentIntent.pricing.totalPrice
                                 )}
                             </p>
                         </div>
