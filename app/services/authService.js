@@ -57,8 +57,6 @@ export const verifyOtp = async (phone, otp) => {
             body: { phone, otp, countryCode: "+91" },
         });
 
-        console.log("HERE", response);
-
         return {
             success: true,
             data: response,

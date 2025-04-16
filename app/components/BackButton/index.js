@@ -9,7 +9,6 @@ const BackButton = ({ className, link, ...props }) => {
     const router = useRouter();
 
     const onClickBackBtn = () => {
-        // console.log("Back Button Clicked");
         if (link) {
             router.push(link);
             return;

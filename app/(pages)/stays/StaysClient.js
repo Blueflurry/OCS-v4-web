@@ -9,15 +9,12 @@ import StayListings from "@/app/components/StayListings";
 import FooterWithoutTabs from "@/app/modules/Footer/FooterWithoutTabs";
 import StaysFilter from "@/app/components/StaysFilter";
 
-// Client-side component that handles search parameters and saving to localStorage
 export default function StaysClient({ searchParams, initialStays }) {
-    // State for filter drawer and stays data
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [stays, setStays] = useState(initialStays);
     const [loading, setLoading] = useState(false);
     const [activeFilters, setActiveFilters] = useState({});
 
-    // Parse and save search parameters to localStorage on page load
     useEffect(() => {
         if (typeof window !== "undefined" && searchParams) {
             // Extract search parameters from URL
@@ -84,7 +81,6 @@ export default function StaysClient({ searchParams, initialStays }) {
                 "searchParams",
                 JSON.stringify(searchParamsObj)
             );
-            console.log("Saved search parameters from URL:", searchParamsObj);
         }
     }, [searchParams]);
 
@@ -141,8 +137,6 @@ export default function StaysClient({ searchParams, initialStays }) {
             Object.keys(apiFilters).forEach(
                 (key) => apiFilters[key] === undefined && delete apiFilters[key]
             );
-
-            console.log("Applying filters to API:", apiFilters);
 
             // Fetch filtered stays
             const filteredStays = await getFilteredStays(apiFilters);

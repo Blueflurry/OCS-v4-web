@@ -39,7 +39,6 @@ const Addons = () => {
                 // Fetch add-on services for this stay
                 const addonsData = await getStayAddons(stayId);
                 const addons = addonsData?.addOns;
-                console.log("Add-ons data:", addons);
                 if (Array.isArray(addons) && addons.length > 0) {
                     // Initialize isChecked property to fix uncontrolled to controlled issue
                     const servicesWithChecked = addons.map((addon) => ({
@@ -110,7 +109,6 @@ const Addons = () => {
                     selectedAddOns
                 );
 
-                console.log("Updated booking:", updatedBooking);
                 // Store selected addons for checkout page
                 localStorage.setItem(
                     "selectedAddOns",

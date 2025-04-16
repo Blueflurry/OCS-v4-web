@@ -25,11 +25,6 @@ const StayCard = ({ stay }) => {
         featuredImage,
     } = stay;
 
-    // console.log("stay", stay);
-
-    // Get the first image or use a placeholder
-    // ADD FEATURED IMAGE HERE #pending
-    // @todo BACKUP IMG #pending
     const imageUrl = featuredImage
         ? featuredImage
         : "/assets/images/banner.webp";

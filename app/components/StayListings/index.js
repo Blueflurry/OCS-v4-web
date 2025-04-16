@@ -54,20 +54,9 @@ const StayListings = ({
                 limit: 10,
             };
 
-            console.log(
-                "Fetching page:",
-                nextPage,
-                "with filters:",
-                paginatedFilters
-            );
-
             // Fetch next batch of stays
             const nextBatch = await getFilteredStays(paginatedFilters);
-            console.log("Received new batch:", nextBatch);
-
-            // If no more stays are returned, we've reached the end
             if (!nextBatch || nextBatch.length === 0) {
-                console.log("No more stays, setting hasMore to false");
                 setHasMore(false);
             } else {
                 // Add new stays to existing stays
@@ -131,12 +120,11 @@ const StayListings = ({
 
     // Update stays when initialStays changes (e.g., when filters are applied)
     useEffect(() => {
-        console.log("initialStays changed:", initialStays);
         if (initialStays) {
             // Reset to initial state when filters change
             setStays(initialStays);
             setPage(1);
-            setHasMore(true); // Assume we have more until proven otherwise
+            setHasMore(true);
         }
     }, [initialStays]);
 

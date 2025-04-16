@@ -63,12 +63,6 @@ const StaysFilter = ({
 
     // Toggle accordion sections
     const toggleSection = (section) => {
-        console.log("Toggling section:", section);
-        console.log("Current expanded sections:", expandedSections);
-        console.log(
-            "New expanded state for section:",
-            !expandedSections[section]
-        );
         setExpandedSections({
             ...expandedSections,
             [section]: !expandedSections[section],

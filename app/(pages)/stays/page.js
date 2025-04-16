@@ -1,7 +1,6 @@
 import { getFilteredStays } from "@/app/services/staysService";
 import StaysClient from "./StaysClient";
 
-// Next.js server component that handles search parameters and fetches initial data
 export default async function Stays({ searchParams }) {
     const resolvedSearchParams = await searchParams;
 
@@ -23,7 +22,6 @@ export default async function Stays({ searchParams }) {
         women,
         children,
         pets,
-
         page: 1,
         limit: 10,
 
@@ -42,11 +40,6 @@ export default async function Stays({ searchParams }) {
 
     // Fetch initial batch of filtered stays data (first 10 items)
     const initialStays = await getFilteredStays(filters);
-
-    // console.log("Search Parameters:", searchParams);
-    console.log("Resolved Search Parameters:", resolvedSearchParams);
-    console.log("Filters:", filters);
-    console.log("Initial Stays:", initialStays);
 
     // Pass both the search parameters and initial stays to the client component
     return (

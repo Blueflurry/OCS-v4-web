@@ -21,7 +21,6 @@ const History = () => {
             try {
                 setLoading(true);
                 const data = await getCompletedBookings();
-                console.log("Completed bookings data:", data);
                 setBookings(data);
             } catch (err) {
                 console.error("Error fetching completed bookings:", err);

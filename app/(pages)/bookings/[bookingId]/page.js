@@ -28,9 +28,7 @@ const BookingDetails = () => {
         const fetchBookingDetails = async () => {
             try {
                 setLoading(true);
-                // console.log("Fetching booking with ID:", bookingId);
                 const data = await getBookingDetails(bookingId);
-                console.log("Booking data received:", data);
 
                 if (Object.keys(data).length === 0) {
                     setError("Booking not found");

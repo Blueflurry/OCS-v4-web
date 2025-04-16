@@ -15,7 +15,6 @@ const HeroImageCarousel = (props) => {
     const SLIDE_COUNT = images.length;
     const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
-    // console.log("images", images);
     return (
         <div>
             <EmblaCarousel slides={SLIDES} options={OPTIONS} images={images} />

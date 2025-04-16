@@ -36,12 +36,10 @@ const RazorpayButton = ({
     const razorpayInstance = useRef(null);
     const router = useRouter();
 
-    console.log("paymentIntent", paymentIntent);
-    // Load Razorpay script only once
     useEffect(() => {
         // Check if script is already loaded
         if (window.Razorpay) {
-            console.log("Razorpay already loaded");
+            // console.log("Razorpay already loaded");
             setRazorpayLoaded(true);
             return;
         }
@@ -53,12 +51,12 @@ const RazorpayButton = ({
         script.defer = true;
 
         script.onload = () => {
-            console.log("Razorpay script loaded successfully");
+            // console.log("Razorpay script loaded successfully");
             setRazorpayLoaded(true);
         };
 
         script.onerror = (error) => {
-            console.error("Error loading Razorpay script:", error);
+            // console.error("Error loading Razorpay script:", error);
             setError("Failed to load payment gateway. Please try again later.");
         };
 
@@ -84,12 +82,9 @@ const RazorpayButton = ({
             razorpayOrderId: response.razorpay_order_id,
             razorpaySignature: response.razorpay_signature,
         };
-        console.log("Payment Success:", paymentData);
 
         // Verify payment with backend after success
         const verificationResult = await verifyPayment(paymentData);
-
-        console.log(verificationResult);
 
         if (verificationResult.success) {
             // Payment verified successfully
@@ -102,7 +97,6 @@ const RazorpayButton = ({
             };
 
             localStorage.setItem("booking", JSON.stringify(updatedBooking));
-
             return verificationResult;
         } else {
             // Payment verification failed
@@ -162,14 +156,10 @@ const RazorpayButton = ({
                 // order_id: paymentIntent.razorpayOrderId,
             };
 
-            console.log("payment details", paymentDetails);
-
             const orderData = await createPaymentOrder(
                 paymentIntentId,
                 paymentDetails
             );
-
-            console.log("orderData", orderData);
 
             if (!orderData || !orderData.razorpayOrderId) {
                 throw new Error("Failed to create payment order");
@@ -188,7 +178,7 @@ const RazorpayButton = ({
 
             // Convert amount to paise for Razorpay
             const amountInPaise = Math.round(Number(amount) * 100);
-            console.log(`Amount: ${amount} INR (${amountInPaise} paise)`);
+            // console.log(`Amount: ${amount} INR (${amountInPaise} paise)`);
 
             // Configure Razorpay options
             const options = {
@@ -201,18 +191,12 @@ const RazorpayButton = ({
                 order_id: orderData.razorpayOrderId, // Using order ID from API
                 handler: async function (response) {
                     try {
-                        console.log("Payment Success:", response);
-
-                        // get backend verification on the payment received
                         const result = await handlePaymentSuccess(
                             response,
                             bookingInfo
                         );
 
-                        console.log("result: ------> ", result);
-                        // Call success callback if provided
                         if (result) {
-                            // Navigate to success page
                             router.push(`/stays/${stayId}/payment-success`);
                         }
                     } catch (error) {
@@ -245,7 +229,7 @@ const RazorpayButton = ({
                 modal: {
                     ondismiss: function () {
                         setLoading(false);
-                        console.log("Payment modal dismissed");
+                        // console.log("Payment modal dismissed");
                     },
                     escape: true,
                 },

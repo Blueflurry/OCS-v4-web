@@ -111,7 +111,6 @@ const OtpVerification = () => {
 
         // Call API to verify OTP with improved error handling
         const response = await verifyOtp(phoneNumber, otpValue);
-        console.log("verifyOtp response", response.data);
 
         // In page.js (OTP Verification page - document 14)
         // Inside the handleSubmit function, update the redirect logic:

@@ -86,7 +86,6 @@ const PaymentSuccess = () => {
         : "/bookings/24";
 
     const handleAnimationEnterFrame = (frame) => {
-        // console.log("frame", frame);
         setTimeout(() => {
             setAnimationFlag(true);
         }, 800);

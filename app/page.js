@@ -13,10 +13,7 @@ export default async function Home() {
 
     try {
         const result = await fetchHomePageStays();
-        console.log("Response from server:", result);
-
         availableCategories = result.data;
-        console.log("Available categories:", availableCategories);
     } catch (error) {
         console.error("Failed to fetch stays:", error);
         // Return null or error state

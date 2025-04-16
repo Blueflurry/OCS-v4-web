@@ -45,7 +45,7 @@ export const updatePaymentIntentWithAddOns = async (
             method: "PATCH",
             body: { addOns: addOnDetails },
         });
-        console.log("Update payment intent response:", response);
+        // console.log("Update payment intent response:", response);
         return response.booking || {};
     } catch (error) {
         console.error("Error updating payment intent with add-ons:", error);
@@ -72,7 +72,6 @@ export const createPaymentOrder = async (bookingId, paymentDetails) => {
             true
         );
 
-        console.log("Payment order created:", response);
         return response;
     } catch (error) {
         console.error("Error creating payment order:", error);

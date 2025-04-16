@@ -19,7 +19,7 @@ export const getBookingDetails = async (bookingId) => {
 
     try {
         const response = await fetchAPI(`/bookings/${bookingId}`, {}, true);
-        console.log("Booking details response:", response);
+        // console.log("Booking details response:", response);
         return response.booking || {};
     } catch (error) {
         console.error(

@@ -163,7 +163,6 @@ const MobileSearch = ({ searchTxt }) => {
         };
 
         localStorage.setItem("searchParams", JSON.stringify(searchParams));
-        console.log("Saved search parameters:", searchParams);
 
         // Create the query string for URL
         const queryParams = new URLSearchParams({

@@ -56,20 +56,16 @@ const StayDetails = () => {
             pets: 0,
         };
 
-        // Try to get search parameters from localStorage
         if (typeof window !== "undefined") {
             const searchParamsStr = localStorage.getItem("searchParams");
             if (searchParamsStr) {
                 try {
                     const searchParams = JSON.parse(searchParamsStr);
-                    // console.log("Retrieved search parameters:", searchParams);
-
-                    // If we have search parameters with dates and guests, use them
                     if (
                         searchParams.formattedCheckin &&
                         searchParams.formattedCheckout
                     ) {
-                        setIsDefaultBooking(false); // User has explicitly set booking info
+                        setIsDefaultBooking(false);
                         return {
                             checkin: searchParams.formattedCheckin,
                             checkout: searchParams.formattedCheckout,
@@ -92,7 +88,6 @@ const StayDetails = () => {
         return defaultBooking;
     });
 
-    console.log("Booking info:", bookingInfo);
     const {
         data: stayData,
         error,
@@ -149,8 +144,6 @@ const StayDetails = () => {
         }
     );
 
-    console.log("Stay data:", stayData);
-
     // Handle booking info update
     const handleBookingUpdate = (updatedBookingInfo) => {
         setBookingInfo((prevBookingInfo) => {
@@ -159,7 +152,6 @@ const StayDetails = () => {
                 ...updatedBookingInfo,
             };
 
-            // Update localStorage with the new search parameters
             if (typeof window !== "undefined") {
                 const searchParams = {
                     location: stayData?.location?.name || "",
@@ -179,7 +171,6 @@ const StayDetails = () => {
                     "searchParams",
                     JSON.stringify(searchParams)
                 );
-                console.log("Updated search parameters:", searchParams);
             }
 
             // Clear booking error since user has updated information
@@ -211,9 +202,6 @@ const StayDetails = () => {
         try {
             const response = await fetch("https://ipapi.co/json/");
             const data = await response.json();
-            // console.log(
-            //     `Location: ${data.city}, ${data.region}, ${data.country_name}`
-            // );
             return data;
         } catch (error) {
             console.error("Error fetching location:", error);
@@ -225,7 +213,6 @@ const StayDetails = () => {
         // First, retrieve the current staydetails object from localStorage
         let stayDetails = JSON.parse(localStorage.getItem("stayBasics"));
 
-        // Check if staydetails exists
         if (stayDetails && paymentIntentData) {
             stayDetails.pricing = {
                 basePrice: paymentIntentData.pricing.breakdown.basePrice,
@@ -240,7 +227,6 @@ const StayDetails = () => {
             };
 
             localStorage.setItem("stayBasics", JSON.stringify(stayDetails));
-            console.log("Pricing updated successfully");
         } else {
             console.error("staydetails not found in localStorage");
         }
@@ -260,7 +246,6 @@ const StayDetails = () => {
             const geoLocationPermission = await hasGeolocationPermission();
             const ipLocation = await getLocationFromIP();
 
-            // Create a payment intent using stored data
             createPaymentIntent({
                 stayId: stayData._id,
                 checkIn: bookingInfo.rawCheckin,
@@ -287,12 +272,10 @@ const StayDetails = () => {
                 },
             })
                 .then((paymentIntent) => {
-                    // Store the payment intent ID in localStorage
                     localStorage.setItem(
                         "paymentIntentId",
                         paymentIntent.bookingId
                     );
-                    console.log("Payment intent created:", paymentIntent);
 
                     // update stay Details in localstorage
                     updateStayInfo(paymentIntent);
@@ -304,14 +287,14 @@ const StayDetails = () => {
                     setBookingError(
                         "Unable to process your booking. Please try again."
                     );
-                    return false; // Prevent navigation
+                    return false;
                 });
         } catch (err) {
             console.error("Error creating payment intent:", err);
             setBookingError(
                 "Unable to process your booking. Please try again."
             );
-            return false; // Prevent navigation
+            return false;
         }
     };
 

@@ -15,7 +15,6 @@ const Header = () => {
         // This code will only run on the client side
         const userFromStorage = localStorage.getItem("user");
 
-        console.log("userFromStorage", userFromStorage);
         if (userFromStorage) {
             setUser(JSON.parse(userFromStorage));
         }

@@ -74,8 +74,6 @@ const Signup = () => {
                 phone: formData.phoneNumber,
             });
 
-            console.log("User creation", response);
-
             if (response.success) {
                 localStorage.setItem(
                     "user",

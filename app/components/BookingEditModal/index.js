@@ -164,7 +164,6 @@ const BookingEditModal = ({
 
         // Save updated booking to localStorage
         localStorage.setItem("booking", JSON.stringify(updatedBookingInfo));
-        console.log("Updated booking:", updatedBookingInfo);
 
         // Call the onUpdate callback with updated booking
         if (onUpdate) {
