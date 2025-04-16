@@ -47,6 +47,11 @@
         }
     }
 
+    &__details {
+        overflow-y: scroll;
+        height: 76vh;
+    }
+
     &__stay-details {
         display: flex;
         justify-content: flex-start;
