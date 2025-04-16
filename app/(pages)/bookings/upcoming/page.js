@@ -10,6 +10,9 @@ import {
 } from "@/app/services/bookingService";
 import Loading from "@/app/loading";
 import Header from "@/app/modules/Header";
+import dynamic from "next/dynamic";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+import emptyStateAnimation from "@/public/assets/animations/empty-state.json";
 
 const Upcoming = () => {
     const [bookings, setBookings] = useState([]);
@@ -81,8 +84,19 @@ const Upcoming = () => {
 
                 <div className={styles["upcoming-bookings__details"]}>
                     {bookings.length === 0 ? (
-                        <div className={styles["no-bookings"]}>
-                            <p>You don't have any upcoming bookings</p>
+                        // <div className={styles["no-bookings"]}>
+                        //     <p>You don't have any upcoming bookings</p>
+                        //     <Link href="/" className={styles["browse-link"]}>
+                        //         Browse stays
+                        //     </Link>
+                        // </div>
+
+                        <div className={styles.loadingContainer}>
+                            <Lottie
+                                animationData={emptyStateAnimation}
+                                loop={true}
+                                style={{ height: 300 }}
+                            />
                             <Link href="/" className={styles["browse-link"]}>
                                 Browse stays
                             </Link>
@@ -91,27 +105,30 @@ const Upcoming = () => {
                         bookings.map((booking) => {
                             // Format dates for display
                             const checkInDate = formatBookingDate(
-                                booking.dates?.checkIn
+                                booking?.dates?.checkIn
                             );
                             const checkOutDate = formatBookingDate(
-                                booking.dates?.checkOut
+                                booking?.dates?.checkOut
                             );
                             const dateRange = `${checkInDate} - ${checkOutDate}`;
 
                             // Get stay details
-                            const stay = booking.stay || {};
-                            const location = stay.location?.name || "";
+                            const stay = booking.stays[0]?.stay || {};
+                            const location = stay.location?.address?.city || "";
+                            const guestCount = booking.guests?.total || 0;
+                            const guestInfo =
+                                guestCount > 0 ? ` • ${guestCount} Guests` : "";
 
                             // Get pricing details
                             const originalPrice =
                                 booking.pricing?.originalPrice || 0;
                             const currentPrice =
-                                booking.pricing?.stayTotal || 0;
+                                booking.pricing?.totalPrice || 0;
 
                             return (
                                 <Link
-                                    href={`/bookings/${booking._id}`}
-                                    key={booking._id}
+                                    href={`/bookings/${booking.bookingId}`}
+                                    key={booking.bookingId}
                                 >
                                     <div
                                         className={
@@ -129,12 +146,16 @@ const Upcoming = () => {
                                         >
                                             <Image
                                                 src={
-                                                    stay.images?.[0] ||
+                                                    stay.media?.featuredImage ||
                                                     "/assets/images/villa-1.svg"
                                                 }
                                                 width={100}
                                                 height={100}
-                                                alt={stay.name || "Stay"}
+                                                alt={
+                                                    stay.name
+                                                        ?.split("|")[0]
+                                                        .trim() || "Luxury Stay"
+                                                }
                                             />
                                         </div>
                                         <div
@@ -146,13 +167,17 @@ const Upcoming = () => {
                                         >
                                             <h4>
                                                 <span>Booking ID:</span>
-                                                {booking.bookingId ||
-                                                    "#OCSBK299024"}
+                                                {booking.bookingId}
                                             </h4>
                                             <h3>
-                                                {stay.name || "Luxury Stay"}
+                                                {stay.name
+                                                    ?.split("|")[0]
+                                                    .trim() || "Luxury Stay"}
                                             </h3>
-                                            <p>{dateRange}</p>
+                                            <p>
+                                                {dateRange}
+                                                {guestInfo}
+                                            </p>
 
                                             <div
                                                 className={
@@ -171,14 +196,14 @@ const Upcoming = () => {
                                             </div>
 
                                             <h2>
-                                                {originalPrice > 0 && (
+                                                {/* {originalPrice > 0 && (
                                                     <span>
                                                         ₹
                                                         {formatBookingAmount(
                                                             originalPrice
                                                         )}
                                                     </span>
-                                                )}
+                                                )} */}
                                                 ₹
                                                 {formatBookingAmount(
                                                     currentPrice

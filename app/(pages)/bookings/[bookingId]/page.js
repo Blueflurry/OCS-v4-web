@@ -124,11 +124,7 @@ const BookingDetails = () => {
 
                 <p>
                     <span>Status:</span>
-                    <span
-                        className={
-                            styles[booking.status?.toLowerCase() || "confirmed"]
-                        }
-                    >
+                    <span className={styles[booking.status?.toLowerCase()]}>
                         {booking.status.toUpperCase()}
                     </span>
                     <CircleCheckBig style={{ stroke: "lightgreen" }} />
@@ -145,18 +141,18 @@ const BookingDetails = () => {
                     <div className={styles["booking__stay-details--image"]}>
                         <Image
                             src={
-                                booking.stay?.images?.[0] ||
+                                booking.stays[0]?.stay?.media?.featuredImage ||
                                 "/assets/images/villa-1.svg"
                             }
                             width={100}
                             height={100}
-                            alt={booking.stay?.name || "Stay"}
+                            alt={booking.stays[0]?.stay?.name || "Stay"}
                         ></Image>
                     </div>
                     <div className={styles["booking__stay-details--details"]}>
                         <h4>
-                            {booking.stay?.name ||
-                                "CEO's Paradise - OneClick Exclusive"}
+                            {booking.stays[0]?.stay?.name.split("|")[0] ||
+                                "Stay"}
                         </h4>
                         <p>
                             ₹{" "}
@@ -173,8 +169,10 @@ const BookingDetails = () => {
                     <h2>Stay Price Breakup</h2>
                     <div className={styles["booking__price-breakup--item"]}>
                         <h4>
-                            {booking.stay?.name ||
-                                "CEO's Paradise - OneClick Exclusive"}
+                            {booking.stays[0]?.stay?.name
+                                ?.split("|")[0]
+                                .trim() + " "}
+                            ({booking.dates?.nights + "nights"})
                         </h4>
                         <p>
                             ₹
