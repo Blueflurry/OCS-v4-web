@@ -57,6 +57,8 @@ export const verifyOtp = async (phone, otp) => {
             body: { phone, otp, countryCode: "+91" },
         });
 
+        console.log("HERE", response);
+
         return {
             success: true,
             data: response,
@@ -84,11 +86,11 @@ export const createUser = async (userData) => {
 
         return {
             success: true,
-            data: response.data,
+            data: response,
             error: null,
         };
     } catch (error) {
-        return handleApiError(error, "createUser");
+        return handleApiError(error?.response?.data, "createUser");
     }
 };
 

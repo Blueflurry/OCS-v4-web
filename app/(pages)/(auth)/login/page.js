@@ -56,7 +56,7 @@ const Login = () => {
     return (
         <div className={styles["login"]}>
             <div className={styles["login__header"]}>
-                <BackButton link="/welcome" />
+                {/* <BackButton link="/welcome" /> */}
                 <Image
                     src="/assets/images/logo.svg"
                     alt="OneClick Stays"

@@ -74,19 +74,22 @@ const Signup = () => {
                 phone: formData.phoneNumber,
             });
 
-            console.log("User created successfully", response);
+            console.log("User creation", response);
 
             if (response.success) {
                 // Store user data in local storage
                 localStorage.setItem(
                     "user",
-                    JSON.stringify({ ...response.user, token: response.token })
+                    JSON.stringify({
+                        ...response.data.user,
+                        token: response.data.token,
+                    })
                 );
 
                 // Redirect to home page
                 router.push("/");
             } else {
-                throw new Error(response.message || "User already exists!!");
+                throw new Error(response.error || "User already exists!!");
             }
         } catch (error) {
             console.error("Signup error:", error);

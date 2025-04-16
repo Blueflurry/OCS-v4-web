@@ -70,10 +70,14 @@ export const handleApiError = (error, context) => {
     let errorMessage = "Something went wrong. Please try again.";
 
     // Extract more specific error message if available
-    if (error.response && error.response.data && error.response.data.error) {
-        errorMessage = error.response.data.error;
-    } else if (error.message) {
+    if (error.message) {
         errorMessage = error.message;
+    } else if (
+        error.response &&
+        error.response.data &&
+        error.response.data.error
+    ) {
+        errorMessage = error.response.data.error;
     }
 
     return {

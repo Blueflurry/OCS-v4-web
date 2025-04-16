@@ -111,15 +111,18 @@ const OtpVerification = () => {
 
         // Call API to verify OTP with improved error handling
         const response = await verifyOtp(phoneNumber, otpValue);
+        console.log("verifyOtp response", response.data);
 
         if (response.success) {
             try {
                 // Get user data from response
-                const userData = response;
+                const userData = response.data;
 
                 // Check if user exists: #pending
                 if (userData.user) {
-                    const user = { ...userData.user, token: response.token };
+                    const user = { ...userData.user, token: userData.token };
+                    // console.log("USER", user);
+
                     // Store user data in local storage
                     localStorage.setItem("user", JSON.stringify(user || {}));
 
