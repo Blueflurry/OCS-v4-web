@@ -1,4 +1,12 @@
-import { fetchAPI } from "./config";
+import { fetchAPI, isAuthenticated } from "./config";
+
+const checkAuthForPayment = () => {
+    if (!isAuthenticated() && typeof window !== "undefined") {
+        const currentPath = window.location.pathname;
+        window.location.href = `/login?redirect=${currentPath}`;
+        throw new Error("Authentication required for payment operations");
+    }
+};
 
 /**
  * Create a new payment intent for a stay
@@ -52,11 +60,17 @@ export const updatePaymentIntentWithAddOns = async (
  * @returns {Promise<Object>} - Order details including Razorpay order ID
  */
 export const createPaymentOrder = async (bookingId, paymentDetails) => {
+    checkAuthForPayment();
+
     try {
-        const response = await fetchAPI(`/bookings/${bookingId}/payment`, {
-            method: "POST",
-            body: paymentDetails,
-        });
+        const response = await fetchAPI(
+            `/bookings/${bookingId}/payment`,
+            {
+                method: "POST",
+                body: paymentDetails,
+            },
+            true
+        );
 
         console.log("Payment order created:", response);
         return response;
@@ -72,11 +86,17 @@ export const createPaymentOrder = async (bookingId, paymentDetails) => {
  * @returns {Promise<Object>} - Verification result
  */
 export const verifyPayment = async (paymentData) => {
+    checkAuthForPayment();
+
     try {
-        const response = await fetchAPI("/bookings/verify-payment", {
-            method: "POST",
-            body: paymentData,
-        });
+        const response = await fetchAPI(
+            "/bookings/verify-payment",
+            {
+                method: "POST",
+                body: paymentData,
+            },
+            true
+        );
 
         return response;
     } catch (error) {

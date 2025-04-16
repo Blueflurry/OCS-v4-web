@@ -113,32 +113,35 @@ const OtpVerification = () => {
         const response = await verifyOtp(phoneNumber, otpValue);
         console.log("verifyOtp response", response.data);
 
+        // In page.js (OTP Verification page - document 14)
+        // Inside the handleSubmit function, update the redirect logic:
+
         if (response.success) {
             try {
-                // Get user data from response
                 const userData = response.data;
 
-                // Check if user exists: #pending
                 if (userData.user) {
                     const user = { ...userData.user, token: userData.token };
-                    // console.log("USER", user);
-
-                    // Store user data in local storage
                     localStorage.setItem("user", JSON.stringify(user || {}));
 
-                    // Redirect to home page if user exists
-                    router.push("/");
+                    // Check if there's a redirect URL
+                    const redirectUrl = sessionStorage.getItem("redirectUrl");
+                    if (redirectUrl) {
+                        sessionStorage.removeItem("redirectUrl");
+                        router.push(redirectUrl);
+                    } else {
+                        router.push("/");
+                    }
                 } else {
-                    // Redirect to signup page if user doesn't exist
                     router.push("/signup");
                 }
             } catch (storageError) {
                 console.error("Error storing user data:", storageError);
                 // Try to navigate anyway
-                router.push(userData?.user ? "/" : "/signup");
+                const redirectUrl = sessionStorage.getItem("redirectUrl");
+                router.push(userData?.user ? redirectUrl || "/" : "/signup");
             }
         } else {
-            // Handle verification failure
             setError(
                 response.error || "Invalid verification code. Please try again."
             );

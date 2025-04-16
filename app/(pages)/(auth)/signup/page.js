@@ -77,7 +77,6 @@ const Signup = () => {
             console.log("User creation", response);
 
             if (response.success) {
-                // Store user data in local storage
                 localStorage.setItem(
                     "user",
                     JSON.stringify({
@@ -86,10 +85,13 @@ const Signup = () => {
                     })
                 );
 
-                // Redirect to home page
-                router.push("/");
-            } else {
-                throw new Error(response.error || "User already exists!!");
+                const redirectUrl = sessionStorage.getItem("redirectUrl");
+                if (redirectUrl) {
+                    sessionStorage.removeItem("redirectUrl");
+                    router.push(redirectUrl);
+                } else {
+                    router.push("/");
+                }
             }
         } catch (error) {
             console.error("Signup error:", error);

@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./Checkout.module.scss";
-// import Footer from "@/app/modules/Footer";
 import Image from "next/image";
 import BackButton from "@/app/components/BackButton";
 import { CheckCheck } from "lucide-react";
@@ -29,7 +28,7 @@ const Checkout = () => {
             try {
                 // Check if login is required
                 if (REQUIRE_LOGIN_FOR_CHECKOUT && !isAuthenticated()) {
-                    // Redirect to login page
+                    // Redirect to login page with the return URL
                     router.push(`/login?redirect=/stays/${stayId}/checkout`);
                     return;
                 }
@@ -122,118 +121,154 @@ const Checkout = () => {
         return <div className={styles["error"]}>{error}</div>;
     }
 
-    if (!paymentIntent || !stayDetails) {
-        return (
-            <div className={styles["error"]}>Booking information not found</div>
-        );
-    }
+    // if (!paymentIntent || !stayDetails) {
+    //     return (
+    //         <div className={styles["error"]}>Booking information not found</div>
+    //     );
+    // }
 
     return (
         <>
-            <Header />
-            <div className={styles["checkout"]}>
-                <div className={styles["checkout__header"]}>
-                    <h2>Checkout</h2>
-                    <BackButton />
-                </div>
+            {stayDetails && (
+                <>
+                    <Header />
 
-                <div className={styles["checkout__details"]}>
-                    <div className={styles["checkout__stay-details"]}>
-                        <div
-                            className={styles["checkout__stay-details--image"]}
-                        >
-                            <Image
-                                src={
-                                    stayDetails.image ||
-                                    "/assets/images/villa-1.svg"
-                                }
-                                width={100}
-                                height={100}
-                                alt={stayDetails.name}
-                            />
+                    <div className={styles["checkout"]}>
+                        <div className={styles["checkout__header"]}>
+                            <h2>Checkout</h2>
+                            <BackButton />
                         </div>
-                        <div
-                            className={
-                                styles["checkout__stay-details--details"]
-                            }
-                        >
-                            <h4>{stayDetails.name}</h4>
-                            <p>
-                                ₹{" "}
-                                {formatCurrency(
-                                    stayDetails.pricing.currentPrice
-                                )}
-                                /night
-                            </p>
-                            <p>
-                                {stayDetails.checkin} - {stayDetails.checkout}
-                            </p>
-                        </div>
-                    </div>
 
-                    <div className={styles["checkout__price-breakup"]}>
-                        <h2>Stay Price Breakup</h2>
-                        <div
-                            className={styles["checkout__price-breakup--item"]}
-                        >
-                            <h4>
-                                {stayDetails.name} ({paymentIntent.nights}{" "}
-                                nights)
-                            </h4>
-                            <p>
-                                ₹
-                                {formatCurrency(
-                                    paymentIntent.pricing.basePrice
-                                )}
-                            </p>
-                        </div>
-                        <div
-                            className={styles["checkout__price-breakup--item"]}
-                        >
-                            <h4>CGST ({paymentIntent.pricing.gstPerc / 2}%)</h4>
-                            <p>₹{formatCurrency(paymentIntent.pricing.cgst)}</p>
-                        </div>
-                        <div
-                            className={styles["checkout__price-breakup--item"]}
-                        >
-                            <h4>SGST ({paymentIntent.pricing.gstPerc / 2}%)</h4>
-                            <p>₹{formatCurrency(paymentIntent.pricing.sgst)}</p>
-                        </div>
-                        <div
-                            className={styles["checkout__price-breakup--item"]}
-                        >
-                            <h4>Grand Total</h4>
-                            <p>
-                                ₹
-                                {formatCurrency(
-                                    paymentIntent.pricing.totalPrice
-                                )}
-                            </p>
-                        </div>
-                    </div>
-
-                    {selectedAddOns && selectedAddOns.length > 0 && (
-                        <div className={styles["checkout__addons"]}>
-                            <h2>Requested Add-ons</h2>
-                            <p>
-                                Our team will contact you to discuss these
-                                add-ons.
-                            </p>
-                            {selectedAddOns.map((addon, index) => (
+                        <div className={styles["checkout__details"]}>
+                            <div className={styles["checkout__stay-details"]}>
                                 <div
-                                    key={index}
-                                    className={styles["checkout__addons--item"]}
+                                    className={
+                                        styles["checkout__stay-details--image"]
+                                    }
                                 >
-                                    <CheckCheck />
-                                    <h4>{addon.name}</h4>
+                                    <Image
+                                        src={
+                                            stayDetails.image ||
+                                            "/assets/images/villa-1.svg"
+                                        }
+                                        width={100}
+                                        height={100}
+                                        alt={stayDetails.name}
+                                    />
                                 </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                                <div
+                                    className={
+                                        styles[
+                                            "checkout__stay-details--details"
+                                        ]
+                                    }
+                                >
+                                    <h4>{stayDetails.name}</h4>
+                                    <p>
+                                        ₹{" "}
+                                        {formatCurrency(
+                                            stayDetails.pricing.currentPrice
+                                        )}
+                                        /night
+                                    </p>
+                                    <p>
+                                        {stayDetails.checkin} -{" "}
+                                        {stayDetails.checkout}
+                                    </p>
+                                </div>
+                            </div>
 
-                <CustomFooter />
-            </div>
+                            <div className={styles["checkout__price-breakup"]}>
+                                <h2>Stay Price Breakup</h2>
+                                <div
+                                    className={
+                                        styles["checkout__price-breakup--item"]
+                                    }
+                                >
+                                    <h4>
+                                        {stayDetails.name} (
+                                        {paymentIntent.nights} nights)
+                                    </h4>
+                                    <p>
+                                        ₹
+                                        {formatCurrency(
+                                            paymentIntent.pricing.basePrice
+                                        )}
+                                    </p>
+                                </div>
+                                <div
+                                    className={
+                                        styles["checkout__price-breakup--item"]
+                                    }
+                                >
+                                    <h4>
+                                        CGST (
+                                        {paymentIntent.pricing.gstPerc / 2}%)
+                                    </h4>
+                                    <p>
+                                        ₹
+                                        {formatCurrency(
+                                            paymentIntent.pricing.cgst
+                                        )}
+                                    </p>
+                                </div>
+                                <div
+                                    className={
+                                        styles["checkout__price-breakup--item"]
+                                    }
+                                >
+                                    <h4>
+                                        SGST (
+                                        {paymentIntent.pricing.gstPerc / 2}%)
+                                    </h4>
+                                    <p>
+                                        ₹
+                                        {formatCurrency(
+                                            paymentIntent.pricing.sgst
+                                        )}
+                                    </p>
+                                </div>
+                                <div
+                                    className={
+                                        styles["checkout__price-breakup--item"]
+                                    }
+                                >
+                                    <h4>Grand Total</h4>
+                                    <p>
+                                        ₹
+                                        {formatCurrency(
+                                            paymentIntent.pricing.totalPrice
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {selectedAddOns && selectedAddOns.length > 0 && (
+                                <div className={styles["checkout__addons"]}>
+                                    <h2>Requested Add-ons</h2>
+                                    <p>
+                                        Our team will contact you to discuss
+                                        these add-ons.
+                                    </p>
+                                    {selectedAddOns.map((addon, index) => (
+                                        <div
+                                            key={index}
+                                            className={
+                                                styles["checkout__addons--item"]
+                                            }
+                                        >
+                                            <CheckCheck />
+                                            <h4>{addon.name}</h4>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        <CustomFooter />
+                    </div>
+                </>
+            )}
         </>
     );
 };

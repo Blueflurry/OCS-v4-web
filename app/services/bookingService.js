@@ -1,4 +1,13 @@
-import { fetchAPI } from "./config";
+import { fetchAPI, isAuthenticated } from "./config";
+
+// Add this function for protected booking operations
+const checkAuthForBooking = () => {
+    if (!isAuthenticated() && typeof window !== "undefined") {
+        const currentPath = window.location.pathname;
+        window.location.href = `/login?redirect=${currentPath}`;
+        throw new Error("Authentication required for booking operations");
+    }
+};
 
 /**
  * Get details for a specific booking
@@ -6,8 +15,10 @@ import { fetchAPI } from "./config";
  * @returns {Promise<Object>} - Booking details object
  */
 export const getBookingDetails = async (bookingId) => {
+    checkAuthForBooking();
+
     try {
-        const response = await fetchAPI(`/bookings/${bookingId}`);
+        const response = await fetchAPI(`/bookings/${bookingId}`, {}, true);
         console.log("Booking details response:", response);
         return response.booking || {};
     } catch (error) {
@@ -26,8 +37,8 @@ export const getBookingDetails = async (bookingId) => {
  */
 export const getUserBookings = async (status) => {
     try {
-        const response = await fetchAPI(`/bookings/${status}`);
-        return response || [];
+        const response = await fetchAPI(`/users/bookings/${status}`, {}, true);
+        return response.bookings || [];
     } catch (error) {
         console.error(`Error fetching user bookings:`, error);
         return [];

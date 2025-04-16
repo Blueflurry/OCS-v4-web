@@ -7,12 +7,54 @@ export const API_BASE_URL =
     process.env.NEXT_PUBLIC_BASEURL || "https://api.oneclickstays.com/api";
 
 /**
+ * Check if user is authenticated
+ * @returns {boolean} - Whether user is authenticated
+ */
+export const isAuthenticated = () => {
+    if (typeof window === "undefined") return false;
+
+    try {
+        const userStr = localStorage.getItem("user");
+        if (!userStr) return false;
+
+        const user = JSON.parse(userStr);
+        return !!user.token;
+    } catch (e) {
+        console.error("Error checking authentication:", e);
+        return false;
+    }
+};
+
+/**
  * Helper function for making API requests
  * @param {string} endpoint - API endpoint
  * @param {Object} options - Fetch options
+ * @param {boolean} requiresAuth - Whether endpoint requires authentication
  * @returns {Promise<any>} - API response
  */
-export const fetchAPI = async (endpoint, options = {}) => {
+export const fetchAPI = async (
+    endpoint,
+    options = {},
+    requiresAuth = false
+) => {
+    // Add authentication token to headers if authentication is required
+    if (requiresAuth && typeof window !== "undefined") {
+        const userStr = localStorage.getItem("user");
+        if (userStr) {
+            try {
+                const user = JSON.parse(userStr);
+                if (user.token) {
+                    options.headers = {
+                        ...options.headers,
+                        Authorization: `Bearer ${user.token}`,
+                    };
+                }
+            } catch (e) {
+                console.error("Error parsing user data:", e);
+            }
+        }
+    }
+
     // Build the full URL with query parameters if provided
     let url = `${API_BASE_URL}${endpoint}`;
 
@@ -44,6 +86,16 @@ export const fetchAPI = async (endpoint, options = {}) => {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
+
+            // Check if error is due to authentication
+            if (response.status === 401 && typeof window !== "undefined") {
+                console.error(
+                    "Authentication error: Token may be invalid or expired"
+                );
+                // Clear user data for auth errors
+                localStorage.removeItem("user");
+            }
+
             throw {
                 status: response.status,
                 message: errorData.error || response.statusText,

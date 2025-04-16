@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Button from "../../components/Button";
 import styles from "./Header.module.scss";
@@ -8,6 +8,18 @@ import { useRouter } from "next/navigation";
 
 const Header = () => {
     const router = useRouter();
+    const [user, setUser] = useState(null);
+
+    // Move localStorage access into useEffect
+    useEffect(() => {
+        // This code will only run on the client side
+        const userFromStorage = localStorage.getItem("user");
+
+        console.log("userFromStorage", userFromStorage);
+        if (userFromStorage) {
+            setUser(JSON.parse(userFromStorage));
+        }
+    }, []);
 
     const handleLoginClick = () => {
         router.push("/login");
@@ -25,17 +37,22 @@ const Header = () => {
                 />
             </Link>
             <div className={`${styles["header__actions"]}`}>
-                <Button type="secondary" onClick={handleLoginClick}>
-                    Login
-                </Button>
-                <Button type="secondary" square>
+                {
+                    // don't show if user exists
+                    !user && (
+                        <Button type="secondary" onClick={handleLoginClick}>
+                            Login
+                        </Button>
+                    )
+                }
+                {/* <Button type="secondary" square>
                     <Image
                         src="/assets/images/menu.svg"
                         alt="Menu"
                         width={20}
                         height={20}
                     />
-                </Button>
+                </Button> */}
             </div>
         </div>
     );

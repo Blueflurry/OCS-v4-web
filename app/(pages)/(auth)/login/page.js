@@ -1,17 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Button from "@/app/components/Button";
 import BackButton from "@/app/components/BackButton";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./Login.module.scss";
 import { sendLoginOtp } from "@/app/services/authService";
 
 const Login = () => {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const [redirectUrl, setRedirectUrl] = useState("/");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+
+    // Add this useEffect
+    useEffect(() => {
+        // Get the redirect URL from query params
+        const redirect = searchParams.get("redirect");
+        if (redirect) {
+            setRedirectUrl(redirect);
+            // Store redirect URL in session storage to use after OTP verification
+            sessionStorage.setItem("redirectUrl", redirect);
+        }
+    }, [searchParams]);
 
     const handlePhoneChange = (e) => {
         // Allow only numbers and limit to 10 digits
