@@ -25,9 +25,9 @@ export const fetchHomePageStays = async () => {
  * @returns {Promise<Array>} - Array of stay objects
  */
 export const getFilteredStays = async (filters) => {
+    console.log("filters", filters);
     try {
-        const guests =
-            filters.men + filters.women + filters.children + filters.pets;
+        const guests = filters.men + filters.women + filters.children;
 
         // Pre-process special filter fields if needed
         const processedFilters = {
@@ -51,8 +51,8 @@ export const getFilteredStays = async (filters) => {
             bedrooms: filters.bedrooms || "0",
             beds: filters.beds || "0",
             priceRange: {
-                min: 0,
-                max: 2500000,
+                min: filters.priceMin || 0,
+                max: filters.priceMax || 2500000,
             },
         };
 

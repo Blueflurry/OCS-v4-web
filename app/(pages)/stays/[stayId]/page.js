@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import styles from "./StayDetails.module.scss";
 import HeroImageCarousel from "@/app/components/HeroImageCarousel";
-// import Image from "next/image";
 import Amenities from "@/app/components/Amenities";
 import ReturnPolicy from "@/app/components/ReturnPolicy";
+// import Image from "next/image";
 // import Reviews from "@/app/components/Reviews";
 import Header from "@/app/modules/Header";
 import PartnerLogo from "@/app/components/PartnerLogo";
@@ -232,6 +232,38 @@ const StayDetails = () => {
         }
     };
 
+    const getCurrentPositionPromise = () => {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) {
+                reject(new Error("Geolocation not supported"));
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // Extract only the data we need to avoid circular references
+                    const simplifiedPosition = {
+                        coords: {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy,
+                        },
+                        timestamp: position.timestamp,
+                    };
+                    resolve(simplifiedPosition);
+                },
+                (error) => {
+                    reject(error);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0,
+                }
+            );
+        });
+    };
+
     const handleProceedToCheckout = async () => {
         // Validate booking info before proceeding
         if (isDefaultBooking) {
@@ -245,6 +277,17 @@ const StayDetails = () => {
         try {
             const geoLocationPermission = await hasGeolocationPermission();
             const ipLocation = await getLocationFromIP();
+
+            // Get geolocation if permission is granted
+            let geoLocationData = null;
+            if (geoLocationPermission) {
+                try {
+                    geoLocationData = await getCurrentPositionPromise();
+                } catch (geoError) {
+                    console.error("Error getting geolocation:", geoError);
+                    // Continue without geolocation data
+                }
+            }
 
             createPaymentIntent({
                 stayId: stayData._id,
@@ -262,9 +305,7 @@ const StayDetails = () => {
                 device: {
                     timeSpent: performance.now(),
                     connectionType: navigator.connection,
-                    geoLocation: geoLocationPermission
-                        ? navigator.geolocation.getCurrentPosition()
-                        : null,
+                    geoLocation: geoLocationData,
                     ipLocation: ipLocation,
                     userAgent: navigator.userAgent,
                     language: navigator.language,
@@ -321,7 +362,6 @@ const StayDetails = () => {
                         <HeroImageCarousel
                             images={[
                                 stayData.featuredImage,
-
                                 ...Object.values(stayData.images).reduce(
                                     (a, b) => {
                                         a.push(...b);
@@ -330,7 +370,9 @@ const StayDetails = () => {
                                     []
                                 ),
                             ]}
+                            categoryImages={stayData.images}
                         />
+
                         <BackButton />
 
                         {/* stay information */}

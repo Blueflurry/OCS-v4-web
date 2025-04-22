@@ -82,60 +82,69 @@ const MobileSearch = ({ searchTxt }) => {
 
     // Handle clicking "Use my current location"
     const handleCurrentLocationClick = () => {
-        if (navigator.geolocation) {
-            setIsLoadingLocation(true);
-
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    try {
-                        const { latitude, longitude } = position.coords;
-                        const cityName = await getCityFromCoordinates(
-                            latitude,
-                            longitude
-                        );
-
-                        setAutocompleteVal(cityName);
-                        setLocationDropdown(false);
-                    } catch (error) {
-                        console.error("Error getting location:", error);
-                        alert(
-                            "Could not determine your location. Please enter it manually."
-                        );
-                    } finally {
-                        setIsLoadingLocation(false);
-                    }
-                },
-                (error) => {
-                    setIsLoadingLocation(false);
-                    console.error("Geolocation error:", error);
-
-                    // Handle different error scenarios with specific messages
-                    let message =
-                        "Could not determine your location. Please enter it manually.";
-                    if (error.code === error.PERMISSION_DENIED) {
-                        message =
-                            "Location permission denied. Please allow location access or enter location manually.";
-                    } else if (error.code === error.POSITION_UNAVAILABLE) {
-                        message =
-                            "Location information is unavailable. Please try again later.";
-                    } else if (error.code === error.TIMEOUT) {
-                        message =
-                            "Location request timed out. Please try again.";
-                    }
-
-                    alert(message);
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0,
-                }
-            );
-        } else {
+        if (!navigator.geolocation) {
             alert(
                 "Geolocation is not supported by your browser. Please enter your location manually."
             );
+            return;
         }
+
+        setIsLoadingLocation(true);
+
+        const successCallback = async (position) => {
+            try {
+                const { latitude, longitude } = position.coords;
+                const cityName = await getCityFromCoordinates(
+                    latitude,
+                    longitude
+                );
+
+                setAutocompleteVal(cityName);
+                setLocationDropdown(false);
+            } catch (error) {
+                console.error("Error getting location:", error);
+                alert(
+                    "Could not determine your location. Please enter it manually."
+                );
+            } finally {
+                setIsLoadingLocation(false);
+            }
+        };
+
+        const errorCallback = (error) => {
+            setIsLoadingLocation(false);
+            console.error("Geolocation error:", error);
+
+            // Handle different error scenarios with specific messages
+            let message =
+                "Could not determine your location. Please enter it manually.";
+            if (error.code === 1) {
+                // PERMISSION_DENIED
+                message =
+                    "Location permission denied. Please allow location access or enter location manually.";
+            } else if (error.code === 2) {
+                // POSITION_UNAVAILABLE
+                message =
+                    "Location information is unavailable. Please try again later.";
+            } else if (error.code === 3) {
+                // TIMEOUT
+                message = "Location request timed out. Please try again.";
+            }
+
+            alert(message);
+        };
+
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0,
+        };
+
+        navigator.geolocation.getCurrentPosition(
+            successCallback,
+            errorCallback,
+            options
+        );
     };
 
     // Load values from URL parameters on mount

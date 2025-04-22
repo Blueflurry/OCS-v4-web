@@ -8,9 +8,16 @@ const numberWithinRange = (number, min, max) =>
     Math.min(Math.max(number, min), max);
 
 const EmblaCarousel = (props) => {
-    const { slides, options, images } = props;
+    const { slides, options, images, setEmblaApi } = props;
     const [emblaRef, emblaApi] = useEmblaCarousel(options);
     const tweenFactor = useRef(0);
+
+    // Pass the emblaApi to parent component when it's ready
+    useEffect(() => {
+        if (emblaApi && setEmblaApi) {
+            setEmblaApi(emblaApi);
+        }
+    }, [emblaApi, setEmblaApi]);
 
     const setTweenFactor = useCallback((emblaApi) => {
         tweenFactor.current =
@@ -67,7 +74,7 @@ const EmblaCarousel = (props) => {
             .on("reInit", tweenOpacity)
             .on("scroll", tweenOpacity)
             .on("slideFocus", tweenOpacity);
-    }, [emblaApi, tweenOpacity]);
+    }, [emblaApi, setTweenFactor, tweenOpacity]);
 
     return (
         <div className={styles["embla"]}>

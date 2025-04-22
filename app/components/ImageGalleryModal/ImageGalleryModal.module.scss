@@ -1,0 +1,136 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+    backdrop-filter: blur(2px);
+}
+
+.modalContent {
+    background-color: white;
+    color: #000000;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 1200px;
+    max-height: 96vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease-out;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1;
+
+    h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: #f1f1f1;
+    }
+}
+
+.modalBody {
+    padding: 8px 20px 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.categorySection {
+    margin-bottom: 24px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.categoryHeading {
+    margin: 16px 0 12px;
+    font-size: 16px;
+    font-weight: 500;
+    padding-bottom: 4px;
+    // border-bottom: 1px solid #eee;
+}
+
+.imageGrid {
+    display: grid;
+    // grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+
+    // @media (min-width: 640px) {
+    //     grid-template-columns: repeat(3, 1fr);
+    // }
+
+    // @media (min-width: 1024px) {
+    //     grid-template-columns: repeat(4, 1fr);
+    // }
+}
+
+.imageWrapper {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-radius: 8px;
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: scale(1.02);
+    }
+}
+
+.galleryImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0.8;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

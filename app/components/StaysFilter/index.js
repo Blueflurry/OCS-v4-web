@@ -177,6 +177,9 @@ const StaysFilter = ({
             amenities: selectedAmenities,
         };
 
+        console.log("Applied Filters:", finalFilters);
+
+        // return;
         if (onApplyFilters) {
             onApplyFilters(finalFilters);
         }
