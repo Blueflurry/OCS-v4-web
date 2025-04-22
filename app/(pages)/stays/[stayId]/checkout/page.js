@@ -3,7 +3,22 @@ import React, { useEffect, useState } from "react";
 import styles from "./Checkout.module.scss";
 import Image from "next/image";
 import BackButton from "@/app/components/BackButton";
-import { CheckCheck } from "lucide-react";
+import {
+    CheckCheck,
+    Info,
+    Shield,
+    Clock,
+    CreditCard,
+    CheckCircleIcon,
+    Badge,
+    Award,
+    Receipt,
+    UserCircle,
+    Lock,
+    CreditCardIcon,
+    Headphones,
+    ShieldCheck,
+} from "lucide-react";
 import { formatCurrency } from "@/app/utils/formatter";
 import RazorpayButton from "@/app/components/RazorpayButton";
 import Loading from "../loading";
@@ -91,23 +106,65 @@ const Checkout = () => {
         fetchData();
     }, [stayId, router]);
 
+    // Checkout progress steps
+    const checkoutSteps = [
+        { id: 1, name: "Details", success: true },
+        { id: 2, name: "Add-ons", success: true },
+        { id: 3, name: "Payment", current: true },
+    ];
+
     // Custom Footer with Razorpay button
     const CustomFooter = () => (
         <div className={styles["footer"]}>
+            <div className={styles["secure-payment-info"]}>
+                <div className={styles["secure-payment-icon"]}>
+                    <Shield size={16} />
+                </div>
+                <span>All payments are secure and encrypted</span>
+            </div>
+
             <div className={styles["button-container"]}>
                 {paymentIntent && (
-                    <RazorpayButton
-                        paymentIntent={paymentIntent}
-                        amount={paymentIntent.pricing.totalPrice.toString()}
-                        paymentIntentId={paymentIntent.id}
-                        stayId={paymentIntent.stayId}
-                        checkInDate={paymentIntent.checkin}
-                        checkOutDate={paymentIntent.checkout}
-                        guests={{
-                            adults: paymentIntent.guests,
-                            children: 0,
-                        }}
-                    />
+                    <div className={styles["payment-action"]}>
+                        <div className={styles["payment-methods"]}>
+                            <Image
+                                src="/assets/images/payment/visa.svg"
+                                width={28}
+                                height={32}
+                                alt="Visa"
+                            />
+                            <Image
+                                src="/assets/images/payment/mastercard.svg"
+                                width={28}
+                                height={32}
+                                alt="Mastercard"
+                            />
+                            <Image
+                                src="/assets/images/payment/rupay.svg"
+                                width={32}
+                                height={32}
+                                alt="RuPay"
+                            />
+                            <Image
+                                src="/assets/images/payment/upi.svg"
+                                width={32}
+                                height={32}
+                                alt="UPI"
+                            />
+                        </div>
+                        <RazorpayButton
+                            paymentIntent={paymentIntent}
+                            amount={paymentIntent.pricing.totalPrice.toString()}
+                            paymentIntentId={paymentIntent.id}
+                            stayId={paymentIntent.stayId}
+                            checkInDate={paymentIntent.checkin}
+                            checkOutDate={paymentIntent.checkout}
+                            guests={{
+                                adults: paymentIntent.guests,
+                                children: 0,
+                            }}
+                        />
+                    </div>
                 )}
             </div>
         </div>
@@ -121,12 +178,6 @@ const Checkout = () => {
         return <div className={styles["error"]}>{error}</div>;
     }
 
-    // if (!paymentIntent || !stayDetails) {
-    //     return (
-    //         <div className={styles["error"]}>Booking information not found</div>
-    //     );
-    // }
-
     return (
         <>
             {stayDetails && (
@@ -137,6 +188,27 @@ const Checkout = () => {
                         <div className={styles["checkout__header"]}>
                             <h2>Checkout</h2>
                             <BackButton />
+                        </div>
+
+                        {/* Checkout progress steps */}
+                        <div className={styles["checkout-progress"]}>
+                            {checkoutSteps.map((step) => (
+                                <div
+                                    key={step.id}
+                                    className={`${styles["progress-step"]} ${
+                                        step.current ? styles["active"] : ""
+                                    }
+                                     ${step.success ? styles["success"] : ""}
+                                    `}
+                                >
+                                    <div className={styles["step-number"]}>
+                                        {step.id}
+                                    </div>
+                                    <div className={styles["step-name"]}>
+                                        {step.name}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
 
                         <div className={styles["checkout__details"]}>
@@ -175,6 +247,65 @@ const Checkout = () => {
                                         {stayDetails.checkin} -{" "}
                                         {stayDetails.checkout}
                                     </p>
+                                </div>
+                            </div>
+
+                            {/* Booking guarantees section */}
+                            <div className={styles["booking-guarantees"]}>
+                                <div className={styles["guarantee-item"]}>
+                                    <div className={styles["guarantee-icon"]}>
+                                        {/* <Image
+                                            src="/assets/images/trust/verified.svg"
+                                            width={24}
+                                            height={24}
+                                            alt="Verified"
+                                        /> */}
+
+                                        <CheckCircleIcon
+                                            size={24}
+                                            color="#10b981"
+                                        />
+                                    </div>
+                                    <div className={styles["guarantee-text"]}>
+                                        <h4>Verified Property</h4>
+                                        <p>
+                                            All listings are verified by our
+                                            team
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className={styles["guarantee-item"]}>
+                                    <div className={styles["guarantee-icon"]}>
+                                        {/* <Image
+                                            src="/assets/images/trust/best-price.svg"
+                                            width={24}
+                                            height={24}
+                                            alt="Best Price"
+                                        /> */}
+                                        <Award size={24} color="#0891b2" />
+                                    </div>
+                                    <div className={styles["guarantee-text"]}>
+                                        <h4>Best Price Guarantee</h4>
+                                        <p>
+                                            You won't find a better price
+                                            anywhere
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className={styles["guarantee-item"]}>
+                                    <div className={styles["guarantee-icon"]}>
+                                        {/* <Image
+                                            src="/assets/images/trust/no-hidden-fees.svg"
+                                            width={24}
+                                            height={24}
+                                            alt="No Hidden Fees"
+                                        /> */}
+                                        <Receipt size={24} color="#6366f1" />
+                                    </div>
+                                    <div className={styles["guarantee-text"]}>
+                                        <h4>No Hidden Fees</h4>
+                                        <p>The price you see is what you pay</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -263,6 +394,111 @@ const Checkout = () => {
                                     ))}
                                 </div>
                             )}
+
+                            {/* Guest reviews section */}
+                            {/* <div className={styles["guest-reviews"]}>
+                                <h2>
+                                    <span className={styles["review-score"]}>
+                                        4.9
+                                    </span>{" "}
+                                    Excellent
+                                    <span className={styles["review-count"]}>
+                                        (125 reviews)
+                                    </span>
+                                </h2>
+                                <div className={styles["review-item"]}>
+                                    <div className={styles["review-icon"]}>
+                                     
+                                        <UserCircle size={24} color="#6b7280" />
+                                    </div>
+                                    <div className={styles["review-content"]}>
+                                        <p>
+                                            "Amazing stay, very clean and just
+                                            as described. The check-in process
+                                            was very smooth."
+                                        </p>
+                                        <span
+                                            className={styles["reviewer-name"]}
+                                        >
+                                            - Priya S.
+                                        </span>
+                                    </div>
+                                </div>
+                            </div> */}
+
+                            {/* Cancellation policy */}
+                            <div className={styles["cancellation-policy"]}>
+                                <div className={styles["policy-header"]}>
+                                    <Clock size={16} />
+                                    <h3>
+                                        Free cancellation until 48 hours before
+                                        check-in
+                                    </h3>
+                                </div>
+                                <p>
+                                    After that, cancel before check-in and get a
+                                    50% refund, minus the service fee.
+                                </p>
+                            </div>
+
+                            {/* Trust badges section */}
+                            <div className={styles["trust-badges"]}>
+                                <div className={styles["badge-container"]}>
+                                    <div className={styles["badge"]}>
+                                        {/* <Image
+                                            src="/assets/images/trust/ssl-secure.svg"
+                                            width={40}
+                                            height={40}
+                                            alt="SSL Secure"
+                                        /> */}
+                                        <Lock size={24} color="#10b981" />
+                                        <span>SSL Secured</span>
+                                    </div>
+                                    <div className={styles["badge"]}>
+                                        {/* <Image
+                                            src="/assets/images/trust/pci-dss.svg"
+                                            width={40}
+                                            height={40}
+                                            alt="PCI DSS"
+                                        /> */}
+                                        <CreditCardIcon
+                                            size={24}
+                                            color="#6366f1"
+                                        />
+                                        <span>PCI Compliant</span>
+                                    </div>
+                                    <div className={styles["badge"]}>
+                                        {/* <Image
+                                            src="/assets/images/trust/support.svg"
+                                            width={40}
+                                            height={40}
+                                            alt="24/7 Support"
+                                        /> */}
+                                        <Headphones size={24} color="#0891b2" />
+                                        <span>24/7 Support</span>
+                                    </div>
+                                    <div className={styles["badge"]}>
+                                        {/* <Image
+                                            src="/assets/images/trust/encrypted.svg"
+                                            width={40}
+                                            height={40}
+                                            alt="Encrypted"
+                                        /> */}
+                                        <ShieldCheck
+                                            size={24}
+                                            color="#10b981"
+                                        />
+                                        <span>Encrypted Data</span>
+                                    </div>
+                                </div>
+                                <div className={styles["support-text"]}>
+                                    <Info size={14} />
+                                    <span>
+                                        Need help? Call our team at{" "}
+                                        <strong>+91 98765 43210</strong>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
                         <CustomFooter />

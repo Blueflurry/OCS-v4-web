@@ -58,11 +58,12 @@
     &__listing {
         background-color: #fafafa;
         color: $color-text-black;
-        border-radius: 24px 24px 0 0;
+        // border-radius: 24px 24px 0 0;
         position: relative;
         display: block;
-        margin-top: 10px;
-        padding: 44px 12px 20vh;
+        // margin-top: 10px;
+        // padding: 44px 12px 20vh;
+        padding: 12px 12px 20vh;
 
         h4 {
             font-weight: 600;
@@ -80,18 +81,18 @@
             max-width: 300px;
         }
 
-        &::after {
-            content: "";
-            position: absolute;
-            background: rgba(black, 0.1);
-            border-radius: 24px;
-            width: 80px;
-            height: 6px;
-            top: 20px;
-            left: 50%;
-            z-index: 2;
-            transform: translateX(-50%);
-        }
+        // &::after {
+        //     content: "";
+        //     position: absolute;
+        //     background: rgba(black, 0.1);
+        //     border-radius: 24px;
+        //     width: 80px;
+        //     height: 6px;
+        //     top: 20px;
+        //     left: 50%;
+        //     z-index: 2;
+        //     transform: translateX(-50%);
+        // }
 
         &--row {
             display: grid;
@@ -221,6 +222,79 @@
                 }
             }
         }
+    }
+
+    // Checkout progress indicator
+    &-progress {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 24px;
+        background-color: white;
+        border-bottom: 1px solid $color-border-secondary;
+    }
+
+    .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        width: 33.33%;
+
+        &.active {
+            .step-number {
+                background-color: $color-primary;
+                color: white;
+            }
+
+            .step-name {
+                color: $color-primary;
+                font-weight: 500;
+            }
+        }
+
+        &.success {
+            .step-number {
+                background-color: $color-success;
+                color: white;
+            }
+
+            .step-name {
+                color: $color-success;
+                font-weight: 500;
+            }
+        }
+
+        // $color-success
+
+        &:not(:last-child):after {
+            content: "";
+            position: absolute;
+            top: 16px;
+            right: -40%;
+            width: 80%;
+            height: 1px;
+            background-color: $color-border-secondary;
+            z-index: 0;
+        }
+    }
+
+    .step-number {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        z-index: 1;
+    }
+
+    .step-name {
+        font-size: 12px;
+        color: #6b7280;
     }
 
     &__fixed {

@@ -18,7 +18,12 @@ const Addons = () => {
 
     const [stayDetails, setStayDetails] = useState(null);
     const [services, setServices] = useState([]);
-
+    // Checkout progress steps
+    const checkoutSteps = [
+        { id: 1, name: "Details", success: true },
+        { id: 2, name: "Add-ons", current: true },
+        { id: 3, name: "Payment" },
+    ];
     // Get stay details from localStorage and fetch add-ons from API
     useEffect(() => {
         const fetchData = async () => {
@@ -152,6 +157,22 @@ const Addons = () => {
                         color="white"
                     />
                 </div>
+            </div>
+            {/* Checkout progress steps */}
+            <div className={styles["addons-progress"]}>
+                {checkoutSteps.map((step) => (
+                    <div
+                        key={step.id}
+                        className={`${styles["progress-step"]} ${
+                            step.current ? styles["active"] : ""
+                        }
+                        ${step.success ? styles["success"] : ""}
+                        `}
+                    >
+                        <div className={styles["step-number"]}>{step.id}</div>
+                        <div className={styles["step-name"]}>{step.name}</div>
+                    </div>
+                ))}
             </div>
 
             {/* addons listing */}
