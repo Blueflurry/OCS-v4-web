@@ -4,8 +4,8 @@ import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
     width: "100%",
-    height: "300px",
-    borderRadius: "8px",
+    height: "400px",
+    // borderRadius: "8px",
 };
 
 // Default center in case coordinates aren't provided
@@ -39,11 +39,7 @@ function GoogleMapComponent({ location }) {
 
         // Handle the specific location structure:
         // { coordinates: { lat: 20.5937, lng: 78.9629 } }
-        if (
-            location.coordinates &&
-            location.coordinates.lat !== undefined &&
-            location.coordinates.lng !== undefined
-        ) {
+        if (location.coordinates && location.coordinates.lat !== undefined && location.coordinates.lng !== undefined) {
             setMapCenter({
                 lat: parseFloat(location.coordinates.lat),
                 lng: parseFloat(location.coordinates.lng),
@@ -59,18 +55,8 @@ function GoogleMapComponent({ location }) {
                 const bounds = new window.google.maps.LatLngBounds();
 
                 // Create a small area around the point to ensure proper zoom
-                bounds.extend(
-                    new window.google.maps.LatLng(
-                        mapCenter.lat - 0.01,
-                        mapCenter.lng - 0.01
-                    )
-                );
-                bounds.extend(
-                    new window.google.maps.LatLng(
-                        mapCenter.lat + 0.01,
-                        mapCenter.lng + 0.01
-                    )
-                );
+                bounds.extend(new window.google.maps.LatLng(mapCenter.lat - 0.01, mapCenter.lng - 0.01));
+                bounds.extend(new window.google.maps.LatLng(mapCenter.lat + 0.01, mapCenter.lng + 0.01));
 
                 map.fitBounds(bounds);
 

@@ -1,7 +1,7 @@
 @import "../../styles/variables";
 
 .amenities {
-    padding: 20px 0;
+    padding: 10px 0;
     background-color: #ffffff;
     color: #000000;
 
@@ -22,19 +22,21 @@
     &__list {
         display: flex;
         flex-wrap: wrap;
-        // justify-content: space-between;
-        margin-top: 20px;
-        margin-left: 20px;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 20px;
+        gap: 8px;
+        // margin-top: 20px;
+        // margin-left: 20px;
     }
 
     &__item {
         display: flex;
         align-items: center;
-        width: 50%;
         color: #000000;
-        margin-bottom: 10px;
-        // margin-right: 10px;
-        // gap: 10px;
+        padding: 4px 6px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
 
         img {
             width: 20px;

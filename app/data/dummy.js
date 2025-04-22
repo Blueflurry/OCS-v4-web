@@ -64,27 +64,24 @@ export const POLICY_LIST = [
         id: 1,
         name: "full-refund-icon",
         icon: "/assets/images/full-refund-icon.svg",
-        title: "100% Refund if cancelled within 30 days",
-        description:
-            "Lorem ipsum dolor sit amet, consect etur adipiscing elit.",
+        title: "100% Refund before 30 days",
+        description: "You will receive a full refund if the cancellation request is made when at least 30 days are left before the booking date.",
     },
 
     {
         id: 2,
         name: "half-refund-icon",
         icon: "/assets/images/half-refund-icon.svg",
-        title: "50% Refund if cancelled within 10 days",
-        description:
-            "Lorem ipsum dolor sit amet, consect etur adipiscing elit.",
+        title: "50% Refund before 10 days",
+        description: "A 50% refund will be provided for cancellations made when 10 to 29 days are left before the booking date.",
     },
 
     {
         id: 3,
         name: "no-refund-icon",
         icon: "/assets/images/no-refund-icon.svg",
-        title: "No Refund otherwise",
-        description:
-            "Lorem ipsum dolor sit amet, consect etur adipiscing elit.",
+        title: "No Refund in less than 10 days",
+        description: "Cancellations made when less than 10 days are left before the booking date are non-refundable.",
     },
 ];
 
