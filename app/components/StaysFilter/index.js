@@ -2,10 +2,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./StaysFilter.module.scss";
 import { ChevronDown, ChevronUp, X, Bed, Bath, DoorOpen } from "lucide-react";
-import { amenitiesList, managementTypes, propertyTypes, numericOptions } from "../../services/mockData";
+import {
+    amenitiesList,
+    managementTypes,
+    propertyTypes,
+    numericOptions,
+} from "../../services/mockData";
 import Image from "next/image";
+import { getFilters } from "@/app/services/staysService";
 
-const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) => {
+const StaysFilter = ({
+    isOpen,
+    onClose,
+    onApplyFilters,
+    initialFilters = {},
+}) => {
     // Filter states
     const [filters, setFilters] = useState({
         managementType: "everything", // Default selection
@@ -31,6 +42,32 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
             }));
         }
     }, [initialFilters]);
+
+    // GET filters
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchFilters = async () => {
+            try {
+                const response = await getFilters();
+                if (isMounted) {
+                    console.log("Filters from API:", response);
+                    // setFilters((prev) => ({
+                    //     ...prev,
+                    //     ...response,
+                    // }));
+                }
+            } catch (error) {
+                console.error("Error fetching filters:", error);
+            }
+        };
+
+        fetchFilters();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     // Accordion state - set all to open as requested
     const [expandedSections, setExpandedSections] = useState({
@@ -88,7 +125,10 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
         if (type === "min") {
             newValue = Math.max(0, Math.min(newValue, filters.priceRange.max));
         } else {
-            newValue = Math.max(filters.priceRange.min, Math.min(newValue, 500000));
+            newValue = Math.max(
+                filters.priceRange.min,
+                Math.min(newValue, 500000)
+            );
         }
 
         setFilters({
@@ -192,12 +232,19 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                 <div className={styles.filterSections}>
                     {/* Management Type */}
                     <div className={styles.filterSection}>
-                        <div className={styles.sectionHeader} onClick={() => toggleSection("managementType")}>
+                        <div
+                            className={styles.sectionHeader}
+                            onClick={() => toggleSection("managementType")}
+                        >
                             <div>
                                 <h3>Management Type</h3>
                                 <p>How are the properties managed</p>
                             </div>
-                            {expandedSections.managementType ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                            {expandedSections.managementType ? (
+                                <ChevronUp size={20} />
+                            ) : (
+                                <ChevronDown size={20} />
+                            )}
                         </div>
 
                         {expandedSections.managementType && (
@@ -206,10 +253,21 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                     {managementTypes.map((type) => (
                                         <div
                                             key={type.id}
-                                            className={`${styles.boxOption} ${filters.managementType === type.id ? styles.selected : ""}`}
-                                            onClick={() => handleManagementTypeSelect(type.id)}
+                                            className={`${styles.boxOption} ${
+                                                filters.managementType ===
+                                                type.id
+                                                    ? styles.selected
+                                                    : ""
+                                            }`}
+                                            onClick={() =>
+                                                handleManagementTypeSelect(
+                                                    type.id
+                                                )
+                                            }
                                         >
-                                            <div className={styles.boxOptionIcon}>
+                                            <div
+                                                className={styles.boxOptionIcon}
+                                            >
                                                 {type.icon}
 
                                                 {/* <Image
@@ -219,7 +277,11 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                                     height={24}
                                                 ></Image> */}
                                             </div>
-                                            <div className={styles.boxOptionContent}>
+                                            <div
+                                                className={
+                                                    styles.boxOptionContent
+                                                }
+                                            >
                                                 <h4>{type.title}</h4>
                                                 <p>{type.description}</p>
                                             </div>
@@ -232,12 +294,19 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
 
                     {/* Price Range */}
                     <div className={styles.filterSection}>
-                        <div className={styles.sectionHeader} onClick={() => toggleSection("priceRange")}>
+                        <div
+                            className={styles.sectionHeader}
+                            onClick={() => toggleSection("priceRange")}
+                        >
                             <div>
                                 <h3>Price Range</h3>
                                 <p>Nightly prices before fees and taxes</p>
                             </div>
-                            {expandedSections.priceRange ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                            {expandedSections.priceRange ? (
+                                <ChevronUp size={20} />
+                            ) : (
+                                <ChevronDown size={20} />
+                            )}
                         </div>
 
                         {expandedSections.priceRange && (
@@ -247,10 +316,24 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                     <div className={styles.sliderContainer}>
                                         <div className={styles.sliderTrack}>
                                             <div
-                                                className={styles.sliderProgress}
+                                                className={
+                                                    styles.sliderProgress
+                                                }
                                                 style={{
-                                                    left: `${(filters.priceRange.min / 500000) * 100}%`,
-                                                    width: `${((filters.priceRange.max - filters.priceRange.min) / 500000) * 100}%`,
+                                                    left: `${
+                                                        (filters.priceRange
+                                                            .min /
+                                                            500000) *
+                                                        100
+                                                    }%`,
+                                                    width: `${
+                                                        ((filters.priceRange
+                                                            .max -
+                                                            filters.priceRange
+                                                                .min) /
+                                                            500000) *
+                                                        100
+                                                    }%`,
                                                 }}
                                             ></div>
                                         </div>
@@ -262,7 +345,12 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                             max="500000"
                                             step="10000"
                                             value={filters.priceRange.min}
-                                            onChange={(e) => handlePriceRangeChange("min", e.target.value)}
+                                            onChange={(e) =>
+                                                handlePriceRangeChange(
+                                                    "min",
+                                                    e.target.value
+                                                )
+                                            }
                                             className={`${styles.priceSlider} ${styles.minPriceSlider}`}
                                         />
 
@@ -273,7 +361,12 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                             max="500000"
                                             step="10000"
                                             value={filters.priceRange.max}
-                                            onChange={(e) => handlePriceRangeChange("max", e.target.value)}
+                                            onChange={(e) =>
+                                                handlePriceRangeChange(
+                                                    "max",
+                                                    e.target.value
+                                                )
+                                            }
                                             className={`${styles.priceSlider} ${styles.maxPriceSlider}`}
                                         />
                                     </div>
@@ -281,23 +374,45 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                     <div className={styles.priceInputs}>
                                         <div className={styles.priceInput}>
                                             <label>Min Price</label>
-                                            <div className={styles.inputWithSymbol}>
+                                            <div
+                                                className={
+                                                    styles.inputWithSymbol
+                                                }
+                                            >
                                                 <span>₹</span>
                                                 <input
                                                     type="number"
-                                                    value={filters.priceRange.min}
-                                                    onChange={(e) => handlePriceRangeChange("min", e.target.value)}
+                                                    value={
+                                                        filters.priceRange.min
+                                                    }
+                                                    onChange={(e) =>
+                                                        handlePriceRangeChange(
+                                                            "min",
+                                                            e.target.value
+                                                        )
+                                                    }
                                                 />
                                             </div>
                                         </div>
                                         <div className={styles.priceInput}>
                                             <label>Max Price</label>
-                                            <div className={styles.inputWithSymbol}>
+                                            <div
+                                                className={
+                                                    styles.inputWithSymbol
+                                                }
+                                            >
                                                 <span>₹</span>
                                                 <input
                                                     type="number"
-                                                    value={filters.priceRange.max}
-                                                    onChange={(e) => handlePriceRangeChange("max", e.target.value)}
+                                                    value={
+                                                        filters.priceRange.max
+                                                    }
+                                                    onChange={(e) =>
+                                                        handlePriceRangeChange(
+                                                            "max",
+                                                            e.target.value
+                                                        )
+                                                    }
                                                 />
                                             </div>
                                         </div>
@@ -309,12 +424,19 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
 
                     {/* Rooms and Beds */}
                     <div className={styles.filterSection}>
-                        <div className={styles.sectionHeader} onClick={() => toggleSection("rooms")}>
+                        <div
+                            className={styles.sectionHeader}
+                            onClick={() => toggleSection("rooms")}
+                        >
                             <div>
                                 <h3>Rooms and Beds</h3>
                                 <p>Select your preferred room configuration</p>
                             </div>
-                            {expandedSections.rooms ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                            {expandedSections.rooms ? (
+                                <ChevronUp size={20} />
+                            ) : (
+                                <ChevronDown size={20} />
+                            )}
                         </div>
 
                         {expandedSections.rooms && (
@@ -329,8 +451,20 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                             {numericOptions.map((option) => (
                                                 <div
                                                     key={`bedroom-${option}`}
-                                                    className={`${styles.chip} ${filters.rooms.bedrooms === option ? styles.selected : ""}`}
-                                                    onClick={() => handleRoomSelect("bedrooms", option)}
+                                                    className={`${
+                                                        styles.chip
+                                                    } ${
+                                                        filters.rooms
+                                                            .bedrooms === option
+                                                            ? styles.selected
+                                                            : ""
+                                                    }`}
+                                                    onClick={() =>
+                                                        handleRoomSelect(
+                                                            "bedrooms",
+                                                            option
+                                                        )
+                                                    }
                                                 >
                                                     {option}
                                                 </div>
@@ -347,8 +481,20 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                             {numericOptions.map((option) => (
                                                 <div
                                                     key={`bed-${option}`}
-                                                    className={`${styles.chip} ${filters.rooms.beds === option ? styles.selected : ""}`}
-                                                    onClick={() => handleRoomSelect("beds", option)}
+                                                    className={`${
+                                                        styles.chip
+                                                    } ${
+                                                        filters.rooms.beds ===
+                                                        option
+                                                            ? styles.selected
+                                                            : ""
+                                                    }`}
+                                                    onClick={() =>
+                                                        handleRoomSelect(
+                                                            "beds",
+                                                            option
+                                                        )
+                                                    }
                                                 >
                                                     {option}
                                                 </div>
@@ -365,8 +511,21 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                             {numericOptions.map((option) => (
                                                 <div
                                                     key={`bathroom-${option}`}
-                                                    className={`${styles.chip} ${filters.rooms.bathrooms === option ? styles.selected : ""}`}
-                                                    onClick={() => handleRoomSelect("bathrooms", option)}
+                                                    className={`${
+                                                        styles.chip
+                                                    } ${
+                                                        filters.rooms
+                                                            .bathrooms ===
+                                                        option
+                                                            ? styles.selected
+                                                            : ""
+                                                    }`}
+                                                    onClick={() =>
+                                                        handleRoomSelect(
+                                                            "bathrooms",
+                                                            option
+                                                        )
+                                                    }
                                                 >
                                                     {option}
                                                 </div>
@@ -380,53 +539,112 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
 
                     {/* Amenities */}
                     <div className={styles.filterSection}>
-                        <div className={styles.sectionHeader} onClick={() => toggleSection("amenities")}>
+                        <div
+                            className={styles.sectionHeader}
+                            onClick={() => toggleSection("amenities")}
+                        >
                             <div>
                                 <h3>Amenities</h3>
                                 <p>Select amenities that matter to you</p>
                             </div>
-                            {expandedSections.amenities ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                            {expandedSections.amenities ? (
+                                <ChevronUp size={20} />
+                            ) : (
+                                <ChevronDown size={20} />
+                            )}
                         </div>
 
                         {expandedSections.amenities && (
                             <div className={styles.sectionContent}>
-                                <h4 className={styles.subHeading}>Essentials</h4>
+                                <h4 className={styles.subHeading}>
+                                    Essentials
+                                </h4>
                                 <div className={styles.amenitiesList}>
-                                    {amenitiesList.slice(0, showAllAmenities ? amenitiesList.length : 6).map((amenity) => (
-                                        <div key={amenity.id} className={styles.amenityItem}>
-                                            <label className={styles.checkbox}>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={!!filters.amenities[amenity.id]}
-                                                    onChange={() => handleAmenityToggle(amenity.id)}
-                                                />
-                                                <span className={styles.checkmark}></span>
-                                                <div className={styles.amenityLabel}>
-                                                    {amenity.icon && <span className={styles.amenityIcon}>{amenity.icon}</span>}
-                                                    {amenity.name}
-                                                </div>
-                                            </label>
-                                        </div>
-                                    ))}
+                                    {amenitiesList
+                                        .slice(
+                                            0,
+                                            showAllAmenities
+                                                ? amenitiesList.length
+                                                : 6
+                                        )
+                                        .map((amenity) => (
+                                            <div
+                                                key={amenity.id}
+                                                className={styles.amenityItem}
+                                            >
+                                                <label
+                                                    className={styles.checkbox}
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={
+                                                            !!filters.amenities[
+                                                                amenity.id
+                                                            ]
+                                                        }
+                                                        onChange={() =>
+                                                            handleAmenityToggle(
+                                                                amenity.id
+                                                            )
+                                                        }
+                                                    />
+                                                    <span
+                                                        className={
+                                                            styles.checkmark
+                                                        }
+                                                    ></span>
+                                                    <div
+                                                        className={
+                                                            styles.amenityLabel
+                                                        }
+                                                    >
+                                                        {amenity.icon && (
+                                                            <span
+                                                                className={
+                                                                    styles.amenityIcon
+                                                                }
+                                                            >
+                                                                {amenity.icon}
+                                                            </span>
+                                                        )}
+                                                        {amenity.name}
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        ))}
                                 </div>
 
-                                {!showAllAmenities && amenitiesList.length > 6 && (
-                                    <button className={styles.showMoreButton} onClick={() => setShowAllAmenities(true)}>
-                                        SHOW {amenitiesList.length - 6} MORE AMENITIES
-                                    </button>
-                                )}
+                                {!showAllAmenities &&
+                                    amenitiesList.length > 6 && (
+                                        <button
+                                            className={styles.showMoreButton}
+                                            onClick={() =>
+                                                setShowAllAmenities(true)
+                                            }
+                                        >
+                                            SHOW {amenitiesList.length - 6} MORE
+                                            AMENITIES
+                                        </button>
+                                    )}
                             </div>
                         )}
                     </div>
 
                     {/* Property Type */}
                     <div className={styles.filterSection}>
-                        <div className={styles.sectionHeader} onClick={() => toggleSection("propertyType")}>
+                        <div
+                            className={styles.sectionHeader}
+                            onClick={() => toggleSection("propertyType")}
+                        >
                             <div>
                                 <h3>Property Type</h3>
                                 <p>Select your preferred stay type</p>
                             </div>
-                            {expandedSections.propertyType ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                            {expandedSections.propertyType ? (
+                                <ChevronUp size={20} />
+                            ) : (
+                                <ChevronDown size={20} />
+                            )}
                         </div>
 
                         {expandedSections.propertyType && (
@@ -435,10 +653,20 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                     {propertyTypes.map((type) => (
                                         <div
                                             key={type.id}
-                                            className={`${styles.boxOption} ${filters.propertyType === type.id ? styles.selected : ""}`}
-                                            onClick={() => handlePropertyTypeSelect(type.id)}
+                                            className={`${styles.boxOption} ${
+                                                filters.propertyType === type.id
+                                                    ? styles.selected
+                                                    : ""
+                                            }`}
+                                            onClick={() =>
+                                                handlePropertyTypeSelect(
+                                                    type.id
+                                                )
+                                            }
                                         >
-                                            <div className={styles.boxOptionIcon}>
+                                            <div
+                                                className={styles.boxOptionIcon}
+                                            >
                                                 {type.icon}
                                                 {/* <Image
                                                     src={type.iconLink}
@@ -447,7 +675,11 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
                                                     height={24}
                                                 ></Image> */}
                                             </div>
-                                            <div className={styles.boxOptionContent}>
+                                            <div
+                                                className={
+                                                    styles.boxOptionContent
+                                                }
+                                            >
                                                 <h4>{type.title}</h4>
                                                 <p>{type.description}</p>
                                             </div>
@@ -461,10 +693,16 @@ const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) =
 
                 {/* Action Buttons */}
                 <div className={styles.actionButtons}>
-                    <button className={styles.resetButton} onClick={resetFilters}>
+                    <button
+                        className={styles.resetButton}
+                        onClick={resetFilters}
+                    >
                         Reset All
                     </button>
-                    <button className={styles.applyButton} onClick={applyFilters}>
+                    <button
+                        className={styles.applyButton}
+                        onClick={applyFilters}
+                    >
                         Apply Filters
                     </button>
                 </div>

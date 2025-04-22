@@ -20,6 +20,21 @@ export const fetchHomePageStays = async () => {
 };
 
 /**
+ * Get filters from API
+ * @returns {Promise<Array>} - Object of filters
+ */
+export const getFilters = async () => {
+    try {
+        const response = await fetchAPI("/catalog");
+        console.log("Filters response:", response);
+        return response.data || [];
+    } catch (error) {
+        console.error("Error fetching filters:", error);
+        return [];
+    }
+};
+
+/**
  * Get filtered stays from API with pagination support
  * @param {Object} filters - Filter parameters
  * @returns {Promise<Array>} - Array of stay objects
