@@ -234,7 +234,7 @@ const StayListings = ({
             )}
 
             {/* Debug button - to help test if there's an issue with the observer */}
-            <div className={styles.debugSection}>
+            {/* <div className={styles.debugSection}>
                 {hasMore && !isLoadingMore && stays?.length > 0 && (
                     <button
                         className={styles.debugButton}
@@ -243,7 +243,7 @@ const StayListings = ({
                         Load More (Debug)
                     </button>
                 )}
-            </div>
+            </div> */}
         </div>
     );
 };
