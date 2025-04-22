@@ -43,17 +43,11 @@ const ImageGalleryModal = ({ isOpen, onClose, categoryImages }) => {
     };
 
     // Count total images
-    const totalImages = Object.values(categoryImages).reduce(
-        (count, images) => count + images.length,
-        0
-    );
+    const totalImages = Object.values(categoryImages).reduce((count, images) => count + images.length, 0);
 
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
-            <div
-                className={styles.modalContent}
-                onClick={(e) => e.stopPropagation()}
-            >
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modalHeader}>
                     <h2>All Images ({totalImages})</h2>
                     <button className={styles.closeButton} onClick={onClose}>
@@ -62,35 +56,21 @@ const ImageGalleryModal = ({ isOpen, onClose, categoryImages }) => {
                 </div>
 
                 <div className={styles.modalBody}>
-                    {Object.entries(categoryImages).map(
-                        ([category, images]) => (
-                            <div
-                                key={category}
-                                className={styles.categorySection}
-                            >
-                                <h3 className={styles.categoryHeading}>
-                                    {formatCategoryName(category)} (
-                                    {images.length})
-                                </h3>
-                                <div className={styles.imageGrid}>
-                                    {images.map((imageUrl, index) => (
-                                        <div
-                                            key={index}
-                                            className={styles.imageWrapper}
-                                        >
-                                            <img
-                                                src={imageUrl}
-                                                alt={`${formatCategoryName(
-                                                    category
-                                                )} ${index + 1}`}
-                                                className={styles.galleryImage}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
+                    {Object.entries(categoryImages).map(([category, images]) => (
+                        <div key={category} className={styles.categorySection}>
+                            <h3 className={styles.categoryHeading}>
+                                {formatCategoryName(category)}
+                                {/* ({images.length}) */}
+                            </h3>
+                            <div className={styles.imageGrid}>
+                                {images.map((imageUrl, index) => (
+                                    <div key={index} className={styles.imageWrapper}>
+                                        <img src={imageUrl} alt={`${formatCategoryName(category)} ${index + 1}`} className={styles.galleryImage} />
+                                    </div>
+                                ))}
                             </div>
-                        )
-                    )}
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

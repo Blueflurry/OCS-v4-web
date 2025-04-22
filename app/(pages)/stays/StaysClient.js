@@ -56,9 +56,7 @@ export default function StaysClient({ searchParams, initialStays }) {
             if (checkin && checkout) {
                 const checkinDate = new Date(checkin);
                 const checkoutDate = new Date(checkout);
-                nights = Math.ceil(
-                    (checkoutDate - checkinDate) / (1000 * 60 * 60 * 24)
-                );
+                nights = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
             }
 
             // Create search parameters object
@@ -77,10 +75,7 @@ export default function StaysClient({ searchParams, initialStays }) {
             };
 
             // Save to localStorage
-            localStorage.setItem(
-                "searchParams",
-                JSON.stringify(searchParamsObj)
-            );
+            localStorage.setItem("searchParams", JSON.stringify(searchParamsObj));
         }
     }, [searchParams]);
 
@@ -90,9 +85,7 @@ export default function StaysClient({ searchParams, initialStays }) {
 
         try {
             // Prepare amenities array
-            const amenitiesArray = Object.keys(
-                filterValues.amenities || {}
-            ).filter((key) => filterValues.amenities[key]);
+            const amenitiesArray = Object.keys(filterValues.amenities || {}).filter((key) => filterValues.amenities[key]);
 
             // Combine search params with new filters
             const apiFilters = {
@@ -106,26 +99,13 @@ export default function StaysClient({ searchParams, initialStays }) {
                 pets: parseInt(searchParams?.pets || "0", 10),
 
                 // Add filter parameters
-                managementType:
-                    filterValues.managementType !== "everything"
-                        ? filterValues.managementType
-                        : undefined,
+                managementType: filterValues.managementType !== "everything" ? filterValues.managementType : undefined,
                 priceMin: filterValues.priceRange?.min || 0,
                 priceMax: filterValues.priceRange?.max || 2500000,
-                bedrooms:
-                    filterValues.rooms?.bedrooms !== "Any"
-                        ? filterValues.rooms.bedrooms
-                        : undefined,
-                beds:
-                    filterValues.rooms?.beds !== "Any"
-                        ? filterValues.rooms.beds
-                        : undefined,
-                bathrooms:
-                    filterValues.rooms?.bathrooms !== "Any"
-                        ? filterValues.rooms.bathrooms
-                        : undefined,
-                amenities:
-                    amenitiesArray.length > 0 ? amenitiesArray : undefined,
+                bedrooms: filterValues.rooms?.bedrooms !== "Any" ? filterValues.rooms.bedrooms : undefined,
+                beds: filterValues.rooms?.beds !== "Any" ? filterValues.rooms.beds : undefined,
+                bathrooms: filterValues.rooms?.bathrooms !== "Any" ? filterValues.rooms.bathrooms : undefined,
+                amenities: amenitiesArray.length > 0 ? amenitiesArray : undefined,
                 propertyType: filterValues.propertyType || undefined,
 
                 // Pagination parameters
@@ -134,9 +114,7 @@ export default function StaysClient({ searchParams, initialStays }) {
             };
 
             // Remove undefined values
-            Object.keys(apiFilters).forEach(
-                (key) => apiFilters[key] === undefined && delete apiFilters[key]
-            );
+            Object.keys(apiFilters).forEach((key) => apiFilters[key] === undefined && delete apiFilters[key]);
 
             // Fetch filtered stays
             const filteredStays = await getFilteredStays(apiFilters);
@@ -156,15 +134,11 @@ export default function StaysClient({ searchParams, initialStays }) {
     if (searchParams?.checkin && searchParams?.checkout) {
         const checkInDate = new Date(searchParams.checkin);
         const checkOutDate = new Date(searchParams.checkout);
-        description += `${checkInDate.toLocaleDateString(
-            "en-US"
-        )} - ${checkOutDate.toLocaleDateString("en-US")}`;
+        description += `${checkInDate.toLocaleDateString("en-US")} - ${checkOutDate.toLocaleDateString("en-US")}`;
     }
 
     const totalGuests =
-        parseInt(searchParams?.men || "0", 10) +
-        parseInt(searchParams?.women || "0", 10) +
-        parseInt(searchParams?.children || "0", 10);
+        parseInt(searchParams?.men || "0", 10) + parseInt(searchParams?.women || "0", 10) + parseInt(searchParams?.children || "0", 10);
 
     if (totalGuests > 0) {
         description += description ? " • " : "";
@@ -173,37 +147,29 @@ export default function StaysClient({ searchParams, initialStays }) {
 
     if (parseInt(searchParams?.pets || "0", 10) > 0) {
         description += description ? " • " : "";
-        description += `${searchParams.pets} pet${
-            searchParams.pets !== 1 ? "s" : ""
-        }`;
+        description += `${searchParams.pets} pet${searchParams.pets !== 1 ? "s" : ""}`;
     }
 
     return (
         <>
             <Header />
-            <Hero searchTxt={"Edit your search"} />
+            <br />
+            <Hero searchTxt={"Edit your search"} isListingPage />
             <div className={styles["main"]}>
                 {/* Filter button */}
                 <div className={styles["filter-button-container"]}>
-                    <button
-                        className={styles["filter-button"]}
-                        onClick={() => setIsFilterOpen(true)}
-                    >
+                    <h4>Showing 20 results</h4>
+                    <button className={styles["filter-button"]} onClick={() => setIsFilterOpen(true)}>
                         <SlidersHorizontal size={18} />
                         <span>Filters</span>
-                        {Object.keys(activeFilters).length > 0 && (
-                            <span className={styles["filter-count"]}>
-                                {countActiveFilters(activeFilters)}
-                            </span>
-                        )}
+                        {Object.keys(activeFilters).length > 0 && <span className={styles["filter-count"]}>{countActiveFilters(activeFilters)}</span>}
                     </button>
                 </div>
 
                 <StayListings
                     initialStays={stays}
-                    title={`Stays in ${
-                        searchParams?.location || "All Destinations"
-                    }`}
+                    noHeader
+                    // title={`Stays in ${searchParams?.location || "All Destinations"}`}
                     filters={searchParams}
                     loading={loading}
                 />
@@ -228,15 +194,10 @@ function countActiveFilters(filters) {
     let count = 0;
 
     // Management type
-    if (filters.managementType && filters.managementType !== "everything")
-        count++;
+    if (filters.managementType && filters.managementType !== "everything") count++;
 
     // Price range (if different from default)
-    if (
-        filters.priceRange?.min > 0 ||
-        (filters.priceRange?.max && filters.priceRange.max < 2500000)
-    )
-        count++;
+    if (filters.priceRange?.min > 0 || (filters.priceRange?.max && filters.priceRange.max < 2500000)) count++;
 
     // Rooms
     if (filters.rooms?.bedrooms && filters.rooms.bedrooms !== "Any") count++;
@@ -244,9 +205,7 @@ function countActiveFilters(filters) {
     if (filters.rooms?.bathrooms && filters.rooms.bathrooms !== "Any") count++;
 
     // Amenities
-    const amenityCount = Object.values(filters.amenities || {}).filter(
-        Boolean
-    ).length;
+    const amenityCount = Object.values(filters.amenities || {}).filter(Boolean).length;
     if (amenityCount > 0) count++;
 
     // Property type
