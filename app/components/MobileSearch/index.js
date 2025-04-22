@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import Button from "../Button";
 import DateRangePicker from "../DateRangePicker";
@@ -12,14 +12,21 @@ import {
     MousePointer2,
     Search,
     UserRound,
+    Loader2,
 } from "lucide-react";
 import { formatDateRange, formatISODate } from "@/app/utils/formatter";
 import { GUESTS } from "@/app/data/dummy";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { LOCATIONOPTIONS } from "@/app/services/mockData";
+import { useLocationCache } from "@/app/hooks/useLocationCache";
 
 const MobileSearch = ({ searchTxt }) => {
     const searchTxtRef = searchTxt || "Start your search";
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    // Use the location cache hook
+    const { filterLocations } = useLocationCache(50, 3600000); // 50 entries, 1 hour expiry
 
     const [isOpen, setIsOpen] = useState(false);
     const [dateRange, setDateRange] = useState([null, null]);
@@ -29,18 +36,173 @@ const MobileSearch = ({ searchTxt }) => {
     const [filteredLocationOptions, setFilteredLocationOptions] = useState([]);
     const [guests, setGuests] = useState([...GUESTS]);
     const [isSearchDisabled, setIsSearchDisabled] = useState(true);
-    const locationOptions = [
-        { key: 1, value: "Goa" },
-        { key: 2, value: "Mumbai" },
-        { key: 3, value: "Delhi" },
-        { key: 4, value: "Bangalore" },
-        { key: 5, value: "Jaipur" },
-        { key: 6, value: "Manali" },
-        { key: 7, value: "Udaipur" },
-        { key: 8, value: "Kerala" },
-        { key: 9, value: "Chennai" },
-        { key: 10, value: "Kolkata" },
-    ];
+    const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+
+    // Store location options in a memoized variable to prevent re-creation on every render
+    const locationOptions = useMemo(() => LOCATIONOPTIONS, []);
+
+    // Function to get city name from coordinates using reverse geocoding
+    const getCityFromCoordinates = async (latitude, longitude) => {
+        try {
+            // Using Nominatim (OpenStreetMap) for reverse geocoding - doesn't require API key
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`,
+                {
+                    headers: {
+                        "Accept-Language": "en", // Get results in English
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to get location information");
+            }
+
+            const data = await response.json();
+
+            // Extract city from the response
+            // The response structure can vary, but typically city is in address.city or address.town
+            const city =
+                data.address.city ||
+                data.address.town ||
+                data.address.village ||
+                data.address.hamlet ||
+                data.address.county;
+
+            if (!city) {
+                throw new Error("Could not determine city from coordinates");
+            }
+
+            return city;
+        } catch (error) {
+            console.error("Reverse geocoding error:", error);
+            throw error;
+        }
+    };
+
+    // Handle clicking "Use my current location"
+    const handleCurrentLocationClick = () => {
+        if (navigator.geolocation) {
+            setIsLoadingLocation(true);
+
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    try {
+                        const { latitude, longitude } = position.coords;
+                        const cityName = await getCityFromCoordinates(
+                            latitude,
+                            longitude
+                        );
+
+                        setAutocompleteVal(cityName);
+                        setLocationDropdown(false);
+                    } catch (error) {
+                        console.error("Error getting location:", error);
+                        alert(
+                            "Could not determine your location. Please enter it manually."
+                        );
+                    } finally {
+                        setIsLoadingLocation(false);
+                    }
+                },
+                (error) => {
+                    setIsLoadingLocation(false);
+                    console.error("Geolocation error:", error);
+
+                    // Handle different error scenarios with specific messages
+                    let message =
+                        "Could not determine your location. Please enter it manually.";
+                    if (error.code === error.PERMISSION_DENIED) {
+                        message =
+                            "Location permission denied. Please allow location access or enter location manually.";
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        message =
+                            "Location information is unavailable. Please try again later.";
+                    } else if (error.code === error.TIMEOUT) {
+                        message =
+                            "Location request timed out. Please try again.";
+                    }
+
+                    alert(message);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0,
+                }
+            );
+        } else {
+            alert(
+                "Geolocation is not supported by your browser. Please enter your location manually."
+            );
+        }
+    };
+
+    // Load values from URL parameters on mount
+    useEffect(() => {
+        // Extract parameters from URL
+        const location = searchParams.get("location");
+        const checkin = searchParams.get("checkin");
+        const checkout = searchParams.get("checkout");
+        const men = searchParams.get("men");
+        const women = searchParams.get("women");
+        const children = searchParams.get("children");
+        const pets = searchParams.get("pets");
+
+        // Set location from URL params or keep default empty
+        if (location) {
+            setAutocompleteVal(location);
+        }
+
+        // Set date range from URL params
+        if (checkin && checkout) {
+            try {
+                setDateRange([new Date(checkin), new Date(checkout)]);
+            } catch (e) {
+                console.error("Error parsing dates:", e);
+                // Keep default empty dates if parsing fails
+            }
+        }
+
+        // Set guest counts from URL params
+        const newGuests = [...guests];
+
+        // Update Men count
+        if (men !== null && !isNaN(men)) {
+            const menIndex = newGuests.findIndex((g) => g.type === "Men");
+            if (menIndex !== -1) {
+                newGuests[menIndex].count = parseInt(men);
+            }
+        }
+
+        // Update Women count
+        if (women !== null && !isNaN(women)) {
+            const womenIndex = newGuests.findIndex((g) => g.type === "Women");
+            if (womenIndex !== -1) {
+                newGuests[womenIndex].count = parseInt(women);
+            }
+        }
+
+        // Update Children count
+        if (children !== null && !isNaN(children)) {
+            const childrenIndex = newGuests.findIndex(
+                (g) => g.type === "Children"
+            );
+            if (childrenIndex !== -1) {
+                newGuests[childrenIndex].count = parseInt(children);
+            }
+        }
+
+        // Update Pets count
+        if (pets !== null && !isNaN(pets)) {
+            const petsIndex = newGuests.findIndex((g) => g.type === "Pets");
+            if (petsIndex !== -1) {
+                newGuests[petsIndex].count = parseInt(pets);
+            }
+        }
+
+        setGuests(newGuests);
+    }, [searchParams]); // Only run this effect when searchParams changes
 
     const handleLocationSelect = (option) => {
         setAutocompleteVal(option.value);
@@ -53,11 +215,8 @@ const MobileSearch = ({ searchTxt }) => {
         const value = e.target.value;
         setAutocompleteVal(value);
 
-        setFilteredLocationOptions(
-            locationOptions.filter((option) =>
-                option.value.toLowerCase().includes(value.toLowerCase())
-            )
-        );
+        // Use the hook's filterLocations method
+        setFilteredLocationOptions(filterLocations(value, locationOptions));
     };
 
     const decreaseCount = (index) => {
@@ -98,7 +257,7 @@ const MobileSearch = ({ searchTxt }) => {
     // Handle search button click
     const handleSearch = () => {
         if (isSearchDisabled) {
-            alert("Please select the dates & atleast 1 guest");
+            alert("Please select the dates & guests");
             return;
         }
 
@@ -120,50 +279,6 @@ const MobileSearch = ({ searchTxt }) => {
         const checkin = dateRange[0] ? formatISODate(dateRange[0]) : "";
         const checkout = dateRange[1] ? formatISODate(dateRange[1]) : "";
 
-        // Calculate number of nights if both dates are selected
-        let nights = 0;
-        if (dateRange[0] && dateRange[1]) {
-            nights = Math.ceil(
-                (dateRange[1] - dateRange[0]) / (1000 * 60 * 60 * 24)
-            );
-        }
-
-        // Format dates for display
-        const formattedCheckin = dateRange[0]
-            ? dateRange[0].toLocaleDateString("en-US", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-              })
-            : "";
-        const formattedCheckout = dateRange[1]
-            ? dateRange[1].toLocaleDateString("en-US", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-              })
-            : "";
-
-        // Calculate total guests
-        const totalGuests = menCount + womenCount + childrenCount;
-
-        // Save search parameters to localStorage for use in booking flow
-        const searchParams = {
-            location: autocompleteVal,
-            checkin: checkin,
-            checkout: checkout,
-            formattedCheckin: formattedCheckin,
-            formattedCheckout: formattedCheckout,
-            nights: nights,
-            men: menCount,
-            women: womenCount,
-            children: childrenCount,
-            pets: petsCount,
-            totalGuests: totalGuests,
-        };
-
-        localStorage.setItem("searchParams", JSON.stringify(searchParams));
-
         // Create the query string for URL
         const queryParams = new URLSearchParams({
             location: autocompleteVal,
@@ -182,6 +297,21 @@ const MobileSearch = ({ searchTxt }) => {
         setIsOpen(false);
     };
 
+    // Get search button text - customize based on whether we have pre-filled values
+    const getSearchButtonText = () => {
+        if (autocompleteVal && dateRange[0] && dateRange[1]) {
+            return `Search in ${autocompleteVal}`;
+        }
+        return "Search Stays";
+    };
+
+    // Check if we have active search criteria
+    const hasSearchCriteria =
+        autocompleteVal &&
+        dateRange[0] &&
+        dateRange[1] &&
+        guests.some((guest) => guest.count > 0);
+
     return (
         <>
             <div style={{ padding: "0 16px" }}>
@@ -192,7 +322,10 @@ const MobileSearch = ({ searchTxt }) => {
                         width={20}
                         height={20}
                     />
-                    {searchTxtRef}
+                    {/* Show a more informative search text if we have values */}
+                    {hasSearchCriteria
+                        ? `${autocompleteVal} · ${formatDateRange(dateRange)}`
+                        : searchTxtRef}
                 </Button>
             </div>
             <div
@@ -222,7 +355,16 @@ const MobileSearch = ({ searchTxt }) => {
                                 type="text"
                                 value={autocompleteVal}
                                 onChange={handleLocationChange}
-                                onClick={handleLocationChange}
+                                onClick={() => {
+                                    setLocationDropdown(true);
+                                    // Pre-populate dropdown with cached or initial suggestions
+                                    setFilteredLocationOptions(
+                                        filterLocations(
+                                            autocompleteVal,
+                                            locationOptions
+                                        )
+                                    );
+                                }}
                                 className={styles["autocomplete--input"]}
                                 style={{
                                     marginBottom: locationDropdown ? 0 : 20,
@@ -234,7 +376,7 @@ const MobileSearch = ({ searchTxt }) => {
                         {locationDropdown && (
                             <div
                                 className={styles.modal}
-                                onClick={() => setIsLocationOpen(false)}
+                                onClick={() => setLocationDropdown(false)}
                             >
                                 <div
                                     className={styles.modalContent}
@@ -245,20 +387,28 @@ const MobileSearch = ({ searchTxt }) => {
                                             styles["autocomplete--dropdown"]
                                         }
                                     >
-                                        {/* fixed current location */}
+                                        {/* "Use my current location" button */}
                                         <li
                                             className={
                                                 styles["autocomplete--item"]
                                             }
+                                            onClick={handleCurrentLocationClick}
                                         >
-                                            {/* mouse-pointer-2 */}
-                                            <MousePointer2></MousePointer2>
-                                            <span>Use my current location</span>
+                                            {isLoadingLocation ? (
+                                                <Loader2 className="animate-spin" />
+                                            ) : (
+                                                <MousePointer2 />
+                                            )}
+                                            <span>
+                                                {isLoadingLocation
+                                                    ? "Getting your location..."
+                                                    : "Use my current location"}
+                                            </span>
                                         </li>
-                                        {/* list */}
+                                        {/* location suggestions list */}
                                         {filteredLocationOptions.length > 0 ? (
                                             filteredLocationOptions.map(
-                                                (option, index) => (
+                                                (option) => (
                                                     <li
                                                         key={option.key}
                                                         className={
@@ -272,7 +422,7 @@ const MobileSearch = ({ searchTxt }) => {
                                                             )
                                                         }
                                                     >
-                                                        <MapPin></MapPin>
+                                                        <MapPin />
                                                         <span>
                                                             {option.value}
                                                         </span>
@@ -361,7 +511,7 @@ const MobileSearch = ({ searchTxt }) => {
                         onClick={handleSearch}
                         disabled={isSearchDisabled}
                     >
-                        Search Stays <ArrowRight />
+                        {getSearchButtonText()} <ArrowRight />
                     </Button>
 
                     {/* logo */}

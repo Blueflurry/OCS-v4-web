@@ -1032,6 +1032,19 @@ export const GUESTS = [
     },
 ];
 
+export const LOCATIONOPTIONS = [
+    { key: 1, value: "Goa" },
+    { key: 2, value: "Mumbai" },
+    { key: 3, value: "Delhi" },
+    { key: 4, value: "Bangalore" },
+    { key: 5, value: "Jaipur" },
+    { key: 6, value: "Manali" },
+    { key: 7, value: "Udaipur" },
+    { key: 8, value: "Kerala" },
+    { key: 9, value: "Chennai" },
+    { key: 10, value: "Kolkata" },
+];
+
 // Navigation pages for the Footer component
 export const PAGES = [
     {
