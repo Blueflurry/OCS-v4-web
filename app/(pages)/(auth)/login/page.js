@@ -49,7 +49,7 @@ const Login = () => {
             // Call login API to send OTP
             const response = await sendLoginOtp(phoneNumber);
 
-            console.log("OTP sent response:", response);
+            // console.log("OTP sent response:", response);
 
             if (response.success) {
                 // Store phone number in session storage for OTP verification

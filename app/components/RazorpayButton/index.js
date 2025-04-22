@@ -114,7 +114,7 @@ const RazorpayButton = ({
     // Handle the payment process
     const handlePayment = async () => {
         if (!razorpayLoaded) {
-            console.log("Payment gateway is still loading. Please wait.");
+            // console.log("Payment gateway is still loading. Please wait.");
             return;
         }
 

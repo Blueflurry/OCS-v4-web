@@ -24,7 +24,7 @@ const Upcoming = () => {
             try {
                 setLoading(true);
                 const data = await getUpcomingBookings();
-                console.log("Upcoming bookings data:", data);
+                // console.log("Upcoming bookings data:", data);
                 setBookings(data);
             } catch (err) {
                 console.error("Error fetching upcoming bookings:", err);

@@ -11,7 +11,7 @@ const Locations = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                console.log("SCROLLED");
+                // console.log("SCROLLED");
                 setScrolled(
                     entry.boundingClientRect.top <= window.innerHeight * 0.2
                 );

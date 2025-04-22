@@ -9,6 +9,7 @@ export const metadata = {
         "OneClick Stays provides Luxury Villas and Apartment at lowest price guaranteed",
     icons: {
         icon: "/favicon.ico",
+        sizes: "any",
     },
     other: {
         "gtag-id": "G-WWB084J6BG", // Replace with your GA4 Measurement ID
@@ -21,7 +22,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <head>
-                <link rel="icon" href="/favicon.ico" />
+                {/* <link rel="icon" href="/favicon.ico" /> */}
 
                 {/* Google Analytics Script */}
                 <script

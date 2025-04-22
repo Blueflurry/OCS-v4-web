@@ -42,7 +42,7 @@ const StayListings = ({
         // Check if we're already loading or have no more to load
         if (isLoadingMore || !hasMore) return;
 
-        console.log("Loading more stays, current page:", page);
+        // console.log("Loading more stays, current page:", page);
         setIsLoadingMore(true);
 
         try {
@@ -97,9 +97,9 @@ const StayListings = ({
                 (entries) => {
                     // If the last element is visible and we have more items to load
                     if (entries[0]?.isIntersecting && hasMore) {
-                        console.log(
-                            "Last element is visible, loading more stays"
-                        );
+                        // console.log(
+                        //     "Last element is visible, loading more stays"
+                        // );
                         loadMoreStays();
                     }
                 },
@@ -111,7 +111,7 @@ const StayListings = ({
 
             // Observe the node if it exists
             if (node) {
-                console.log("Setting up observer for last element");
+                // console.log("Setting up observer for last element");
                 observer.current.observe(node);
             }
         },

@@ -83,7 +83,7 @@ export const getFilteredStays = async (filters) => {
 export const getStayDetails = async (stayId) => {
     try {
         const response = await fetchAPI(`/stay/${stayId}`);
-        console.log("Stay details response:", response);
+        // console.log("Stay details response:", response);
         return response.stay || {};
     } catch (error) {
         console.error(`Error fetching stay details for ${stayId}:`, error);
@@ -99,7 +99,7 @@ export const getStayDetails = async (stayId) => {
 export const getStayAddons = async (stayId) => {
     try {
         const response = await fetchAPI(`/stay/${stayId}/addons`);
-        console.log("Add-ons response:", response);
+        // console.log("Add-ons response:", response);
         return response || [];
     } catch (error) {
         console.error(`Error fetching add-ons for stay ${stayId}:`, error);
