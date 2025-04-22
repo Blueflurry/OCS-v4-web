@@ -18,13 +18,7 @@ import LoadingAnimation from "@/public/assets/animations/load-more.json";
  * @param {boolean} props.loading - Whether data is currently loading
  * @returns {JSX.Element} StayListings component
  */
-const StayListings = ({
-    initialStays,
-    title,
-    description,
-    filters,
-    loading = false,
-}) => {
+const StayListings = ({ initialStays, title, description, filters, loading = false, noHeader = false }) => {
     const [animationFlag, setAnimationFlag] = useState(false);
     // Make sure we're initializing the stays array correctly
     const [stays, setStays] = useState(initialStays || []);
@@ -145,26 +139,20 @@ const StayListings = ({
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <h2 className={styles.title}>{title}</h2>
-                {description && (
-                    <p className={styles.description}>{description}</p>
-                )}
-                {paginationInfo.totalResults > 0 && (
-                    <p className={styles.results}>
-                        {paginationInfo.totalResults} stays found
-                    </p>
-                )}
-            </div>
+            {!noHeader && (
+                <>
+                    <div className={styles.header}>
+                        <h2 className={styles.title}>{title}</h2>
+                        {description && <p className={styles.description}>{description}</p>}
+                        {paginationInfo.totalResults > 0 && <p className={styles.results}>{paginationInfo.totalResults} stays found</p>}
+                    </div>
+                </>
+            )}
 
             {/* Loading state for initial load */}
             {loading && (
                 <div className={styles.loadingContainer}>
-                    <Lottie
-                        animationData={emptyStateAnimation}
-                        loop={true}
-                        style={{ height: 200 }}
-                    />
+                    <Lottie animationData={emptyStateAnimation} loop={true} style={{ height: 200 }} />
                     <p>Finding the perfect stays for you...</p>
                 </div>
             )}
@@ -172,16 +160,9 @@ const StayListings = ({
             {/* Empty state when no stays match filters */}
             {!loading && (!stays || stays.length === 0) && (
                 <div className={styles.emptyState}>
-                    <Lottie
-                        animationData={emptyStateAnimation}
-                        loop={true}
-                        onEnterFrame={handleAnimationEnterFrame}
-                    />
+                    <Lottie animationData={emptyStateAnimation} loop={true} onEnterFrame={handleAnimationEnterFrame} />
                     <h3>No stays match your filters</h3>
-                    <p>
-                        Try adjusting your search filters or exploring a
-                        different location
-                    </p>
+                    <p>Try adjusting your search filters or exploring a different location</p>
                 </div>
             )}
 
@@ -193,21 +174,12 @@ const StayListings = ({
                             // Add ref to last element for intersection observer
                             if (stays.length === index + 1) {
                                 return (
-                                    <div
-                                        ref={lastStayElementRef}
-                                        key={stay._id || index}
-                                        className={styles.lastItem}
-                                    >
+                                    <div ref={lastStayElementRef} key={stay._id || index} className={styles.lastItem}>
                                         <StayCard stay={stay} />
                                     </div>
                                 );
                             } else {
-                                return (
-                                    <StayCard
-                                        key={stay._id || index}
-                                        stay={stay}
-                                    />
-                                );
+                                return <StayCard key={stay._id || index} stay={stay} />;
                             }
                         })}
                     </div>
@@ -215,11 +187,7 @@ const StayListings = ({
                     {/* Loading more indicator */}
                     {isLoadingMore && (
                         <div className={styles.infiniteScrollLoading}>
-                            <Lottie
-                                animationData={LoadingAnimation}
-                                loop={true}
-                                style={{ height: 160 }}
-                            />
+                            <Lottie animationData={LoadingAnimation} loop={true} style={{ height: 160 }} />
                             <p>Loading more amazing stays...</p>
                         </div>
                     )}

@@ -112,7 +112,7 @@ function GoogleMapComponent({ location }) {
         <GoogleMap
             mapContainerStyle={containerStyle}
             center={mapCenter}
-            zoom={15}
+            zoom={13}
             onLoad={onLoad}
             onUnmount={onUnmount}
             options={{

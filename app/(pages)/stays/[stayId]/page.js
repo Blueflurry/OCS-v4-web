@@ -17,27 +17,11 @@ import BookingEditModal from "@/app/components/BookingEditModal";
 import { createPaymentIntent } from "@/app/services/paymentService";
 import { formatCurrency, formatDateRange } from "@/app/utils/formatter";
 import Loading from "../loading";
-import {
-    Calendar,
-    Moon,
-    Pencil,
-    Users,
-    AlertTriangle,
-    Star,
-    MapPin,
-} from "lucide-react";
+import { Calendar, Moon, Pencil, Users, AlertTriangle, Star, MapPin } from "lucide-react";
 import useSWR from "swr";
 
 const ArrowSwiggle = React.forwardRef((props, forwardedRef) => (
-    <svg
-        width="150"
-        height="82"
-        viewBox="0 0 150 82"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        ref={forwardedRef}
-        {...props}
-    >
+    <svg width="150" height="82" viewBox="0 0 150 82" fill="none" xmlns="http://www.w3.org/2000/svg" ref={forwardedRef} {...props}>
         <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -62,13 +46,9 @@ const StayDetails = () => {
         // Default booking info if none is available
         const defaultBooking = {
             checkin: new Date().toLocaleDateString(),
-            checkout: new Date(
-                Date.now() + 5 * 24 * 60 * 60 * 1000
-            ).toLocaleDateString(),
+            checkout: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString(),
             rawCheckin: new Date().toISOString().split("T")[0],
-            rawCheckout: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
-                .toISOString()
-                .split("T")[0],
+            rawCheckout: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
             nights: 5,
             guests: 2,
             men: 1,
@@ -82,10 +62,7 @@ const StayDetails = () => {
             if (searchParamsStr) {
                 try {
                     const searchParams = JSON.parse(searchParamsStr);
-                    if (
-                        searchParams.formattedCheckin &&
-                        searchParams.formattedCheckout
-                    ) {
+                    if (searchParams.formattedCheckin && searchParams.formattedCheckout) {
                         setIsDefaultBooking(false);
                         return {
                             checkin: searchParams.formattedCheckin,
@@ -150,10 +127,7 @@ const StayDetails = () => {
                             ...bookingInfo, // Include the booking info
                         };
 
-                        localStorage.setItem(
-                            "stayBasics",
-                            JSON.stringify(stayBasics)
-                        );
+                        localStorage.setItem("stayBasics", JSON.stringify(stayBasics));
                     }
 
                     return data;
@@ -188,10 +162,7 @@ const StayDetails = () => {
                     totalGuests: newBookingInfo.guests,
                 };
 
-                localStorage.setItem(
-                    "searchParams",
-                    JSON.stringify(searchParams)
-                );
+                localStorage.setItem("searchParams", JSON.stringify(searchParams));
             }
 
             // Clear booking error since user has updated information
@@ -288,9 +259,7 @@ const StayDetails = () => {
     const handleProceedToCheckout = async () => {
         // Validate booking info before proceeding
         if (isDefaultBooking) {
-            setBookingError(
-                "Please confirm your stay details before proceeding"
-            );
+            setBookingError("Please confirm your stay details before proceeding");
             setIsEditModalOpen(true);
             return false;
         }
@@ -334,10 +303,7 @@ const StayDetails = () => {
                 },
             })
                 .then((paymentIntent) => {
-                    localStorage.setItem(
-                        "paymentIntentId",
-                        paymentIntent.bookingId
-                    );
+                    localStorage.setItem("paymentIntentId", paymentIntent.bookingId);
 
                     // update stay Details in localstorage
                     updateStayInfo(paymentIntent);
@@ -346,16 +312,12 @@ const StayDetails = () => {
                 })
                 .catch((err) => {
                     console.error("Error creating payment intent:", err);
-                    setBookingError(
-                        "Unable to process your booking. Please try again."
-                    );
+                    setBookingError("Unable to process your booking. Please try again.");
                     return false;
                 });
         } catch (err) {
             console.error("Error creating payment intent:", err);
-            setBookingError(
-                "Unable to process your booking. Please try again."
-            );
+            setBookingError("Unable to process your booking. Please try again.");
             return false;
         }
     };
@@ -381,16 +343,15 @@ const StayDetails = () => {
                 <div className={`${styles["stay-details"]} container`}>
                     <div className={styles["stay-details__carousel"]}>
                         <HeroImageCarousel
-                            images={[
-                                stayData.featuredImage,
-                                ...Object.values(stayData.images).reduce(
-                                    (a, b) => {
+                            images={Array.from(
+                                new Set([
+                                    stayData.featuredImage,
+                                    ...Object.values(stayData.images).reduce((a, b) => {
                                         a.push(...b);
                                         return a;
-                                    },
-                                    []
-                                ),
-                            ]}
+                                    }, []),
+                                ])
+                            )}
                             categoryImages={stayData.images}
                         />
                         <BackButton className={styles["goBack"]} />
@@ -398,20 +359,11 @@ const StayDetails = () => {
                         {/* stay information */}
                         <div className={styles["stay-details__content"]}>
                             <div className={styles["stay-details__header"]}>
-                                <div
-                                    className={styles["stay-details__location"]}
-                                >
-                                    <MapPin
-                                        size={16}
-                                        stroke="rgba(255, 255, 255, 0.4)"
-                                    />
+                                <div className={styles["stay-details__location"]}>
+                                    <MapPin size={16} stroke="rgba(255, 255, 255, 0.4)" />
                                     <p>{stayData.location.name}</p>
                                 </div>
-                                <span
-                                    className={
-                                        styles["stay-details__separator"]
-                                    }
-                                />
+                                <span className={styles["stay-details__separator"]} />
                                 <div className={styles["stay-details__rating"]}>
                                     <b>{stayData.rating.toFixed(1)}</b>
                                     {/* <Image
@@ -428,159 +380,52 @@ const StayDetails = () => {
                                     <Star size={16} />
                                     {/* <StarHalf /> */}
 
-                                    {stayData.reviewCount > 0 && (
-                                        <p>({stayData.reviewCount} Reviews)</p>
-                                    )}
+                                    {stayData.reviewCount > 0 && <p>({stayData.reviewCount} Reviews)</p>}
                                 </div>
                             </div>
                             <div className={styles["stay-details__title"]}>
                                 <h3>{stayData.name}</h3>
                             </div>
                             <p className={styles["stay-details__capacity"]}>
-                                <span
-                                    className={
-                                        styles["stay-details__capacity--amount"]
-                                    }
-                                >
-                                    {stayData.bhk}
-                                </span>{" "}
-                                BHK
-                                <span
-                                    className={
-                                        styles["stay-details__separator"]
-                                    }
-                                />
-                                <span
-                                    className={
-                                        styles["stay-details__capacity--amount"]
-                                    }
-                                >
-                                    {stayData.maxGuests}
-                                </span>{" "}
-                                Guests
-                                <span
-                                    className={
-                                        styles["stay-details__separator"]
-                                    }
-                                />
-                                <span
-                                    className={styles["stay-details__partner"]}
-                                >
-                                    <PartnerLogo
-                                        name={
-                                            stayData.partner?.name || "elivaas"
-                                        }
-                                    />
+                                <span className={styles["stay-details__capacity--amount"]}>{stayData.bhk}</span> BHK
+                                <span className={styles["stay-details__separator"]} />
+                                <span className={styles["stay-details__capacity--amount"]}>{stayData.maxGuests}</span> Guests
+                                <span className={styles["stay-details__separator"]} />
+                                <span className={styles["stay-details__partner"]}>
+                                    <PartnerLogo name={stayData.partner?.name || "elivaas"} />
                                 </span>
                             </p>
                             <div className={styles["stay-details__price"]}>
                                 {/* <ArrowSwiggle /> */}
                                 {/* <Image src="/assets/images/arrow-swiggle.svg" width={100} height={100} /> */}
                                 <div>
-                                    <span
-                                        className={
-                                            styles[
-                                                "stay-details__price--striked"
-                                            ]
-                                        }
-                                    >
-                                        ₹
-                                        {formatCurrency(
-                                            stayData.pricing.originalPrice
-                                        )}
-                                    </span>
-                                    <p
-                                        className={
-                                            styles[
-                                                "stay-details__price--active"
-                                            ]
-                                        }
-                                    >
-                                        ₹
-                                        {formatCurrency(
-                                            stayData.pricing.currentPrice
-                                        )}{" "}
-                                        <span
-                                            className={
-                                                styles[
-                                                    "stay-details__price--unit"
-                                                ]
-                                            }
-                                        >
-                                            per night
-                                        </span>
+                                    <span className={styles["stay-details__price--striked"]}>₹{formatCurrency(stayData.pricing.originalPrice)}</span>
+                                    <p className={styles["stay-details__price--active"]}>
+                                        ₹{formatCurrency(stayData.pricing.currentPrice)}{" "}
+                                        <span className={styles["stay-details__price--unit"]}>per night</span>
                                     </p>
                                 </div>
-                                <p
-                                    className={
-                                        styles["stay-details__price--person"]
-                                    }
-                                >
-                                    Equals to{" "}
-                                    <b>
-                                        ₹
-                                        {formatCurrency(
-                                            stayData.pricing.perPerson
-                                        )}
-                                    </b>{" "}
-                                    per person
+                                <p className={styles["stay-details__price--person"]}>
+                                    Equals to <b>₹{formatCurrency(stayData.pricing.perPerson)}</b> per person
                                 </p>
                             </div>
 
                             {/* Display booking info from search parameters */}
                             <div className={styles["stay-details__dates"]}>
-                                <div
-                                    className={
-                                        styles["stay-details__booking-info"]
-                                    }
-                                >
-                                    <div
-                                        className={
-                                            styles[
-                                                "stay-details__booking-header"
-                                            ]
-                                        }
-                                    >
+                                <div className={styles["stay-details__booking-info"]}>
+                                    <div className={styles["stay-details__booking-header"]}>
                                         {/* <h3>Your Stay</h3> */}
-                                        Showing prices for these{" "}
-                                        <span>dates</span> & <span>guests</span>
+                                        Showing prices for these <span>dates</span> & <span>guests</span>
                                     </div>
 
-                                    <div
-                                        className={
-                                            styles[
-                                                "stay-details__booking-details"
-                                            ]
-                                        }
-                                    >
-                                        <div
-                                            className={
-                                                styles[
-                                                    "stay-details__booking-row"
-                                                ]
-                                            }
-                                        >
-                                            <div
-                                                className={
-                                                    styles[
-                                                        "stay-details__booking-label"
-                                                    ]
-                                                }
-                                            >
+                                    <div className={styles["stay-details__booking-details"]}>
+                                        <div className={styles["stay-details__booking-row"]}>
+                                            <div className={styles["stay-details__booking-label"]}>
                                                 <Calendar size={18} />
                                                 Dates
                                             </div>
-                                            <div
-                                                className={
-                                                    styles[
-                                                        "stay-details__booking-value"
-                                                    ]
-                                                }
-                                            >
-                                                {formatDateRange([
-                                                    bookingInfo.checkin,
-                                                    bookingInfo.checkout,
-                                                ])}
+                                            <div className={styles["stay-details__booking-value"]}>
+                                                {formatDateRange([bookingInfo.checkin, bookingInfo.checkout])}
                                             </div>
                                         </div>
 
@@ -594,57 +439,25 @@ const StayDetails = () => {
                                             </div>
                                         </div> */}
 
-                                        <div
-                                            className={
-                                                styles[
-                                                    "stay-details__booking-row"
-                                                ]
-                                            }
-                                        >
-                                            <div
-                                                className={
-                                                    styles[
-                                                        "stay-details__booking-label"
-                                                    ]
-                                                }
-                                            >
+                                        <div className={styles["stay-details__booking-row"]}>
+                                            <div className={styles["stay-details__booking-label"]}>
                                                 <Users size={18} />
                                                 Guests
                                             </div>
-                                            <div
-                                                className={
-                                                    styles[
-                                                        "stay-details__booking-value"
-                                                    ]
-                                                }
-                                            >
-                                                {bookingInfo.guests}{" "}
-                                                {bookingInfo.guests === 1
-                                                    ? "Guest"
-                                                    : "Guests"}
+                                            <div className={styles["stay-details__booking-value"]}>
+                                                {bookingInfo.guests} {bookingInfo.guests === 1 ? "Guest" : "Guests"}
                                             </div>
                                         </div>
                                     </div>
 
-                                    <button
-                                        className={
-                                            styles["stay-details__edit-button"]
-                                        }
-                                        onClick={() => setIsEditModalOpen(true)}
-                                    >
+                                    <button className={styles["stay-details__edit-button"]} onClick={() => setIsEditModalOpen(true)}>
                                         <Pencil size={16} />
                                         Edit Details
                                     </button>
 
                                     {/* Error message */}
                                     {bookingError && (
-                                        <div
-                                            className={
-                                                styles[
-                                                    "stay-details__booking-error"
-                                                ]
-                                            }
-                                        >
+                                        <div className={styles["stay-details__booking-error"]}>
                                             <AlertTriangle size={16} />
                                             <span>{bookingError}</span>
                                         </div>
@@ -664,21 +477,14 @@ const StayDetails = () => {
                         {/* Map */}
                         {stayData.location.coordinates && (
                             <div className={styles["stay-details__map"]}>
-                                <GoogleMapComponent
-                                    location={stayData.location}
-                                />
+                                <GoogleMapComponent location={stayData.location} />
                             </div>
                         )}
 
                         {/* amenities */}
-                        <Amenities
-                            amenities={stayData.amenities}
-                            amenityImages={stayData.amenityImages}
-                        />
+                        <Amenities amenities={stayData.amenities} amenityImages={stayData.amenityImages} />
 
-                        <div
-                            className={styles["stay-details__separator-2"]}
-                        ></div>
+                        <div className={styles["stay-details__separator-2"]}></div>
 
                         {/* policy */}
                         <ReturnPolicy />
@@ -704,11 +510,7 @@ const StayDetails = () => {
                 />
 
                 <Footer
-                    btnText={
-                        isDefaultBooking
-                            ? "Confirm stay details"
-                            : "Proceed to checkout"
-                    }
+                    btnText={isDefaultBooking ? "Confirm stay details" : "Proceed to checkout"}
                     btnType="primary"
                     onClick={handleProceedToCheckout}
                 />
