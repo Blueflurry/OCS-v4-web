@@ -39,12 +39,12 @@
     &__indicator {
         display: inline-block;
         position: relative;
-        width: 100px;
+        width: 80px;
         top: -40px;
         left: 19%;
         z-index: 4;
         padding: 2px 4px;
-        font-size: 8px !important;
+        font-size: 12px !important;
         font-weight: 700;
         letter-spacing: 0.5px;
         text-transform: uppercase;
@@ -152,6 +152,10 @@
         }
     }
 
+    &__location {
+        margin-left: -4px;
+    }
+
     &__location,
     &__rating {
         display: flex;
@@ -162,7 +166,12 @@
         svg {
             fill: $color-primary;
             stroke: $color-primary;
-            // margin-left: -4px;
+            height: 12px;
+            margin-left: -3px;
+
+            &:first-of-type {
+                margin-left: 2px;
+            }
         }
 
         p {

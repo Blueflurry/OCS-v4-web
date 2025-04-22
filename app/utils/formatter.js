@@ -26,10 +26,10 @@ export function formatDateRange(dateRange) {
         return "Select dates";
     }
 
-    const startDate = dateRange[0];
-    const endDate = dateRange[1];
+    const startDate = dateRange[0] instanceof Date ? dateRange[0] : new Date(dateRange[0]);
+    const endDate = dateRange[1] instanceof Date ? dateRange[1] : new Date(dateRange[1]);
 
-    const options = { month: "short", day: "numeric" };
+    const options = { month: "short", day: "numeric", year: "numeric" };
 
     if (startDate && endDate) {
         const start = startDate.toLocaleDateString("en-US", options);
@@ -81,10 +81,8 @@ export const formatCurrency = (amount) => {
 export const calculateNights = (checkIn, checkOut) => {
     if (!checkIn || !checkOut) return 0;
 
-    const checkInDate =
-        typeof checkIn === "string" ? new Date(checkIn) : checkIn;
-    const checkOutDate =
-        typeof checkOut === "string" ? new Date(checkOut) : checkOut;
+    const checkInDate = typeof checkIn === "string" ? new Date(checkIn) : checkIn;
+    const checkOutDate = typeof checkOut === "string" ? new Date(checkOut) : checkOut;
 
     // Calculate the difference in milliseconds and convert to days
     const diffTime = Math.abs(checkOutDate - checkInDate);
