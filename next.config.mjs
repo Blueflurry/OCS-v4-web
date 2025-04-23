@@ -27,10 +27,6 @@ const nextConfig = {
             // Add other patterns as needed
         ],
     },
-    experimental: {
-        optimizeCss: true, // CSS optimization
-        optimizePackageImports: ["next", "react", "react-dom"], // Package optimization
-    },
 };
 
 export default nextConfig;
