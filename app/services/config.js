@@ -76,8 +76,8 @@ export const fetchAPI = async (
             Accept: "application/json",
             ...(options.headers || {}),
         },
-        credentials: "include",
-        withCredentials: true,
+        // credentials: "include",
+        // withCredentials: true,
         ...(options.body && { body: JSON.stringify(options.body) }),
     };
 
