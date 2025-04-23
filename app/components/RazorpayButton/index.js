@@ -35,6 +35,17 @@ const RazorpayButton = ({
     const [error, setError] = useState(null);
     const razorpayInstance = useRef(null);
     const router = useRouter();
+    const [user, setUser] = useState(null);
+
+    // Move localStorage access into useEffect
+    useEffect(() => {
+        // This code will only run on the client side
+        const userFromStorage = localStorage.getItem("user");
+
+        if (userFromStorage) {
+            setUser(JSON.parse(userFromStorage));
+        }
+    }, []);
 
     useEffect(() => {
         // Check if script is already loaded
@@ -211,12 +222,15 @@ const RazorpayButton = ({
                         router.push(`/stays/${stayId}/checkout`);
                     }
                 },
-                // prefill: {
-                //     name: "",
-                //     email: "",
-                //     contact: "",
-                //     // vpa: "", // Explicitly set empty VPA
-                // },
+                prefill: {
+                    name: user && user.fullName ? user.fullName : "",
+                    email: user && user.email ? user.email : "",
+                    contact:
+                        user && user.phone
+                            ? user.phone.countryCode + user.phone.number
+                            : "",
+                    // vpa: "", // Explicitly set empty VPA
+                },
                 // remember_customer: false,
 
                 notes: {
