@@ -25,16 +25,20 @@ export default async function Stays({ searchParams }) {
         page: 1,
         limit: 10,
 
-        // Optional filters with default values
-        managementType: "everything",
-        amenities: [],
-        propertyType: "villa",
-        bathrooms: "0",
-        bedrooms: "0",
-        beds: "0",
+        // Default values for new filter types
+        luxuryLevel: "",
+        stayType: "",
+        stayVibe: "",
+        addOnService: "",
+        amenities: {},
         priceRange: {
-            min: 0,
-            max: 2500000,
+            min: 3000,
+            max: 500000,
+        },
+        rooms: {
+            bedrooms: "Any",
+            beds: "Any",
+            bathrooms: "Any",
         },
     };
 

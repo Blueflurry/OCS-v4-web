@@ -154,7 +154,7 @@ const PaymentSuccess = () => {
                             </div>
                         )}
 
-                        <Tag type="info">
+                        {/* <Tag type="info">
                             <Image
                                 src={"/assets/images/ocs-coin.svg"}
                                 width={100}
@@ -165,7 +165,7 @@ const PaymentSuccess = () => {
                             <span className={styles["payment__coin-message"]}>
                                 You have earned {coinsOnBooking} OCS Coins
                             </span>
-                        </Tag>
+                        </Tag> */}
 
                         <Link
                             href={bookingLink}

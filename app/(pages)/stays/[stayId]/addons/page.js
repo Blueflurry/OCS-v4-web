@@ -70,14 +70,13 @@ const Addons = () => {
         fetchData();
     }, [stayId]);
 
-    // Handle checkbox changes
-    const onChangeCheckBox = (event) => {
-        const { value, checked } = event.target;
-
+    // Handle add-on service selection
+    const handleAddOnServiceToggle = (serviceId) => {
+        // Update the services array for the UI
         setServices((prev) => {
             return prev.map((service) =>
-                service._id === value
-                    ? { ...service, isChecked: checked }
+                service._id === serviceId
+                    ? { ...service, isChecked: !service.isChecked }
                     : service
             );
         });
@@ -183,71 +182,53 @@ const Addons = () => {
                     these services. You don't have to pay at the time of
                     booking.
                 </p>
-                {services.map((service) => (
-                    <div
-                        className={styles["addons__listing--row"]}
-                        key={service._id}
-                    >
-                        <label
-                            htmlFor={service._id}
-                            className={
-                                styles["addons__listing--row-checkLabel"]
-                            }
-                        >
-                            <input
-                                type="checkbox"
-                                value={service._id}
-                                name="isSelected"
-                                onChange={onChangeCheckBox}
-                                id={service._id}
-                                checked={service.isChecked || false}
-                            />
-                        </label>
-
-                        {/* Item */}
+                <div className={styles.sectionContent}>
+                    {services && services.length > 0 ? (
                         <div
-                            className={`${styles["addons__listing--item"]} ${
-                                service.isChecked
-                                    ? styles["addons__listing--item--selected"]
-                                    : ""
-                            }`}
-                            onClick={() =>
-                                onChangeCheckBox({
-                                    target: {
-                                        value: service._id,
-                                        checked: !service.isChecked,
-                                    },
-                                })
-                            }
+                            className={`${styles.boxOptions} ${styles.addOnOptions}`}
                         >
-                            <Image
-                                src={
-                                    service.catalogId.image ||
-                                    "/assets/images/addons-1.svg"
-                                }
-                                width={200}
-                                height={200}
-                                alt={service.name}
-                                className={
-                                    styles["addons__listing--item-image"]
-                                }
-                            />
-                            <div
-                                className={
-                                    styles["addons__listing--item-details"]
-                                }
-                            >
-                                <h2>{service.name}</h2>
-                                <h4>
-                                    <span>
-                                        ₹ {service.pricing?.basePrice}/day
-                                    </span>
-                                </h4>
-                                <p>{service.catalogId.description}</p>
-                            </div>
+                            {services.map((service) => (
+                                <div
+                                    key={service._id}
+                                    className={`${styles.boxOption} ${
+                                        styles.addOnBox
+                                    } ${
+                                        service.isChecked ? styles.selected : ""
+                                    }`}
+                                    onClick={() =>
+                                        handleAddOnServiceToggle(service._id)
+                                    }
+                                >
+                                    <Image
+                                        src={
+                                            service.catalogId?.image ||
+                                            service.image ||
+                                            "/assets/images/addons-1.svg"
+                                        }
+                                        width={200}
+                                        height={200}
+                                        alt={service.name}
+                                        className={styles.addOnImage}
+                                    />
+                                    <div className={styles.boxOptionContent}>
+                                        <h4>{service.name}</h4>
+                                        <h5>
+                                            ₹ {service.pricing?.basePrice}/day
+                                        </h5>
+                                        <p>
+                                            {service.catalogId?.description ||
+                                                service.description}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    </div>
-                ))}
+                    ) : (
+                        <div className={styles.emptySection}>
+                            <p>Loading add-on service options...</p>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* fixed bottom stay info */}

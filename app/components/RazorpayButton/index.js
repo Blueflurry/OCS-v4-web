@@ -185,9 +185,9 @@ const RazorpayButton = ({
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
                 amount: amountInPaise,
                 currency: "INR",
-                name: "OneClick Stays",
-                description: "Luxury Accommodation",
-                image: "/assets/images/icon.svg", // Your brand logo
+                // name: "OneClick Stays",
+                // description: "Luxury Accommodation",
+                // image: "/assets/images/icon.svg", // Your brand logo
                 order_id: orderData.razorpayOrderId, // Using order ID from API
                 handler: async function (response) {
                     try {
@@ -211,13 +211,13 @@ const RazorpayButton = ({
                         router.push(`/stays/${stayId}/checkout`);
                     }
                 },
-                prefill: {
-                    name: "",
-                    email: "",
-                    contact: "",
-                    vpa: "", // Explicitly set empty VPA
-                },
-                remember_customer: false,
+                // prefill: {
+                //     name: "",
+                //     email: "",
+                //     contact: "",
+                //     // vpa: "", // Explicitly set empty VPA
+                // },
+                // remember_customer: false,
 
                 notes: {
                     stayId: stayId,
@@ -225,7 +225,7 @@ const RazorpayButton = ({
                     checkOutDate: checkOutDate,
                     guests: JSON.stringify(guests),
                 },
-                theme: { color: "#3399cc" },
+                // theme: { color: "#ffb401" },
                 modal: {
                     ondismiss: function () {
                         setLoading(false);

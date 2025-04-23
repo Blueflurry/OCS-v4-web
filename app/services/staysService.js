@@ -21,16 +21,37 @@ export const fetchHomePageStays = async () => {
 
 /**
  * Get filters from API
- * @returns {Promise<Array>} - Object of filters
+ * @returns {Promise<Object>} - Object of filters
  */
 export const getFilters = async () => {
     try {
+        // Fetch catalog filters
         const response = await fetchAPI("/catalog");
-        console.log("Filters response:", response);
-        return response.data || [];
+        console.log("Raw API filters response:", response);
+
+        // For debugging - check the structure of the response
+        if (response) {
+            console.log("Response structure check:", {
+                isObject: typeof response === "object" && response !== null,
+                hasData: response.data ? true : false,
+                keys: Object.keys(response),
+            });
+        }
+
+        // If the API response is nested under a 'data' property, extract it
+        // Otherwise return the response as is
+        const filterData = response?.data || response;
+
+        // Return empty object if response is not valid
+        if (!filterData || typeof filterData !== "object") {
+            console.error("Invalid filter data format received");
+            return {};
+        }
+
+        return filterData;
     } catch (error) {
         console.error("Error fetching filters:", error);
-        return [];
+        return {};
     }
 };
 
@@ -42,7 +63,32 @@ export const getFilters = async () => {
 export const getFilteredStays = async (filters) => {
     console.log("filters", filters);
     try {
-        const guests = filters.men + filters.women + filters.children;
+        const guests =
+            (Number(filters.men) || 0) +
+            (Number(filters.women) || 0) +
+            (Number(filters.children) || 0);
+
+        // Handle multi-select filter objects - convert them to arrays of selected codes
+        const amenityCodes = filters.amenities ? filters.amenities : [];
+
+        const stayTypeCodes = filters.stayType
+            ? Object.keys(filters.stayType).filter(
+                  (key) => filters.stayType[key]
+              )
+            : [];
+
+        const stayVibeCodes = filters.stayVibe
+            ? Object.keys(filters.stayVibe).filter(
+                  (key) => filters.stayVibe[key]
+              )
+            : [];
+
+        // no need to send
+        // const addOnServiceCodes = filters.addOnService
+        //     ? Object.keys(filters.addOnService).filter(
+        //           (key) => filters.addOnService[key]
+        //       )
+        //     : [];
 
         // Pre-process special filter fields if needed
         const processedFilters = {
@@ -53,22 +99,34 @@ export const getFilteredStays = async (filters) => {
                 new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
                     .toISOString()
                     .split("T")[0],
-            guests: guests == 0 ? 2 : guests,
+            guests: guests === 0 ? 2 : guests,
 
             page: filters.page || 1,
             limit: filters.limit || 10,
 
-            // Optional filters with default values
-            managementType: filters.managementType || "everything",
-            amenities: filters.amenities || [],
-            propertyType: filters.propertyType || "",
-            bathrooms: filters.bathrooms || "0",
-            bedrooms: filters.bedrooms || "0",
-            beds: filters.beds || "0",
-            priceRange: {
-                min: filters.priceMin || 0,
-                max: filters.priceMax || 2500000,
-            },
+            // Single select filters
+            luxuryLevel: filters.luxuryLevel || "",
+
+            // Multi-select filters as arrays of codes
+            amenities: amenityCodes,
+            stayTypes: stayTypeCodes,
+            vibes: stayVibeCodes,
+            // addOnServices: addOnServiceCodes,
+
+            // Price range
+            priceMin: filters.priceMin || 3000,
+            priceMax: filters.priceMax || 500000,
+
+            // Room configuration
+            bathrooms:
+                filters.rooms?.bathrooms !== "Any"
+                    ? filters.rooms?.bathrooms
+                    : "",
+            bedrooms:
+                filters.rooms?.bedrooms !== "Any"
+                    ? filters.rooms?.bedrooms
+                    : "",
+            beds: filters.rooms?.beds !== "Any" ? filters.rooms?.beds : "",
         };
 
         // Handle "5+" value for room filters

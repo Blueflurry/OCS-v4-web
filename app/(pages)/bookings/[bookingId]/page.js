@@ -210,7 +210,7 @@ const BookingDetails = () => {
                         </p>
                     </div>
                 </div>
-
+                {/* 
                 <div className="container">
                     <Tag type="info">
                         <Image
@@ -225,7 +225,7 @@ const BookingDetails = () => {
                             Coins
                         </span>
                     </Tag>
-                </div>
+                </div> */}
 
                 {booking.addOns && booking.addOns.length > 0 && (
                     <div className={styles["booking__addons"]}>
