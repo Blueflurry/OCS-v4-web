@@ -5,6 +5,7 @@ import Button from "../../components/Button";
 import styles from "./Header.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Luggage } from "lucide-react";
 
 const Header = () => {
     const router = useRouter();
@@ -44,14 +45,15 @@ const Header = () => {
                         </Button>
                     )
                 }
-                {/* <Button type="secondary" square>
-                    <Image
+                <Button type="secondary" square>
+                    {/* <Image
                         src="/assets/images/menu.svg"
                         alt="Menu"
                         width={20}
                         height={20}
-                    />
-                </Button> */}
+                    /> */}
+                    <Luggage size={24} strokeWidth={1} />
+                </Button>
             </div>
         </div>
     );

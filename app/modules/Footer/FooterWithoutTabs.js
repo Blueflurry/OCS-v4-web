@@ -32,14 +32,14 @@ const FooterWithoutTabs = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <Linkedin style={{ marginLeft: 6 }} />
+                            <Linkedin size={24} style={{ marginLeft: 6 }} />
                         </Link>
                         <Link
                             href="https://www.facebook.com/share/165u7p3Wvy/?mibextid=wwXIfr"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <Facebook />
+                            <Facebook size={24} />
                         </Link>
                     </div>
                 </div>
@@ -53,7 +53,7 @@ const FooterWithoutTabs = () => {
                 <div className={styles["footer__copyright"]}>
                     Copyright &copy; {currentYear}. All Rights Reserved.
                     <small>
-                        An entity of NurtureLuxe Experience Private Limited.
+                        An entity of NurtureLux Experience Private Limited.
                     </small>
                 </div>
             </div>

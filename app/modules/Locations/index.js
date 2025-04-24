@@ -44,99 +44,99 @@ const Locations = () => {
                             i // Duplicate images for seamless looping
                         ) => (
                             <React.Fragment key={i}>
-                                <Link href="/">
+                                <Link href="/stays?location=Bali">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-1.jpeg"
+                                        src="/assets/images/locations/bali.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Bali"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/">
+                                <Link href="/stays?location=Lonavala">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-2.jpeg"
+                                        src="/assets/images/locations/lonavala.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Lonavala"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/">
+                                <Link href="/stays?location=Kashmir">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-3.jpeg"
+                                        src="/assets/images/locations/kashmir.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Kashmir"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/">
+                                <Link href="/stays?location=Himachal Pradesh">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-4.jpeg"
+                                        src="/assets/images/locations/himachal-pradesh.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Himachal Pradesh"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/">
+                                <Link href="/stays?location=Uttrakhand">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-5.jpeg"
+                                        src="/assets/images/locations/uttrakhand.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Uttrakhand"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/">
+                                <Link href="/stays?location=Rajasthan">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-6.jpeg"
+                                        src="/assets/images/locations/rajasthan.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Rajasthan"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/">
+                                <Link href="/stays?location=Alibaug">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-7.jpeg"
+                                        src="/assets/images/locations/alibaug.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Alibaug"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/">
+                                <Link href="/stays?location=Delhi">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-8.jpeg"
+                                        src="/assets/images/locations/delhi.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Delhi"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/">
+                                <Link href="/stays?location=Goa">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-9.jpeg"
+                                        src="/assets/images/locations/goa.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Goa"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/">
+                                <Link href="/stays?location=Maldives">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-10.jpeg"
+                                        src="/assets/images/locations/maldives.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Maldives"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/">
+                                <Link href="/stays?location=Thailand">
                                     <Image
-                                        src="/assets/images/locations/location-carousel-11.jpeg"
+                                        src="/assets/images/locations/thailand.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Thailand"
