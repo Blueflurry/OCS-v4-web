@@ -45,15 +45,15 @@ const Header = () => {
                         </Button>
                     )
                 }
-                <Button type="secondary" square>
-                    {/* <Image
+                {/* <Button type="secondary" square>
+                    <Image
                         src="/assets/images/menu.svg"
                         alt="Menu"
                         width={20}
                         height={20}
-                    /> */}
+                    />
                     <Luggage size={24} strokeWidth={1} />
-                </Button>
+                </Button> */}
             </div>
         </div>
     );
