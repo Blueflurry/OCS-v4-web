@@ -27,16 +27,16 @@ export const getFilters = async () => {
     try {
         // Fetch catalog filters
         const response = await fetchAPI("/catalog");
-        console.log("Raw API filters response:", response);
+        // console.log("Raw API filters response:", response);
 
         // For debugging - check the structure of the response
-        if (response) {
-            console.log("Response structure check:", {
-                isObject: typeof response === "object" && response !== null,
-                hasData: response.data ? true : false,
-                keys: Object.keys(response),
-            });
-        }
+        // if (response) {
+        // console.log("Response structure check:", {
+        //     isObject: typeof response === "object" && response !== null,
+        //     hasData: response.data ? true : false,
+        //     keys: Object.keys(response),
+        // });
+        // }
 
         // If the API response is nested under a 'data' property, extract it
         // Otherwise return the response as is
@@ -53,6 +53,16 @@ export const getFilters = async () => {
         console.error("Error fetching filters:", error);
         return {};
     }
+};
+
+const removeEmptyValues = (obj) => {
+    return Object.fromEntries(
+        Object.entries(obj).filter(([_, value]) => {
+            if (Array.isArray(value)) return value.length > 0;
+            if (typeof value === "string") return value !== "";
+            return true;
+        })
+    );
 };
 
 /**
@@ -83,6 +93,11 @@ export const getFilteredStays = async (filters) => {
               )
             : [];
 
+        // Handle "5+" value for room filters
+        if (filters.bedrooms === "5+") filters.bedrooms = 5;
+        // if (filters.beds === "5+") filters.beds = "5+";
+        if (filters.bathrooms === "5+") filters.bathrooms = 5;
+
         // no need to send
         // const addOnServiceCodes = filters.addOnService
         //     ? Object.keys(filters.addOnService).filter(
@@ -92,6 +107,7 @@ export const getFilteredStays = async (filters) => {
 
         // Pre-process special filter fields if needed
         const processedFilters = {
+            // NEED TO UPDATE
             location: filters.location || "",
             checkIn: filters.checkin || new Date().toISOString().split("T")[0],
             checkOut:
@@ -114,34 +130,28 @@ export const getFilteredStays = async (filters) => {
             // addOnServices: addOnServiceCodes,
 
             // Price range
-            priceMin: filters.priceMin || 3000,
-            priceMax: filters.priceMax || 500000,
+            minPrice: filters.priceMin || 3000,
+            maxPrice: filters.priceMax || 500000,
 
             // Room configuration
             bathrooms:
-                filters.rooms?.bathrooms !== "Any"
-                    ? filters.rooms?.bathrooms
-                    : "",
-            bedrooms:
-                filters.rooms?.bedrooms !== "Any"
-                    ? filters.rooms?.bedrooms
-                    : "",
-            beds: filters.rooms?.beds !== "Any" ? filters.rooms?.beds : "",
+                filters.bathrooms !== "Any" ? Number(filters.bathrooms) : 0,
+            bedrooms: filters.bedrooms !== "Any" ? Number(filters.bedrooms) : 0,
+            // beds: filters.beds !== "Any" ? Number(filters.beds) : 0,
         };
 
-        // Handle "5+" value for room filters
-        if (processedFilters.bedrooms === "5+")
-            processedFilters.bedrooms = "5+";
-        if (processedFilters.beds === "5+") processedFilters.beds = "5+";
-        if (processedFilters.bathrooms === "5+")
-            processedFilters.bathrooms = "5+";
+        // console.log("body", processedFilters);
+        const cleanFilters = removeEmptyValues(processedFilters);
+        console.log("cleanFilters", cleanFilters);
 
         const response = await fetchAPI("/search", {
             method: "POST",
-            body: processedFilters,
+            body: cleanFilters,
         });
 
-        return response.results || [];
+        console.log("RESPONSE", response);
+        console.log("RESPONSE", response.pagination);
+        return response || [];
     } catch (error) {
         console.error("Error fetching filtered stays:", error);
         return [];

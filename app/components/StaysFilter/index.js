@@ -47,7 +47,7 @@ const StaysFilter = ({
         },
         rooms: {
             bedrooms: "Any",
-            beds: "Any",
+            // beds: "Any",
             bathrooms: "Any",
         },
         amenities: {}, // Multi-select as object {code: true/false}
@@ -82,11 +82,11 @@ const StaysFilter = ({
         const fetchFilters = async () => {
             try {
                 const response = await getFilters();
-                console.log("Raw filters response:", response);
+                // console.log("Raw filters response:", response);
 
                 if (isMounted && response) {
                     // Check if we need to log more details about the structure
-                    console.log("Response keys:", Object.keys(response));
+                    // console.log("Response keys:", Object.keys(response));
 
                     // Set filters with proper fallbacks
                     setFilterOptions({
@@ -98,13 +98,13 @@ const StaysFilter = ({
                     });
 
                     // Log the filter options after setting
-                    console.log("Filter options set:", {
-                        luxuryLevel: response.luxury_level?.length || 0,
-                        stayType: response.stay_type?.length || 0,
-                        stayVibe: response.stay_vibe?.length || 0,
-                        amenities: response.amenity?.length || 0,
-                        addOnService: response.add_on_service?.length || 0,
-                    });
+                    // console.log("Filter options set:", {
+                    //     luxuryLevel: response.luxury_level?.length || 0,
+                    //     stayType: response.stay_type?.length || 0,
+                    //     stayVibe: response.stay_vibe?.length || 0,
+                    //     amenities: response.amenity?.length || 0,
+                    //     addOnService: response.add_on_service?.length || 0,
+                    // });
                 } else {
                     console.error(
                         "Invalid response from getFilters:",
@@ -557,7 +557,7 @@ const StaysFilter = ({
             },
             rooms: {
                 bedrooms: "Any",
-                beds: "Any",
+                // beds: "Any",
                 bathrooms: "Any",
             },
             amenities: {},
@@ -682,8 +682,6 @@ const StaysFilter = ({
             stayVibe: selectedStayVibes,
             addOnService: selectedAddOnServices,
         };
-
-        console.log("Applied Filters:", finalFilters);
 
         if (onApplyFilters) {
             onApplyFilters(finalFilters);

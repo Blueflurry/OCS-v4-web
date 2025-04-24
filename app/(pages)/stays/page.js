@@ -37,19 +37,20 @@ export default async function Stays({ searchParams }) {
         },
         rooms: {
             bedrooms: "Any",
-            beds: "Any",
+            // beds: "Any",
             bathrooms: "Any",
         },
     };
 
     // Fetch initial batch of filtered stays data (first 10 items)
     const initialStays = await getFilteredStays(filters);
-
+    // console.log("initialStays", initialStays);
     // Pass both the search parameters and initial stays to the client component
     return (
         <StaysClient
             searchParams={resolvedSearchParams}
-            initialStays={initialStays}
+            initialStays={initialStays.results}
+            totalCount={initialStays.pagination.totalResults}
         />
     );
 }

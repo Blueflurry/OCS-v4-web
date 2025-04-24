@@ -10,13 +10,17 @@ import FooterWithoutTabs from "@/app/modules/Footer/FooterWithoutTabs";
 import StaysFilter from "@/app/components/StaysFilter";
 
 // Client-side component that handles search parameters and saving to localStorage
-export default function StaysClient({ searchParams, initialStays }) {
+export default function StaysClient({
+    searchParams,
+    initialStays,
+    totalCount,
+}) {
     // State for filter drawer and stays data
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [stays, setStays] = useState(initialStays);
     const [loading, setLoading] = useState(false);
     const [activeFilters, setActiveFilters] = useState({});
-    const [resultsCount, setResultsCount] = useState(initialStays?.length || 0);
+    const [resultsCount, setResultsCount] = useState(totalCount || 0);
 
     // Parse and save search parameters to localStorage on page load
     useEffect(() => {
@@ -85,7 +89,7 @@ export default function StaysClient({ searchParams, initialStays }) {
                 "searchParams",
                 JSON.stringify(searchParamsObj)
             );
-            console.log("Saved search parameters from URL:", searchParamsObj);
+            // console.log("Saved search parameters from URL:", searchParamsObj);
         }
     }, [searchParams]);
 
@@ -125,10 +129,10 @@ export default function StaysClient({ searchParams, initialStays }) {
                     filterValues.rooms?.bedrooms !== "Any"
                         ? filterValues.rooms.bedrooms
                         : "",
-                beds:
-                    filterValues.rooms?.beds !== "Any"
-                        ? filterValues.rooms.beds
-                        : "",
+                // beds:
+                //     filterValues.rooms?.beds !== "Any"
+                //         ? filterValues.rooms.beds
+                //         : "",
                 bathrooms:
                     filterValues.rooms?.bathrooms !== "Any"
                         ? filterValues.rooms.bathrooms
@@ -148,12 +152,14 @@ export default function StaysClient({ searchParams, initialStays }) {
                 (key) => apiFilters[key] === undefined && delete apiFilters[key]
             );
 
-            console.log("Applying filters to API:", apiFilters);
+            // console.log("Applying filters to API:", apiFilters);
 
             // Fetch filtered stays
             const filteredStays = await getFilteredStays(apiFilters);
-            setStays(filteredStays);
-            setResultsCount(filteredStays.length);
+            setStays(filteredStays.results);
+
+            // console.log("filteredStays", filteredStays);
+            setResultsCount(filteredStays.pagination.totalResults);
 
             // Save active filters
             setActiveFilters(filterValues);
@@ -260,7 +266,7 @@ function countActiveFilters(filters) {
 
     // Rooms
     if (filters.rooms?.bedrooms && filters.rooms.bedrooms !== "Any") count++;
-    if (filters.rooms?.beds && filters.rooms.beds !== "Any") count++;
+    // if (filters.rooms?.beds && filters.rooms.beds !== "Any") count++;
     if (filters.rooms?.bathrooms && filters.rooms.bathrooms !== "Any") count++;
 
     // Amenities

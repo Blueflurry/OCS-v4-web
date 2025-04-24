@@ -25,25 +25,29 @@ const HeroImageCarousel = (props) => {
     useEffect(() => {
         if (!categoryImages) return;
 
-        console.log("Category Images:", categoryImages);
-        console.log("Images:", images);
+        // console.log("Category Images:", categoryImages);
+        // console.log("Images:", images);
 
         const data = [];
         // Create an array of categories with their starting index in the images array
-        Object.entries(categoryImages).forEach(([category, categoryImageUrls]) => {
-            // Find the index of the first image of this category in the main images array
-            const firstImageUrl = categoryImageUrls[0];
-            const startIndex = images.findIndex((url) => url === firstImageUrl);
+        Object.entries(categoryImages).forEach(
+            ([category, categoryImageUrls]) => {
+                // Find the index of the first image of this category in the main images array
+                const firstImageUrl = categoryImageUrls[0];
+                const startIndex = images.findIndex(
+                    (url) => url === firstImageUrl
+                );
 
-            if (startIndex !== -1) {
-                data.push({
-                    name: formatCategoryName(category),
-                    startIndex,
-                    previewImage: firstImageUrl,
-                    count: categoryImageUrls.length,
-                });
+                if (startIndex !== -1) {
+                    data.push({
+                        name: formatCategoryName(category),
+                        startIndex,
+                        previewImage: firstImageUrl,
+                        count: categoryImageUrls.length,
+                    });
+                }
             }
-        });
+        );
 
         // Sort by startIndex so categories appear in the order they show in the carousel
         data.sort((a, b) => a.startIndex - b.startIndex);
@@ -73,11 +77,21 @@ const HeroImageCarousel = (props) => {
     };
 
     // Count total images
-    const totalImageCount = categoryImages ? Object.values(categoryImages).reduce((count, images) => count + images.length, 0) : 0;
+    const totalImageCount = categoryImages
+        ? Object.values(categoryImages).reduce(
+              (count, images) => count + images.length,
+              0
+          )
+        : 0;
 
     return (
         <div className={styles.carouselContainer}>
-            <EmblaCarousel slides={SLIDES} options={OPTIONS} images={images} setEmblaApi={setEmblaApi} />
+            <EmblaCarousel
+                slides={SLIDES}
+                options={OPTIONS}
+                images={images}
+                setEmblaApi={setEmblaApi}
+            />
 
             {categoryData.length > 0 && (
                 <div className={styles.categoryButtonsContainer}>
@@ -91,8 +105,12 @@ const HeroImageCarousel = (props) => {
                     >
                         <div className={styles.categoryOverlay}>
                             <Grid size={16} className={styles.gridIcon} />
-                            <span className={styles.categoryName}>All Images</span>
-                            <span className={styles.categoryCount}>({totalImageCount})</span>
+                            <span className={styles.categoryName}>
+                                All Images
+                            </span>
+                            <span className={styles.categoryCount}>
+                                ({totalImageCount})
+                            </span>
                         </div>
                     </button>
 
@@ -101,14 +119,20 @@ const HeroImageCarousel = (props) => {
                         <button
                             key={index}
                             className={styles.categoryButton}
-                            onClick={() => scrollToCategory(category.startIndex)}
+                            onClick={() =>
+                                scrollToCategory(category.startIndex)
+                            }
                             // style={{
                             //     backgroundImage: `url(${category.previewImage})`,
                             // }}
                         >
                             <div className={styles.categoryOverlay}>
-                                <span className={styles.categoryName}>{category.name}</span>
-                                <span className={styles.categoryCount}>({category.count})</span>
+                                <span className={styles.categoryName}>
+                                    {category.name}
+                                </span>
+                                <span className={styles.categoryCount}>
+                                    ({category.count})
+                                </span>
                             </div>
                         </button>
                     ))}
@@ -116,7 +140,11 @@ const HeroImageCarousel = (props) => {
             )}
 
             {/* Gallery Modal */}
-            <ImageGalleryModal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} categoryImages={categoryImages || {}} />
+            <ImageGalleryModal
+                isOpen={isGalleryOpen}
+                onClose={() => setIsGalleryOpen(false)}
+                categoryImages={categoryImages || {}}
+            />
         </div>
     );
 };
