@@ -46,11 +46,5 @@ export default async function Stays({ searchParams }) {
     const initialStays = await getFilteredStays(filters);
     // console.log("initialStays", initialStays);
     // Pass both the search parameters and initial stays to the client component
-    return (
-        <StaysClient
-            searchParams={resolvedSearchParams}
-            initialStays={initialStays.results}
-            totalCount={initialStays.pagination.totalResults}
-        />
-    );
+    return <StaysClient searchParams={resolvedSearchParams} initialStays={initialStays.results} totalCount={initialStays.pagination.totalStays} />;
 }

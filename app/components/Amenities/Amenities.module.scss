@@ -57,15 +57,17 @@
     }
 
     &__show-more {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        margin-top: 24px;
-        padding-bottom: 8px;
+        width: 240px;
+        margin: auto;
+        margin-bottom: 20px;
+        // display: flex;
+        // justify-content: center;
+        // margin-top: 24px;
+        // padding-bottom: 8px;
 
-        div {
-            color: #000000;
-        }
+        // div {
+        //     color: #000000;
+        // }
     }
 }
 

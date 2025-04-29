@@ -25,23 +25,13 @@ const Amenities = ({ amenities, amenityImages }) => {
                 Amenities
                 <span>({Math.floor(AMENITIES.length / 10) * 10}+)</span>
             </h3>
-            <SecondaryImageCarousel
-                images={VILLA_IMAGES}
-            ></SecondaryImageCarousel>
+            <SecondaryImageCarousel images={VILLA_IMAGES}></SecondaryImageCarousel>
 
             <div className={styles["amenities__list"]}>
                 {displayedAmenities.map((amenity) => (
-                    <div
-                        key={amenity._id}
-                        className={styles["amenities__item"]}
-                    >
+                    <div key={amenity._id} className={styles["amenities__item"]}>
                         {/* <ChefHat /> */}
-                        <Image
-                            src={amenity.catalogId.icon}
-                            alt={amenity.name}
-                            width={20}
-                            height={20}
-                        />
+                        <Image src={amenity.catalogId.icon} alt={amenity.name} width={20} height={20} />
                         <p>{amenity.name}</p>
                     </div>
                 ))}
@@ -50,10 +40,8 @@ const Amenities = ({ amenities, amenityImages }) => {
             {/* Only show the button if there are more than 6 amenities */}
             {AMENITIES.length > 6 && (
                 <div className={styles["amenities__show-more"]}>
-                    <Button onClick={toggleShowAll} type="secondary">
-                        {showAll
-                            ? "Show less"
-                            : `Show all ${AMENITIES.length} amenities`}
+                    <Button onClick={toggleShowAll} type="outline">
+                        {showAll ? "Show less" : `Show all ${AMENITIES.length} amenities`}
                     </Button>
                 </div>
             )}

@@ -32,12 +32,7 @@ import { numericOptions } from "../../services/mockData";
 import { getFilters } from "@/app/services/staysService";
 import Image from "next/image";
 
-const StaysFilter = ({
-    isOpen,
-    onClose,
-    onApplyFilters,
-    initialFilters = {},
-}) => {
+const StaysFilter = ({ isOpen, onClose, onApplyFilters, initialFilters = {} }) => {
     // Filter states
     const [filters, setFilters] = useState({
         luxuryLevel: "", // This remains single select
@@ -94,7 +89,7 @@ const StaysFilter = ({
                         stayType: response.stay_type || [],
                         stayVibe: response.stay_vibe || [],
                         amenities: response.amenity || [],
-                        addOnService: response.add_on_service || [],
+                        // addOnService: response.add_on_service || [],
                     });
 
                     // Log the filter options after setting
@@ -106,10 +101,7 @@ const StaysFilter = ({
                     //     addOnService: response.add_on_service?.length || 0,
                     // });
                 } else {
-                    console.error(
-                        "Invalid response from getFilters:",
-                        response
-                    );
+                    console.error("Invalid response from getFilters:", response);
 
                     // Set some fallback mock data temporarily so we can see the UI
                     setFilterOptions({
@@ -118,29 +110,25 @@ const StaysFilter = ({
                                 _id: "1",
                                 code: "ultra_luxury",
                                 name: "Ultra Luxury",
-                                description:
-                                    "The finest accommodations with exceptional service",
+                                description: "The finest accommodations with exceptional service",
                             },
                             {
                                 _id: "2",
                                 code: "premium",
                                 name: "Premium",
-                                description:
-                                    "High-end accommodations with great amenities",
+                                description: "High-end accommodations with great amenities",
                             },
                             {
                                 _id: "3",
                                 code: "luxury",
                                 name: "Luxury",
-                                description:
-                                    "Quality accommodations with premium features",
+                                description: "Quality accommodations with premium features",
                             },
                             {
                                 _id: "4",
                                 code: "standard",
                                 name: "Standard",
-                                description:
-                                    "Comfortable accommodations with essential amenities",
+                                description: "Comfortable accommodations with essential amenities",
                             },
                         ],
                         stayType: [
@@ -148,8 +136,7 @@ const StaysFilter = ({
                                 _id: "1",
                                 code: "villa",
                                 name: "Villa",
-                                description:
-                                    "Luxurious independent houses with private spaces",
+                                description: "Luxurious independent houses with private spaces",
                             },
                             {
                                 _id: "2",
@@ -161,15 +148,13 @@ const StaysFilter = ({
                                 _id: "3",
                                 code: "apartment",
                                 name: "Apartment",
-                                description:
-                                    "Modern apartments in residential buildings",
+                                description: "Modern apartments in residential buildings",
                             },
                             {
                                 _id: "4",
                                 code: "suite",
                                 name: "Suite",
-                                description:
-                                    "Elegant suites with separate living areas",
+                                description: "Elegant suites with separate living areas",
                             },
                         ],
                         stayVibe: [
@@ -177,8 +162,7 @@ const StaysFilter = ({
                                 _id: "1",
                                 code: "beachfront",
                                 name: "Beachfront",
-                                description:
-                                    "Properties with direct beach access",
+                                description: "Properties with direct beach access",
                             },
                             {
                                 _id: "2",
@@ -196,8 +180,7 @@ const StaysFilter = ({
                                 _id: "4",
                                 code: "luxury_living",
                                 name: "Luxury Living",
-                                description:
-                                    "Sophisticated accommodations with refined aesthetics",
+                                description: "Sophisticated accommodations with refined aesthetics",
                             },
                         ],
                         amenities: [
@@ -231,8 +214,7 @@ const StaysFilter = ({
                                 _id: "1",
                                 code: "private_chef",
                                 name: "Private Chef",
-                                description:
-                                    "Enjoy meals prepared by a personal chef",
+                                description: "Enjoy meals prepared by a personal chef",
                             },
                             {
                                 _id: "2",
@@ -244,15 +226,13 @@ const StaysFilter = ({
                                 _id: "3",
                                 code: "bonfire",
                                 name: "Bonfire Setup",
-                                description:
-                                    "Enjoy evenings around a private bonfire",
+                                description: "Enjoy evenings around a private bonfire",
                             },
                             {
                                 _id: "4",
                                 code: "airport_pickup",
                                 name: "Airport Pickup",
-                                description:
-                                    "Hassle-free transportation from the airport",
+                                description: "Hassle-free transportation from the airport",
                             },
                         ],
                     });
@@ -267,29 +247,25 @@ const StaysFilter = ({
                             _id: "1",
                             code: "ultra_luxury",
                             name: "Ultra Luxury",
-                            description:
-                                "The finest accommodations with exceptional service",
+                            description: "The finest accommodations with exceptional service",
                         },
                         {
                             _id: "2",
                             code: "premium",
                             name: "Premium",
-                            description:
-                                "High-end accommodations with great amenities",
+                            description: "High-end accommodations with great amenities",
                         },
                         {
                             _id: "3",
                             code: "luxury",
                             name: "Luxury",
-                            description:
-                                "Quality accommodations with premium features",
+                            description: "Quality accommodations with premium features",
                         },
                         {
                             _id: "4",
                             code: "standard",
                             name: "Standard",
-                            description:
-                                "Comfortable accommodations with essential amenities",
+                            description: "Comfortable accommodations with essential amenities",
                         },
                     ],
                     stayType: [
@@ -297,8 +273,7 @@ const StaysFilter = ({
                             _id: "1",
                             code: "villa",
                             name: "Villa",
-                            description:
-                                "Luxurious independent houses with private spaces",
+                            description: "Luxurious independent houses with private spaces",
                         },
                         {
                             _id: "2",
@@ -310,15 +285,13 @@ const StaysFilter = ({
                             _id: "3",
                             code: "apartment",
                             name: "Apartment",
-                            description:
-                                "Modern apartments in residential buildings",
+                            description: "Modern apartments in residential buildings",
                         },
                         {
                             _id: "4",
                             code: "suite",
                             name: "Suite",
-                            description:
-                                "Elegant suites with separate living areas",
+                            description: "Elegant suites with separate living areas",
                         },
                     ],
                     stayVibe: [
@@ -344,8 +317,7 @@ const StaysFilter = ({
                             _id: "4",
                             code: "luxury_living",
                             name: "Luxury Living",
-                            description:
-                                "Sophisticated accommodations with refined aesthetics",
+                            description: "Sophisticated accommodations with refined aesthetics",
                         },
                     ],
                     amenities: [
@@ -379,8 +351,7 @@ const StaysFilter = ({
                             _id: "1",
                             code: "private_chef",
                             name: "Private Chef",
-                            description:
-                                "Enjoy meals prepared by a personal chef",
+                            description: "Enjoy meals prepared by a personal chef",
                         },
                         {
                             _id: "2",
@@ -392,15 +363,13 @@ const StaysFilter = ({
                             _id: "3",
                             code: "bonfire",
                             name: "Bonfire Setup",
-                            description:
-                                "Enjoy evenings around a private bonfire",
+                            description: "Enjoy evenings around a private bonfire",
                         },
                         {
                             _id: "4",
                             code: "airport_pickup",
                             name: "Airport Pickup",
-                            description:
-                                "Hassle-free transportation from the airport",
+                            description: "Hassle-free transportation from the airport",
                         },
                     ],
                 });
@@ -498,15 +467,9 @@ const StaysFilter = ({
 
         // Enforce limits
         if (type === "min") {
-            newValue = Math.max(
-                3000,
-                Math.min(newValue, filters.priceRange.max)
-            );
+            newValue = Math.max(3000, Math.min(newValue, filters.priceRange.max));
         } else {
-            newValue = Math.max(
-                filters.priceRange.min,
-                Math.min(newValue, 500000)
-            );
+            newValue = Math.max(filters.priceRange.min, Math.min(newValue, 500000));
         }
 
         setFilters({
@@ -706,69 +669,70 @@ const StaysFilter = ({
 
                 {/* Filter Sections */}
                 <div className={styles.filterSections}>
+                    {/* Stay Type (replaced Property Type) */}
+                    <div className={styles.filterSection}>
+                        <div className={styles.sectionHeader} onClick={() => toggleSection("stayType")}>
+                            <div>
+                                <h3>Stay Type</h3>
+                                <p>Select your preferred accommodation type</p>
+                            </div>
+                            {expandedSections.stayType ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                        </div>
+
+                        {expandedSections.stayType && (
+                            <div className={styles.sectionContent}>
+                                {filterOptions.stayType && filterOptions.stayType.length > 0 ? (
+                                    <div className={styles.boxOptions}>
+                                        {filterOptions.stayType.map((item) => (
+                                            <div
+                                                key={item._id || item.code}
+                                                className={`${styles.boxOption} ${filters.stayType[item.code] ? styles.selected : ""}`}
+                                                onClick={() => handleStayTypeToggle(item.code)}
+                                            >
+                                                <div className={styles.boxOptionIcon}>{getStayTypeIcon(item.code)}</div>
+                                                <div className={styles.boxOptionContent}>
+                                                    <h4>{item.name}</h4>
+                                                    <p>{item.description || `${item.name} accommodation`}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className={styles.emptySection}>
+                                        <p>Loading stay type options...</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
                     {/* Luxury Level (replaced Management Type) */}
                     <div className={styles.filterSection}>
-                        <div
-                            className={styles.sectionHeader}
-                            onClick={() => toggleSection("luxuryLevel")}
-                        >
+                        <div className={styles.sectionHeader} onClick={() => toggleSection("luxuryLevel")}>
                             <div>
                                 <h3>Luxury Level</h3>
                                 <p>Choose your preferred luxury experience</p>
                             </div>
-                            {expandedSections.luxuryLevel ? (
-                                <ChevronUp size={20} />
-                            ) : (
-                                <ChevronDown size={20} />
-                            )}
+                            {expandedSections.luxuryLevel ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                         </div>
 
                         {expandedSections.luxuryLevel && (
                             <div className={styles.sectionContent}>
-                                {filterOptions.luxuryLevel &&
-                                filterOptions.luxuryLevel.length > 0 ? (
+                                {filterOptions.luxuryLevel && filterOptions.luxuryLevel.length > 0 ? (
                                     <div className={styles.boxOptions}>
-                                        {filterOptions.luxuryLevel.map(
-                                            (item) => (
-                                                <div
-                                                    key={item._id || item.code}
-                                                    className={`${
-                                                        styles.boxOption
-                                                    } ${
-                                                        filters.luxuryLevel ===
-                                                        item.code
-                                                            ? styles.selected
-                                                            : ""
-                                                    }`}
-                                                    onClick={() =>
-                                                        handleLuxuryLevelSelect(
-                                                            item.code
-                                                        )
-                                                    }
-                                                >
-                                                    <div
-                                                        className={
-                                                            styles.boxOptionIcon
-                                                        }
-                                                    >
-                                                        {getLuxuryLevelIcon(
-                                                            item.code
-                                                        )}
-                                                    </div>
-                                                    <div
-                                                        className={
-                                                            styles.boxOptionContent
-                                                        }
-                                                    >
-                                                        <h4>{item.name}</h4>
-                                                        <p>
-                                                            {item.description ||
-                                                                `${item.name} accommodations`}
-                                                        </p>
-                                                    </div>
+                                        {filterOptions.luxuryLevel.map((item) => (
+                                            <div
+                                                key={item._id || item.code}
+                                                className={`${styles.boxOption} ${filters.luxuryLevel === item.code ? styles.selected : ""}`}
+                                                onClick={() => handleLuxuryLevelSelect(item.code)}
+                                            >
+                                                <div className={styles.boxOptionIcon}>{getLuxuryLevelIcon(item.code)}</div>
+                                                <div className={styles.boxOptionContent}>
+                                                    <h4>{item.name}</h4>
+                                                    <p>{item.description || `${item.name} accommodations`}</p>
                                                 </div>
-                                            )
-                                        )}
+                                            </div>
+                                        ))}
                                     </div>
                                 ) : (
                                     <div className={styles.emptySection}>
@@ -781,96 +745,41 @@ const StaysFilter = ({
 
                     {/* Stay Vibe (New Section) */}
                     <div className={styles.filterSection}>
-                        <div
-                            className={styles.sectionHeader}
-                            onClick={() => toggleSection("stayVibe")}
-                        >
+                        <div className={styles.sectionHeader} onClick={() => toggleSection("stayVibe")}>
                             <div>
                                 <h3>Stay Vibe</h3>
                                 <p>Select the atmosphere you prefer</p>
                             </div>
-                            {expandedSections.stayVibe ? (
-                                <ChevronUp size={20} />
-                            ) : (
-                                <ChevronDown size={20} />
-                            )}
+                            {expandedSections.stayVibe ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                         </div>
 
                         {expandedSections.stayVibe && (
                             <div className={styles.sectionContent}>
-                                {filterOptions.stayVibe &&
-                                filterOptions.stayVibe.length > 0 ? (
+                                {filterOptions.stayVibe && filterOptions.stayVibe.length > 0 ? (
                                     <>
                                         <div className={styles.boxOptions}>
-                                            {filterOptions.stayVibe
-                                                .slice(
-                                                    0,
-                                                    showAllStayVibes
-                                                        ? filterOptions.stayVibe
-                                                              .length
-                                                        : 6
-                                                )
-                                                .map((item) => (
-                                                    <div
-                                                        key={
-                                                            item._id ||
-                                                            item.code
-                                                        }
-                                                        className={`${
-                                                            styles.boxOption
-                                                        } ${
-                                                            filters.stayVibe[
-                                                                item.code
-                                                            ]
-                                                                ? styles.selected
-                                                                : ""
-                                                        }`}
-                                                        onClick={() =>
-                                                            handleStayVibeToggle(
-                                                                item.code
-                                                            )
-                                                        }
-                                                    >
-                                                        <div
-                                                            className={
-                                                                styles.boxOptionIcon
-                                                            }
-                                                        >
-                                                            {getStayVibeIcon(
-                                                                item.code
-                                                            )}
-                                                        </div>
-                                                        <div
-                                                            className={
-                                                                styles.boxOptionContent
-                                                            }
-                                                        >
-                                                            <h4>{item.name}</h4>
-                                                            <p>
-                                                                {item.description ||
-                                                                    `${item.name} experience`}
-                                                            </p>
-                                                        </div>
+                                            {filterOptions.stayVibe.slice(0, showAllStayVibes ? filterOptions.stayVibe.length : 6).map((item) => (
+                                                <div
+                                                    key={item._id || item.code}
+                                                    className={`${styles.boxOption} ${filters.stayVibe[item.code] ? styles.selected : ""}`}
+                                                    onClick={() => handleStayVibeToggle(item.code)}
+                                                >
+                                                    <div className={styles.boxOptionIcon}>{getStayVibeIcon(item.code)}</div>
+                                                    <div className={styles.boxOptionContent}>
+                                                        <h4>{item.name}</h4>
+                                                        <p>{item.description || `${item.name} experience`}</p>
                                                     </div>
-                                                ))}
+                                                </div>
+                                            ))}
                                         </div>
                                         {filterOptions.stayVibe.length > 6 && (
                                             <button
-                                                className={
-                                                    styles.showMoreButton
-                                                }
+                                                className={styles.showMoreButton}
                                                 onClick={() => {
-                                                    setShowAllStayVibes(
-                                                        !showAllStayVibes
-                                                    );
+                                                    setShowAllStayVibes(!showAllStayVibes);
                                                 }}
                                             >
-                                                {showAllStayVibes
-                                                    ? "SHOW LESS"
-                                                    : `SHOW ${
-                                                          filterOptions.stayVibe
-                                                              .length - 6
-                                                      } MORE OPTIONS`}
+                                                {showAllStayVibes ? "SHOW LESS" : `SHOW ${filterOptions.stayVibe.length - 6} MORE OPTIONS`}
                                             </button>
                                         )}
                                     </>
@@ -885,19 +794,12 @@ const StaysFilter = ({
 
                     {/* Price Range */}
                     <div className={styles.filterSection}>
-                        <div
-                            className={styles.sectionHeader}
-                            onClick={() => toggleSection("priceRange")}
-                        >
+                        <div className={styles.sectionHeader} onClick={() => toggleSection("priceRange")}>
                             <div>
                                 <h3>Price Range</h3>
                                 <p>Nightly prices before fees and taxes</p>
                             </div>
-                            {expandedSections.priceRange ? (
-                                <ChevronUp size={20} />
-                            ) : (
-                                <ChevronDown size={20} />
-                            )}
+                            {expandedSections.priceRange ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                         </div>
 
                         {expandedSections.priceRange && (
@@ -907,24 +809,10 @@ const StaysFilter = ({
                                     <div className={styles.sliderContainer}>
                                         <div className={styles.sliderTrack}>
                                             <div
-                                                className={
-                                                    styles.sliderProgress
-                                                }
+                                                className={styles.sliderProgress}
                                                 style={{
-                                                    left: `${
-                                                        (filters.priceRange
-                                                            .min /
-                                                            500000) *
-                                                        100
-                                                    }%`,
-                                                    width: `${
-                                                        ((filters.priceRange
-                                                            .max -
-                                                            filters.priceRange
-                                                                .min) /
-                                                            500000) *
-                                                        100
-                                                    }%`,
+                                                    left: `${(filters.priceRange.min / 500000) * 100}%`,
+                                                    width: `${((filters.priceRange.max - filters.priceRange.min) / 500000) * 100}%`,
                                                 }}
                                             ></div>
                                         </div>
@@ -936,12 +824,7 @@ const StaysFilter = ({
                                             max="500000"
                                             step="2000"
                                             value={filters.priceRange.min}
-                                            onChange={(e) =>
-                                                handlePriceRangeChange(
-                                                    "min",
-                                                    e.target.value
-                                                )
-                                            }
+                                            onChange={(e) => handlePriceRangeChange("min", e.target.value)}
                                             className={`${styles.priceSlider} ${styles.minPriceSlider}`}
                                         />
 
@@ -952,12 +835,7 @@ const StaysFilter = ({
                                             max="500000"
                                             step="2000"
                                             value={filters.priceRange.max}
-                                            onChange={(e) =>
-                                                handlePriceRangeChange(
-                                                    "max",
-                                                    e.target.value
-                                                )
-                                            }
+                                            onChange={(e) => handlePriceRangeChange("max", e.target.value)}
                                             className={`${styles.priceSlider} ${styles.maxPriceSlider}`}
                                         />
                                     </div>
@@ -965,45 +843,23 @@ const StaysFilter = ({
                                     <div className={styles.priceInputs}>
                                         <div className={styles.priceInput}>
                                             <label>Min Price</label>
-                                            <div
-                                                className={
-                                                    styles.inputWithSymbol
-                                                }
-                                            >
+                                            <div className={styles.inputWithSymbol}>
                                                 <span>₹</span>
                                                 <input
                                                     type="number"
-                                                    value={
-                                                        filters.priceRange.min
-                                                    }
-                                                    onChange={(e) =>
-                                                        handlePriceRangeChange(
-                                                            "min",
-                                                            e.target.value
-                                                        )
-                                                    }
+                                                    value={filters.priceRange.min}
+                                                    onChange={(e) => handlePriceRangeChange("min", e.target.value)}
                                                 />
                                             </div>
                                         </div>
                                         <div className={styles.priceInput}>
                                             <label>Max Price</label>
-                                            <div
-                                                className={
-                                                    styles.inputWithSymbol
-                                                }
-                                            >
+                                            <div className={styles.inputWithSymbol}>
                                                 <span>₹</span>
                                                 <input
                                                     type="number"
-                                                    value={
-                                                        filters.priceRange.max
-                                                    }
-                                                    onChange={(e) =>
-                                                        handlePriceRangeChange(
-                                                            "max",
-                                                            e.target.value
-                                                        )
-                                                    }
+                                                    value={filters.priceRange.max}
+                                                    onChange={(e) => handlePriceRangeChange("max", e.target.value)}
                                                 />
                                             </div>
                                         </div>
@@ -1015,19 +871,12 @@ const StaysFilter = ({
 
                     {/* Rooms and Beds */}
                     <div className={styles.filterSection}>
-                        <div
-                            className={styles.sectionHeader}
-                            onClick={() => toggleSection("rooms")}
-                        >
+                        <div className={styles.sectionHeader} onClick={() => toggleSection("rooms")}>
                             <div>
                                 <h3>Rooms and Beds</h3>
                                 <p>Select your preferred room configuration</p>
                             </div>
-                            {expandedSections.rooms ? (
-                                <ChevronUp size={20} />
-                            ) : (
-                                <ChevronDown size={20} />
-                            )}
+                            {expandedSections.rooms ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                         </div>
 
                         {expandedSections.rooms && (
@@ -1042,20 +891,8 @@ const StaysFilter = ({
                                             {numericOptions.map((option) => (
                                                 <div
                                                     key={`bedroom-${option}`}
-                                                    className={`${
-                                                        styles.chip
-                                                    } ${
-                                                        filters.rooms
-                                                            .bedrooms === option
-                                                            ? styles.selected
-                                                            : ""
-                                                    }`}
-                                                    onClick={() =>
-                                                        handleRoomSelect(
-                                                            "bedrooms",
-                                                            option
-                                                        )
-                                                    }
+                                                    className={`${styles.chip} ${filters.rooms.bedrooms === option ? styles.selected : ""}`}
+                                                    onClick={() => handleRoomSelect("bedrooms", option)}
                                                 >
                                                     {option}
                                                 </div>
@@ -1104,21 +941,8 @@ const StaysFilter = ({
                                             {numericOptions.map((option) => (
                                                 <div
                                                     key={`bathroom-${option}`}
-                                                    className={`${
-                                                        styles.chip
-                                                    } ${
-                                                        filters.rooms
-                                                            .bathrooms ===
-                                                        option
-                                                            ? styles.selected
-                                                            : ""
-                                                    }`}
-                                                    onClick={() =>
-                                                        handleRoomSelect(
-                                                            "bathrooms",
-                                                            option
-                                                        )
-                                                    }
+                                                    className={`${styles.chip} ${filters.rooms.bathrooms === option ? styles.selected : ""}`}
+                                                    onClick={() => handleRoomSelect("bathrooms", option)}
                                                 >
                                                     {option}
                                                 </div>
@@ -1132,67 +956,32 @@ const StaysFilter = ({
 
                     {/* Amenities - Changed to chips instead of checkboxes */}
                     <div className={styles.filterSection}>
-                        <div
-                            className={styles.sectionHeader}
-                            onClick={() => toggleSection("amenities")}
-                        >
+                        <div className={styles.sectionHeader} onClick={() => toggleSection("amenities")}>
                             <div>
                                 <h3>Amenities</h3>
                                 <p>Select amenities that matter to you</p>
                             </div>
-                            {expandedSections.amenities ? (
-                                <ChevronUp size={20} />
-                            ) : (
-                                <ChevronDown size={20} />
-                            )}
+                            {expandedSections.amenities ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                         </div>
 
                         {expandedSections.amenities && (
                             <div className={styles.sectionContent}>
-                                {filterOptions.amenities &&
-                                filterOptions.amenities.length > 0 ? (
+                                {filterOptions.amenities && filterOptions.amenities.length > 0 ? (
                                     <>
                                         <div className={styles.chipOptions}>
                                             {filterOptions.amenities
-                                                .slice(
-                                                    0,
-                                                    showAllAmenities
-                                                        ? filterOptions
-                                                              .amenities.length
-                                                        : 12
-                                                )
+                                                .slice(0, showAllAmenities ? filterOptions.amenities.length : 12)
                                                 .map((amenity) => (
                                                     <div
-                                                        key={
-                                                            amenity._id ||
-                                                            amenity.code
-                                                        }
-                                                        className={`${
-                                                            styles.chip
-                                                        } ${
-                                                            filters.amenities[
-                                                                amenity.code
-                                                            ]
-                                                                ? styles.selected
-                                                                : ""
-                                                        }`}
-                                                        onClick={() =>
-                                                            handleAmenityToggle(
-                                                                amenity.code
-                                                            )
-                                                        }
+                                                        key={amenity._id || amenity.code}
+                                                        className={`${styles.chip} ${filters.amenities[amenity.code] ? styles.selected : ""}`}
+                                                        onClick={() => handleAmenityToggle(amenity.code)}
                                                     >
                                                         {amenity.icon && (
                                                             <img
-                                                                src={
-                                                                    amenity.icon
-                                                                }
-                                                                alt={
-                                                                    amenity.name
-                                                                }
-                                                                className={
-                                                                    styles.amenityIcon
-                                                                }
+                                                                src={amenity.icon}
+                                                                alt={amenity.name}
+                                                                className={styles.amenityIcon}
                                                                 width={16}
                                                                 height={16}
                                                             />
@@ -1202,25 +991,9 @@ const StaysFilter = ({
                                                 ))}
                                         </div>
 
-                                        {filterOptions.amenities.length >
-                                            12 && (
-                                            <button
-                                                className={
-                                                    styles.showMoreButton
-                                                }
-                                                onClick={() =>
-                                                    setShowAllAmenities(
-                                                        !showAllAmenities
-                                                    )
-                                                }
-                                            >
-                                                {showAllAmenities
-                                                    ? "SHOW LESS"
-                                                    : `SHOW ${
-                                                          filterOptions
-                                                              .amenities
-                                                              .length - 12
-                                                      } MORE AMENITIES`}
+                                        {filterOptions.amenities.length > 12 && (
+                                            <button className={styles.showMoreButton} onClick={() => setShowAllAmenities(!showAllAmenities)}>
+                                                {showAllAmenities ? "SHOW LESS" : `SHOW ${filterOptions.amenities.length - 12} MORE AMENITIES`}
                                             </button>
                                         )}
                                     </>
@@ -1233,76 +1006,8 @@ const StaysFilter = ({
                         )}
                     </div>
 
-                    {/* Stay Type (replaced Property Type) */}
-                    <div className={styles.filterSection}>
-                        <div
-                            className={styles.sectionHeader}
-                            onClick={() => toggleSection("stayType")}
-                        >
-                            <div>
-                                <h3>Stay Type</h3>
-                                <p>Select your preferred accommodation type</p>
-                            </div>
-                            {expandedSections.stayType ? (
-                                <ChevronUp size={20} />
-                            ) : (
-                                <ChevronDown size={20} />
-                            )}
-                        </div>
-
-                        {expandedSections.stayType && (
-                            <div className={styles.sectionContent}>
-                                {filterOptions.stayType &&
-                                filterOptions.stayType.length > 0 ? (
-                                    <div className={styles.boxOptions}>
-                                        {filterOptions.stayType.map((item) => (
-                                            <div
-                                                key={item._id || item.code}
-                                                className={`${
-                                                    styles.boxOption
-                                                } ${
-                                                    filters.stayType[item.code]
-                                                        ? styles.selected
-                                                        : ""
-                                                }`}
-                                                onClick={() =>
-                                                    handleStayTypeToggle(
-                                                        item.code
-                                                    )
-                                                }
-                                            >
-                                                <div
-                                                    className={
-                                                        styles.boxOptionIcon
-                                                    }
-                                                >
-                                                    {getStayTypeIcon(item.code)}
-                                                </div>
-                                                <div
-                                                    className={
-                                                        styles.boxOptionContent
-                                                    }
-                                                >
-                                                    <h4>{item.name}</h4>
-                                                    <p>
-                                                        {item.description ||
-                                                            `${item.name} accommodation`}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className={styles.emptySection}>
-                                        <p>Loading stay type options...</p>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
                     {/* Add-On Services (New Section) */}
-                    <div className={styles.filterSection}>
+                    {/* <div className={styles.filterSection}>
                         <div
                             className={styles.sectionHeader}
                             onClick={() => toggleSection("addOnService")}
@@ -1400,20 +1105,14 @@ const StaysFilter = ({
                                 )}
                             </div>
                         )}
-                    </div>
+                    </div> */}
 
                     {/* Action Buttons */}
                     <div className={styles.actionButtons}>
-                        <button
-                            className={styles.resetButton}
-                            onClick={resetFilters}
-                        >
+                        <button className={styles.resetButton} onClick={resetFilters}>
                             Reset All
                         </button>
-                        <button
-                            className={styles.applyButton}
-                            onClick={applyFilters}
-                        >
+                        <button className={styles.applyButton} onClick={applyFilters}>
                             Apply Filters
                         </button>
                     </div>
