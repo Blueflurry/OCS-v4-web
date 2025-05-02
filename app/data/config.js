@@ -4,4 +4,4 @@ export const WHATSAPP_SUPPORT_LINK =
 
 // Flag to control whether login is required for checkout
 // Set to false to allow payments without login, true to require login
-export const REQUIRE_LOGIN_FOR_CHECKOUT = false;
+export const REQUIRE_LOGIN_FOR_CHECKOUT = true;

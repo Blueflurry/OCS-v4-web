@@ -90,6 +90,17 @@
                 margin: 0 12px;
             }
         }
+
+        &--warning {
+            color: #ff4d4f;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        &--disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
     }
 }
 

@@ -13,11 +13,13 @@ const BookingEditModal = ({
     onClose,
     onUpdate,
     initialBookingInfo,
+    maxGuests,
 }) => {
     const [dateRange, setDateRange] = useState([null, null]);
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [guests, setGuests] = useState([...GUESTS]);
     const [isUpdateDisabled, setIsUpdateDisabled] = useState(true);
+    const [showMaxGuestsWarning, setShowMaxGuestsWarning] = useState(false);
 
     // Set initial values when initialBookingInfo changes or modal opens
     useEffect(() => {
@@ -62,16 +64,47 @@ const BookingEditModal = ({
         }
     }, [initialBookingInfo, isOpen]);
 
+    const increaseCount = (index) => {
+        const newGuests = [...guests];
+        const guestType = newGuests[index].type;
+
+        // Only check human guests (not pets)
+        if (guestType !== "Pets") {
+            const currentTotalGuests = calculateTotalGuests();
+
+            // If adding one more guest would exceed the limit
+            if (currentTotalGuests >= maxGuests) {
+                // Show warning
+                setShowMaxGuestsWarning(true);
+                return; // Don't increase the count
+            }
+        }
+
+        // If we're here, it's okay to increase the count
+        newGuests[index].count = newGuests[index].count + 1;
+        setGuests(newGuests);
+    };
+
     const decreaseCount = (index) => {
         const newGuests = [...guests];
         newGuests[index].count = Math.max(0, newGuests[index].count - 1);
         setGuests(newGuests);
+
+        // Hide the warning when any guest type is decreased
+        if (showMaxGuestsWarning) {
+            setShowMaxGuestsWarning(false);
+        }
     };
 
-    const increaseCount = (index) => {
-        const newGuests = [...guests];
-        newGuests[index].count = newGuests[index].count + 1;
-        setGuests(newGuests);
+    // Calculate total guests count (excluding pets)
+    const calculateTotalGuests = () => {
+        return guests.reduce((sum, guest) => {
+            // Don't count pets toward the guest limit
+            if (guest.type !== "Pets") {
+                return sum + guest.count;
+            }
+            return sum;
+        }, 0);
     };
 
     useEffect(() => {
@@ -224,6 +257,13 @@ const BookingEditModal = ({
                         <h4>Guests</h4>
                     </div>
 
+                    {/* Add warning message when max guests is reached */}
+                    {showMaxGuestsWarning && (
+                        <p className={styles["mobile-search__guests--warning"]}>
+                            Maximum guests you can add is {maxGuests}
+                        </p>
+                    )}
+
                     {guests.map((guest, index) => (
                         <div
                             className={styles["mobile-search__guests--item"]}
@@ -244,9 +284,15 @@ const BookingEditModal = ({
                                 </div>
                                 <div>{guest.count}</div>
                                 <div
-                                    onClick={() => {
-                                        increaseCount(index);
-                                    }}
+                                    onClick={() => increaseCount(index)}
+                                    className={
+                                        guest.type !== "Pets" &&
+                                        calculateTotalGuests() >= maxGuests
+                                            ? styles[
+                                                  "mobile-search__guests--disabled"
+                                              ]
+                                            : ""
+                                    }
                                 >
                                     +
                                 </div>

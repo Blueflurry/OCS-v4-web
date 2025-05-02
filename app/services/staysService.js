@@ -75,14 +75,25 @@ const removeEmptyValues = (obj) => {
 export const getFilteredStays = async (filters) => {
     console.log("filters", filters);
     try {
-        const guests = (Number(filters.men) || 0) + (Number(filters.women) || 0) + (Number(filters.children) || 0);
+        const guests =
+            (Number(filters.men) || 0) +
+            (Number(filters.women) || 0) +
+            (Number(filters.children) || 0);
 
         // Handle multi-select filter objects - convert them to arrays of selected codes
         const amenityCodes = filters.amenities ? filters.amenities : [];
 
-        const stayTypeCodes = filters.stayType ? Object.keys(filters.stayType).filter((key) => filters.stayType[key]) : [];
+        const stayTypeCodes = filters.stayType
+            ? Object.keys(filters.stayType).filter(
+                  (key) => filters.stayType[key]
+              )
+            : [];
 
-        const stayVibeCodes = filters.stayVibe ? Object.keys(filters.stayVibe).filter((key) => filters.stayVibe[key]) : [];
+        const stayVibeCodes = filters.stayVibe
+            ? Object.keys(filters.stayVibe).filter(
+                  (key) => filters.stayVibe[key]
+              )
+            : [];
 
         // Handle "5+" value for room filters
         if (filters.bedrooms === "5+") filters.bedrooms = 5;
@@ -101,7 +112,11 @@ export const getFilteredStays = async (filters) => {
             // NEED TO UPDATE
             location: filters.location || "",
             checkIn: filters.checkin || new Date().toISOString().split("T")[0],
-            checkOut: filters.checkout || new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+            checkOut:
+                filters.checkout ||
+                new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
+                    .toISOString()
+                    .split("T")[0],
             guests: guests === 0 ? 2 : guests,
 
             page: filters.page || 1,
@@ -121,8 +136,14 @@ export const getFilteredStays = async (filters) => {
             maxPrice: filters.priceMax || 500000,
 
             // Room configuration
-            bathrooms: filters.bathrooms !== "Any" ? Number(filters.bathrooms) : 0,
-            bedrooms: filters.bedrooms !== "Any" ? Number(filters.bedrooms) : 0,
+            bathrooms:
+                filters.rooms.bathrooms !== "Any"
+                    ? Number(filters.rooms.bathrooms)
+                    : 0,
+            bedrooms:
+                filters.rooms.bedrooms !== "Any"
+                    ? Number(filters.rooms.bedrooms)
+                    : 0,
             // beds: filters.beds !== "Any" ? Number(filters.beds) : 0,
         };
 
