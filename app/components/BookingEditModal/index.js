@@ -276,6 +276,7 @@ const BookingEditModal = ({
                                 }
                             >
                                 <div
+                                    role="button"
                                     onClick={() => {
                                         decreaseCount(index);
                                     }}
@@ -284,6 +285,7 @@ const BookingEditModal = ({
                                 </div>
                                 <div>{guest.count}</div>
                                 <div
+                                    role="button"
                                     onClick={() => increaseCount(index)}
                                     className={
                                         guest.type !== "Pets" &&

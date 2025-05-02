@@ -32,7 +32,7 @@ export default function Loading() {
                 muted
                 className={styles["svg"]}
             ></video>
-            <span>Finding best stay options for you...</span>
+            <span>Loading...</span>
         </div>
     );
 }

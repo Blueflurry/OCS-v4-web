@@ -89,6 +89,9 @@
             :nth-child(2) {
                 margin: 0 12px;
             }
+            & > div {
+                touch-action: manipulation;
+            }
         }
 
         &--warning {
