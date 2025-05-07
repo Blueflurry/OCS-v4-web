@@ -137,12 +137,12 @@ export const getFilteredStays = async (filters) => {
 
             // Room configuration
             bathrooms:
-                filters.rooms.bathrooms !== "Any"
-                    ? Number(filters.rooms.bathrooms)
+                filters?.rooms?.bathrooms !== "Any"
+                    ? Number(filters?.rooms?.bathrooms)
                     : 0,
             bedrooms:
-                filters.rooms.bedrooms !== "Any"
-                    ? Number(filters.rooms.bedrooms)
+                filters?.rooms?.bedrooms !== "Any"
+                    ? Number(filters?.rooms?.bedrooms)
                     : 0,
             // beds: filters.beds !== "Any" ? Number(filters.beds) : 0,
         };

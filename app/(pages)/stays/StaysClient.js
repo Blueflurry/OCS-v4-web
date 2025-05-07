@@ -126,16 +126,16 @@ export default function StaysClient({
 
                 // Room configuration
                 bedrooms:
-                    filterValues.rooms?.bedrooms !== "Any"
-                        ? filterValues.rooms.bedrooms
+                    filterValues?.rooms?.bedrooms !== "Any"
+                        ? filterValues?.rooms?.bedrooms
                         : "",
                 // beds:
                 //     filterValues.rooms?.beds !== "Any"
                 //         ? filterValues.rooms.beds
                 //         : "",
                 bathrooms:
-                    filterValues.rooms?.bathrooms !== "Any"
-                        ? filterValues.rooms.bathrooms
+                    filterValues?.rooms?.bathrooms !== "Any"
+                        ? filterValues?.rooms?.bathrooms
                         : "",
 
                 // Amenities array
@@ -169,6 +169,10 @@ export default function StaysClient({
             setLoading(false);
         }
     };
+
+    // useEffect(() => {
+    //     handleApplyFilters(searchParams);
+    // }, [initialStays]);
 
     // Create description with dates and guests if available
     let description = "";
