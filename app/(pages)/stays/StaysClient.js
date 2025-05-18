@@ -170,9 +170,17 @@ export default function StaysClient({
         }
     };
 
-    // useEffect(() => {
-    //     handleApplyFilters(searchParams);
-    // }, [initialStays]);
+    useEffect(() => {
+        setStays(initialStays);
+
+        // console.log("filteredStays", filteredStays);
+        setResultsCount(totalCount);
+
+        // Save active filters
+        // setActiveFilters(filterValues);
+
+        // handleApplyFilters(searchParams);
+    }, [initialStays]);
 
     // Create description with dates and guests if available
     let description = "";
