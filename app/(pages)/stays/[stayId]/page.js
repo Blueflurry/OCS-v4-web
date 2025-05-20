@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import styles from "./StayDetails.module.scss";
 import HeroImageCarousel from "@/app/components/HeroImageCarousel";
@@ -103,6 +103,9 @@ const StayDetails = () => {
         return defaultBooking;
     });
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     const {
         data: stayData,
         error,
