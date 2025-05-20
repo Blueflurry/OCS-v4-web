@@ -1,3 +1,8 @@
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  
 [build.environment] 
     RAZORPAY_KEY_ID = "rzp_live_UpMsxkW8VigT2x"
     RAZORPAY_KEY_SECRET = "E9nSHsZfdIeoPM7NnsMZJMbY"

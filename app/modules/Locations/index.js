@@ -44,7 +44,7 @@ const Locations = () => {
                             i // Duplicate images for seamless looping
                         ) => (
                             <React.Fragment key={i}>
-                                <Link href="/stays?location=Bali">
+                                <Link href="/stays">
                                     <Image
                                         src="/assets/images/locations/bali.jpeg"
                                         width={120}
@@ -53,7 +53,7 @@ const Locations = () => {
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/stays?location=Lonavala">
+                                <Link href="/stays?location=Lonavala, Maharashtra">
                                     <Image
                                         src="/assets/images/locations/lonavala.jpeg"
                                         width={120}
@@ -62,7 +62,7 @@ const Locations = () => {
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/stays?location=Kashmir">
+                                <Link href="/stays">
                                     <Image
                                         src="/assets/images/locations/kashmir.jpeg"
                                         width={120}
@@ -71,7 +71,7 @@ const Locations = () => {
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/stays?location=Himachal Pradesh">
+                                <Link href="/stays?location=Himachal Pradesh, India">
                                     <Image
                                         src="/assets/images/locations/himachal-pradesh.jpeg"
                                         width={120}
@@ -80,16 +80,16 @@ const Locations = () => {
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/stays?location=Uttrakhand">
+                                <Link href="/stays?location=Uttarakhand, India">
                                     <Image
-                                        src="/assets/images/locations/uttrakhand.jpeg"
+                                        src="/assets/images/locations/uttarakhand.jpeg"
                                         width={120}
                                         height={120}
-                                        alt="Uttrakhand"
+                                        alt="Uttarakhand"
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/stays?location=Rajasthan">
+                                <Link href="/stays?location=Rajasthan, India">
                                     <Image
                                         src="/assets/images/locations/rajasthan.jpeg"
                                         width={120}
@@ -98,7 +98,7 @@ const Locations = () => {
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/stays?location=Alibaug">
+                                <Link href="/stays?location=Alibaug, Maharashtra">
                                     <Image
                                         src="/assets/images/locations/alibaug.jpeg"
                                         width={120}
@@ -107,7 +107,7 @@ const Locations = () => {
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/stays?location=Delhi">
+                                <Link href="/stays?location=Delhi, India">
                                     <Image
                                         src="/assets/images/locations/delhi.jpeg"
                                         width={120}
@@ -116,7 +116,7 @@ const Locations = () => {
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/stays?location=Goa">
+                                <Link href="/stays?location=Goa, India">
                                     <Image
                                         src="/assets/images/locations/goa.jpeg"
                                         width={120}
@@ -125,7 +125,7 @@ const Locations = () => {
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/stays?location=Maldives">
+                                <Link href="/stays">
                                     <Image
                                         src="/assets/images/locations/maldives.jpeg"
                                         width={120}
@@ -134,7 +134,7 @@ const Locations = () => {
                                         className={styles["locations__image"]}
                                     />
                                 </Link>
-                                <Link href="/stays?location=Thailand">
+                                <Link href="/stays">
                                     <Image
                                         src="/assets/images/locations/thailand.jpeg"
                                         width={120}

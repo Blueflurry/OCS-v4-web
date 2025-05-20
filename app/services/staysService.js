@@ -31,18 +31,21 @@ export const getFilters = async () => {
         const response = await fetchAPI("/catalog");
         // console.log("Raw API filters response:", response);
 
-        // For debugging - check the structure of the response
-        // if (response) {
-        // console.log("Response structure check:", {
-        //     isObject: typeof response === "object" && response !== null,
-        //     hasData: response.data ? true : false,
-        //     keys: Object.keys(response),
-        // });
-        // }
+        const rawData = response?.data || response;
 
-        // If the API response is nested under a 'data' property, extract it
-        // Otherwise return the response as is
-        const filterData = response?.data || response;
+        const filterData =
+            rawData && typeof rawData === "object"
+                ? {
+                      // Map the snake_case keys to camelCase keys
+                      luxuryLevel: rawData.luxury_level || [],
+                      stayType: rawData.stay_type || [],
+                      stayVibe: rawData.stay_vibe || [],
+                      amenity: rawData.amenity || [],
+                      addOnService: rawData.add_on_service || [],
+                      // Include any other fields needed
+                      business_type: rawData.business_type || [],
+                  }
+                : rawData;
 
         // Return empty object if response is not valid
         if (!filterData || typeof filterData !== "object") {
@@ -58,13 +61,20 @@ export const getFilters = async () => {
 };
 
 const removeEmptyValues = (obj) => {
-    return Object.fromEntries(
-        Object.entries(obj).filter(([_, value]) => {
-            if (Array.isArray(value)) return value.length > 0;
-            if (typeof value === "string") return value !== "";
-            return true;
-        })
-    );
+    return Object.entries(obj).reduce((acc, [key, value]) => {
+        // Keep values that are numbers (including 0) or non-empty strings/arrays/objects
+        if (
+            typeof value === "number" ||
+            (value &&
+                ((typeof value === "string" && value.trim() !== "") ||
+                    (Array.isArray(value) && value.length > 0) ||
+                    (typeof value === "object" &&
+                        Object.keys(value).length > 0)))
+        ) {
+            acc[key] = value;
+        }
+        return acc;
+    }, {});
 };
 
 /**
@@ -149,6 +159,7 @@ export const getFilteredStays = async (filters) => {
 
         // console.log("body", processedFilters);
         const cleanFilters = removeEmptyValues(processedFilters);
+
         console.log("cleanFilters", cleanFilters);
 
         const response = await fetchAPI("/search", {

@@ -4,7 +4,16 @@ import Image from "next/image";
 import Button from "../Button";
 import DateRangePicker from "../DateRangePicker";
 import styles from "./MobileSearch.module.scss";
-import { ArrowLeft, ArrowRight, Calendar, MapPin, MousePointer2, Search, UserRound, Loader2 } from "lucide-react";
+import {
+    ArrowLeft,
+    ArrowRight,
+    Calendar,
+    MapPin,
+    MousePointer2,
+    Search,
+    UserRound,
+    Loader2,
+} from "lucide-react";
 import { formatDateRange, formatISODate } from "@/app/utils/formatter";
 import { GUESTS } from "@/app/data/dummy";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -32,7 +41,9 @@ const MobileSearch = ({ searchTxt }) => {
     const fetchLocationOptions = async () => {
         setIsLoadingLocations(true);
         try {
-            const response = await fetch("https://api.oneclickstays.com/api/locations?search=India");
+            const response = await fetch(
+                "https://api.oneclickstays.com/api/locations?search=India"
+            );
             if (!response.ok) {
                 throw new Error("Failed to fetch location options");
             }
@@ -44,7 +55,7 @@ const MobileSearch = ({ searchTxt }) => {
                 value: item.location,
                 stays: item.stays,
             }));
-
+            // console.log("Fetched location options:", transformedOptions);
             setLocationOptions(transformedOptions);
             return transformedOptions;
         } catch (error) {
@@ -63,7 +74,11 @@ const MobileSearch = ({ searchTxt }) => {
 
         setIsLoadingLocations(true);
         try {
-            const response = await fetch(`https://api.oneclickstays.com/api/locations?search=${encodeURIComponent(searchQuery)}`);
+            const response = await fetch(
+                `https://api.oneclickstays.com/api/locations?search=${encodeURIComponent(
+                    searchQuery
+                )}`
+            );
             if (!response.ok) {
                 throw new Error("Failed to fetch location options");
             }
@@ -76,6 +91,7 @@ const MobileSearch = ({ searchTxt }) => {
                 stays: item.stays,
             }));
 
+            // console.log("Filtered locations:", transformedOptions);
             setFilteredLocationOptions(transformedOptions);
             return transformedOptions;
         } catch (error) {
@@ -109,7 +125,12 @@ const MobileSearch = ({ searchTxt }) => {
             const data = await response.json();
             // Extract city from the response
             // The response structure can vary, but typically city is in address.city or address.town
-            const city = data.address.city || data.address.town || data.address.village || data.address.hamlet || data.address.county;
+            const city =
+                data.address.city ||
+                data.address.town ||
+                data.address.village ||
+                data.address.hamlet ||
+                data.address.county;
             if (!city) {
                 throw new Error("Could not determine city from coordinates");
             }
@@ -123,19 +144,26 @@ const MobileSearch = ({ searchTxt }) => {
     // Handle clicking "Use my current location"
     const handleCurrentLocationClick = () => {
         if (!navigator.geolocation) {
-            alert("Geolocation is not supported by your browser. Please enter your location manually.");
+            alert(
+                "Geolocation is not supported by your browser. Please enter your location manually."
+            );
             return;
         }
         setIsLoadingLocation(true);
         const successCallback = async (position) => {
             try {
                 const { latitude, longitude } = position.coords;
-                const cityName = await getCityFromCoordinates(latitude, longitude);
+                const cityName = await getCityFromCoordinates(
+                    latitude,
+                    longitude
+                );
                 setAutocompleteVal(cityName);
                 setLocationDropdown(false);
             } catch (error) {
                 console.error("Error getting location:", error);
-                alert("Could not determine your location. Please enter it manually.");
+                alert(
+                    "Could not determine your location. Please enter it manually."
+                );
             } finally {
                 setIsLoadingLocation(false);
             }
@@ -144,13 +172,16 @@ const MobileSearch = ({ searchTxt }) => {
             setIsLoadingLocation(false);
             console.error("Geolocation error:", error);
             // Handle different error scenarios with specific messages
-            let message = "Could not determine your location. Please enter it manually.";
+            let message =
+                "Could not determine your location. Please enter it manually.";
             if (error.code === 1) {
                 // PERMISSION_DENIED
-                message = "Location permission denied. Please allow location access or enter location manually.";
+                message =
+                    "Location permission denied. Please allow location access or enter location manually.";
             } else if (error.code === 2) {
                 // POSITION_UNAVAILABLE
-                message = "Location information is unavailable. Please try again later.";
+                message =
+                    "Location information is unavailable. Please try again later.";
             } else if (error.code === 3) {
                 // TIMEOUT
                 message = "Location request timed out. Please try again.";
@@ -162,7 +193,11 @@ const MobileSearch = ({ searchTxt }) => {
             timeout: 10000,
             maximumAge: 0,
         };
-        navigator.geolocation.getCurrentPosition(successCallback, errorCallback, options);
+        navigator.geolocation.getCurrentPosition(
+            successCallback,
+            errorCallback,
+            options
+        );
     };
 
     // Load values from URL parameters on mount
@@ -206,7 +241,9 @@ const MobileSearch = ({ searchTxt }) => {
         }
         // Update Children count
         if (children !== null && !isNaN(children)) {
-            const childrenIndex = newGuests.findIndex((g) => g.type === "Children");
+            const childrenIndex = newGuests.findIndex(
+                (g) => g.type === "Children"
+            );
             if (childrenIndex !== -1) {
                 newGuests[childrenIndex].count = parseInt(children);
             }
@@ -276,13 +313,16 @@ const MobileSearch = ({ searchTxt }) => {
             return;
         }
         if (dateRange[0] - dateRange[1] == 2 || dateRange[0] >= dateRange[1]) {
-            alert("We are not taking bookings less than 2 days, please select atleast 3 days");
+            alert(
+                "We are not taking bookings less than 2 days, please select atleast 3 days"
+            );
             return;
         }
         // Extract guest counts by type
         const menCount = guests.find((g) => g.type === "Men")?.count || 0;
         const womenCount = guests.find((g) => g.type === "Women")?.count || 0;
-        const childrenCount = guests.find((g) => g.type === "Children")?.count || 0;
+        const childrenCount =
+            guests.find((g) => g.type === "Children")?.count || 0;
         const petsCount = guests.find((g) => g.type === "Pets")?.count || 0;
         // Format dates as ISO strings if they exist
         const checkin = dateRange[0] ? formatISODate(dateRange[0]) : "";
@@ -312,20 +352,39 @@ const MobileSearch = ({ searchTxt }) => {
     };
 
     // Check if we have active search criteria
-    const hasSearchCriteria = autocompleteVal && dateRange[0] && dateRange[1] && guests.some((guest) => guest.count > 0);
+    const hasSearchCriteria =
+        autocompleteVal &&
+        dateRange[0] &&
+        dateRange[1] &&
+        guests.some((guest) => guest.count > 0);
 
     return (
         <>
             <div style={{ padding: "0 16px" }}>
                 <Button large onClick={() => setIsOpen(true)}>
-                    <Image src="/assets/images/search.svg" alt="Search" width={20} height={20} />
+                    <Image
+                        src="/assets/images/search.svg"
+                        alt="Search"
+                        width={20}
+                        height={20}
+                    />
                     {/* Show a more informative search text if we have values */}
-                    {hasSearchCriteria ? `${autocompleteVal} · ${formatDateRange(dateRange)}` : searchTxtRef}
+                    {hasSearchCriteria
+                        ? `${autocompleteVal} · ${formatDateRange(dateRange)}`
+                        : searchTxtRef}
                 </Button>
             </div>
-            <div className={`${styles["mobile-search"]} ${isOpen ? styles["mobile-search--open"] : ""}`}>
+            <div
+                className={`${styles["mobile-search"]} ${
+                    isOpen ? styles["mobile-search--open"] : ""
+                }`}
+            >
                 {/* BACK BUTTON */}
-                <div tabIndex="-1" className={styles["back-button"]} onClick={() => setIsOpen(false)}>
+                <div
+                    tabIndex="-1"
+                    className={styles["back-button"]}
+                    onClick={() => setIsOpen(false)}
+                >
                     <span className={styles["back-button--icon"]}>
                         <ArrowLeft size={18} />
                     </span>
@@ -344,10 +403,14 @@ const MobileSearch = ({ searchTxt }) => {
                                     setLocationDropdown(true);
                                     // Show all locations if input is empty
                                     if (!autocompleteVal.trim()) {
-                                        fetchLocationOptions().then((options) => setFilteredLocationOptions(options));
+                                        fetchLocationOptions().then((options) =>
+                                            setFilteredLocationOptions(options)
+                                        );
                                     } else {
                                         // Otherwise fetch based on current input
-                                        fetchFilteredLocationOptions(autocompleteVal);
+                                        fetchFilteredLocationOptions(
+                                            autocompleteVal
+                                        );
                                     }
                                 }}
                                 className={styles["autocomplete--input"]}
@@ -358,48 +421,114 @@ const MobileSearch = ({ searchTxt }) => {
                             />
                         </div>
                         {locationDropdown && (
-                            <div className={styles.modal} onClick={() => setLocationDropdown(false)}>
-                                <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                                    <ul className={styles["autocomplete--dropdown"]}>
+                            <div
+                                className={styles.modal}
+                                onClick={() => setLocationDropdown(false)}
+                            >
+                                <div
+                                    className={styles.modalContent}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <ul
+                                        className={
+                                            styles["autocomplete--dropdown"]
+                                        }
+                                    >
                                         {/* "Use my current location" button */}
-                                        <li className={styles["autocomplete--item"]} onClick={handleCurrentLocationClick}>
-                                            {isLoadingLocation ? <Loader2 className="animate-spin" /> : <MousePointer2 />}
-                                            <span>{isLoadingLocation ? "Getting your location..." : "Use my current location"}</span>
+                                        <li
+                                            className={
+                                                styles["autocomplete--item"]
+                                            }
+                                            onClick={handleCurrentLocationClick}
+                                        >
+                                            {isLoadingLocation ? (
+                                                <Loader2 className="animate-spin" />
+                                            ) : (
+                                                <MousePointer2 />
+                                            )}
+                                            <span>
+                                                {isLoadingLocation
+                                                    ? "Getting your location..."
+                                                    : "Use my current location"}
+                                            </span>
                                         </li>
 
                                         {/* Loading indicator for locations */}
                                         {isLoadingLocations && (
-                                            <li className={styles["autocomplete--item"]}>
+                                            <li
+                                                className={
+                                                    styles["autocomplete--item"]
+                                                }
+                                            >
                                                 <Loader2 className="animate-spin" />
-                                                <span>Loading locations...</span>
+                                                <span>
+                                                    Loading locations...
+                                                </span>
                                             </li>
                                         )}
 
                                         {/* location suggestions list */}
-                                        {!isLoadingLocations && filteredLocationOptions.length > 0
-                                            ? filteredLocationOptions.map((option) => (
+                                        {!isLoadingLocations &&
+                                        filteredLocationOptions.length > 0
+                                            ? filteredLocationOptions.map(
+                                                  (option) => (
+                                                      <li
+                                                          key={option.key}
+                                                          className={
+                                                              styles[
+                                                                  "autocomplete--item"
+                                                              ]
+                                                          }
+                                                          onClick={() =>
+                                                              handleLocationSelect(
+                                                                  option
+                                                              )
+                                                          }
+                                                      >
+                                                          <MapPin />
+                                                          <span>
+                                                              {option.value}
+                                                              {option.stays && (
+                                                                  <small
+                                                                      style={{
+                                                                          marginLeft:
+                                                                              "4px",
+                                                                          color: "#888",
+                                                                      }}
+                                                                  >
+                                                                      (
+                                                                      {
+                                                                          option.stays
+                                                                      }{" "}
+                                                                      stays)
+                                                                  </small>
+                                                              )}
+                                                          </span>
+                                                      </li>
+                                                  )
+                                              )
+                                            : !isLoadingLocations && (
                                                   <li
-                                                      key={option.key}
-                                                      className={styles["autocomplete--item"]}
-                                                      onClick={() => handleLocationSelect(option)}
+                                                      className={
+                                                          styles[
+                                                              "autocomplete--no-results"
+                                                          ]
+                                                      }
                                                   >
-                                                      <MapPin />
-                                                      <span>
-                                                          {option.value}
-                                                          {option.stays && (
-                                                              <small style={{ marginLeft: "4px", color: "#888" }}>({option.stays} stays)</small>
-                                                          )}
-                                                      </span>
+                                                      No results found
                                                   </li>
-                                              ))
-                                            : !isLoadingLocations && <li className={styles["autocomplete--no-results"]}>No results found</li>}
+                                              )}
                                     </ul>
                                 </div>
                             </div>
                         )}
                     </div>
                     {/* DATE PICKER BUTTON */}
-                    <Button large type="input" onClick={() => setIsDatePickerOpen(true)}>
+                    <Button
+                        large
+                        type="input"
+                        onClick={() => setIsDatePickerOpen(true)}
+                    >
                         <Calendar />
                         {formatDateRange(dateRange)}
                     </Button>
@@ -418,9 +547,18 @@ const MobileSearch = ({ searchTxt }) => {
                             <h4>Guests</h4>
                         </div>
                         {guests.map((guest, index) => (
-                            <div className={styles["mobile-search__guests--item"]} key={index}>
+                            <div
+                                className={
+                                    styles["mobile-search__guests--item"]
+                                }
+                                key={index}
+                            >
                                 <div>{guest.type}</div>
-                                <div className={styles["mobile-search__guests--count"]}>
+                                <div
+                                    className={
+                                        styles["mobile-search__guests--count"]
+                                    }
+                                >
                                     <div
                                         onClick={() => {
                                             decreaseCount(index);
@@ -441,12 +579,22 @@ const MobileSearch = ({ searchTxt }) => {
                         ))}
                     </div>
                     {/* CTA SEARCH BTN */}
-                    <Button large type="primary" onClick={handleSearch} disabled={isSearchDisabled}>
+                    <Button
+                        large
+                        type="primary"
+                        onClick={handleSearch}
+                        disabled={isSearchDisabled}
+                    >
                         {getSearchButtonText()} <ArrowRight />
                     </Button>
                     {/* logo */}
                     <div style={{ marginTop: 0 }}>
-                        <Image src="/assets/images/logo.svg" alt="OneClick Stays" width={90} height={90} />
+                        <Image
+                            src="/assets/images/logo.svg"
+                            alt="OneClick Stays"
+                            width={90}
+                            height={90}
+                        />
                     </div>
                 </div>
             </div>

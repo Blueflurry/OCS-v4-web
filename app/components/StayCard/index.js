@@ -4,8 +4,9 @@ import PartnerLogo from "../PartnerLogo";
 import Link from "next/link";
 import StayCardCarousel from "../StayCardCarousel";
 import { renderStars } from "@/app/utils/render";
+import { Star } from "lucide-react";
 
-const StayCard = ({ stay }) => {
+const StayCard = ({ stay, isHomePage }) => {
     // If stay data is not provided, don't render
     if (!stay) return null;
 
@@ -37,7 +38,11 @@ const StayCard = ({ stay }) => {
 
     return (
         <Link href={`/stays/${id || _id}`}>
-            <div className={`${styles["stay-card"]}`}>
+            <div
+                className={`${styles["stay-card"]} ${
+                    isHomePage ? styles["stay-card-width"] : ""
+                }`}
+            >
                 {/* Replace single image with carousel */}
                 <StayCardCarousel images={carouselImages} stayName={name} />
 
@@ -67,8 +72,10 @@ const StayCard = ({ stay }) => {
                         <span className={styles["stay-card__separator"]} />
                         <div className={styles["stay-card__rating"]}>
                             <b>{rating?.toFixed(1) || "N/A"}</b>
-                            {renderStars(rating)}
-                            {reviewCount > 0 && <p>({reviewCount} Reviews)</p>}
+                            <Star size={16} fill="#fbb401" stroke="#fbb401" />
+
+                            {/* {renderStars(rating)} */}
+                            {reviewCount > 0 && <p>({reviewCount})</p>}
                         </div>
                     </div>
                     <div className={styles["stay-card__title"]}>
