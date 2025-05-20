@@ -65,7 +65,7 @@ export function useLocationCache(maxSize = 50, expiryTime = 3600000) {
 
             if (cachedResults) {
                 // Console log is optional - you can remove in production
-                console.log("Using cached results for:", lowerQuery);
+                // console.log("Using cached results for:", lowerQuery);
                 return cachedResults;
             }
 
@@ -75,7 +75,7 @@ export function useLocationCache(maxSize = 50, expiryTime = 3600000) {
             );
 
             set(lowerQuery, results);
-            console.log("Caching new results for:", lowerQuery);
+            // console.log("Caching new results for:", lowerQuery);
             return results;
         },
         [get, set]

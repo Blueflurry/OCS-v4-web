@@ -33,9 +33,9 @@ const Addons = () => {
                 // Get stay basics from localStorage
                 const stayBasics = localStorage.getItem("stayBasics");
                 if (!stayBasics) {
-                    console.log(
-                        "Stay details not found. Please return to stay details page."
-                    );
+                    // console.log(
+                    //     "Stay details not found. Please return to stay details page."
+                    // );
                 } else {
                     const parsedStayDetails = JSON.parse(stayBasics);
                     setStayDetails(parsedStayDetails);
@@ -100,9 +100,9 @@ const Addons = () => {
             const paymentIntentId = localStorage.getItem("paymentIntentId");
 
             if (!paymentIntentId) {
-                console.log(
-                    "No payment intent found. Please start booking process again."
-                );
+                // console.log(
+                //     "No payment intent found. Please start booking process again."
+                // );
                 return;
             }
 

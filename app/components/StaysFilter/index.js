@@ -82,7 +82,7 @@ const StaysFilter = ({
         const fetchFilters = async () => {
             try {
                 const response = await getFilters();
-                console.log("Raw filters response:", response);
+                // console.log("Raw filters response:", response);
 
                 if (isMounted && response) {
                     // Check if we need to log more details about the structure

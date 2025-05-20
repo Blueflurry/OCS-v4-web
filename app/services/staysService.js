@@ -12,7 +12,7 @@ export const fetchHomePageStays = async () => {
             },
         });
 
-        console.log("home response", response);
+        // console.log("home response", response);
 
         return response || [];
     } catch (error) {
@@ -83,7 +83,7 @@ const removeEmptyValues = (obj) => {
  * @returns {Promise<Array>} - Array of stay objects
  */
 export const getFilteredStays = async (filters) => {
-    console.log("filters", filters);
+    // console.log("filters", filters);
     try {
         const guests =
             (Number(filters.men) || 0) +
@@ -160,15 +160,15 @@ export const getFilteredStays = async (filters) => {
         // console.log("body", processedFilters);
         const cleanFilters = removeEmptyValues(processedFilters);
 
-        console.log("cleanFilters", cleanFilters);
+        // console.log("cleanFilters", cleanFilters);
 
         const response = await fetchAPI("/search", {
             method: "POST",
             body: cleanFilters,
         });
 
-        console.log("RESPONSE", response);
-        console.log("RESPONSE", response.pagination);
+        // console.log("RESPONSE", response);
+        // console.log("RESPONSE", response.pagination);
         return response || [];
     } catch (error) {
         console.error("Error fetching filtered stays:", error);
