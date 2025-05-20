@@ -4,20 +4,22 @@
     position: relative;
     overflow: hidden;
     border-radius: 12px 12px 0 0;
-    height: 200px;
+    height: 260px;
     width: 100%;
 
     &Container {
         display: flex;
         height: 100%;
         user-select: none;
+        pointer-events: auto;
     }
 
     &Slide {
         flex: 0 0 100%;
         min-width: 0;
         position: relative;
-        height: 100%;
+        // height: 100%;
+        height: 260px;
     }
 
     &Image {
@@ -62,6 +64,46 @@
     );
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
+}
+
+.stayCardCarouselWrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.carouselArrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    &:hover {
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    svg {
+        color: #333;
+    }
+}
+
+.carouselArrowPrev {
+    left: 10px;
+}
+
+.carouselArrowNext {
+    right: 10px;
 }
 
 @keyframes shimmer {

@@ -72,9 +72,9 @@ const StayCard = ({ stay, isHomePage }) => {
                         <span className={styles["stay-card__separator"]} />
                         <div className={styles["stay-card__rating"]}>
                             <b>{rating?.toFixed(1) || "N/A"}</b>
-                            <Star size={16} fill="#fbb401" stroke="#fbb401" />
+                            {/* <Star size={16} fill="#fbb401" stroke="#fbb401" /> */}
 
-                            {/* {renderStars(rating)} */}
+                            {renderStars(rating)}
                             {reviewCount > 0 && <p>({reviewCount})</p>}
                         </div>
                     </div>

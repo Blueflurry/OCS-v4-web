@@ -5,7 +5,7 @@
     position: relative;
 
     &-width {
-        width: 320px;
+        width: 300px;
     }
 
     hr {
@@ -171,7 +171,7 @@
             fill: $color-primary;
             stroke: $color-primary;
             height: 12px;
-            margin-left: -3px;
+            margin-left: -5px;
 
             &:first-of-type {
                 margin-left: 2px;

@@ -4,6 +4,7 @@ import styles from "./Footer.module.scss";
 import Button from "@/app/components/Button";
 import Image from "next/image";
 import RazorpayButton from "@/app/components/RazorpayButton";
+import { Loader2 } from "lucide-react"; // Import loading spinner icon
 
 /**
  * Footer component with action button
@@ -15,10 +16,12 @@ import RazorpayButton from "@/app/components/RazorpayButton";
  */
 const Footer = ({ btnText, btnType = "primary", onClick }) => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleCheckoutClick = () => {
         // Temporarily disable button to prevent multiple clicks
         setIsButtonDisabled(true);
+        setIsLoading(true);
 
         // If custom onClick is provided, call it first
         if (onClick) {
@@ -27,12 +30,20 @@ const Footer = ({ btnText, btnType = "primary", onClick }) => {
             const result = onClick();
 
             if (result === false) {
-                setTimeout(() => setIsButtonDisabled(false), 1500); // Re-enable after delay
+                setTimeout(() => {
+                    setIsButtonDisabled(false);
+                    setIsLoading(false);
+                }, 1500); // Re-enable after delay
                 return;
             }
         }
 
-        // setIsButtonDisabled(false);
+        // This will only execute if onClick doesn't return false
+        // In most cases, navigation will happen before this timeout fires
+        setTimeout(() => {
+            setIsButtonDisabled(false);
+            setIsLoading(false);
+        }, 10000); // Safety timeout to prevent permanently disabled button
     };
 
     return (
@@ -45,7 +56,15 @@ const Footer = ({ btnText, btnType = "primary", onClick }) => {
                     <RazorpayButton />
                 ) : (
                     <Button type={btnType} large disabled={isButtonDisabled}>
-                        {btnType === "whatsapp" ? (
+                        {isLoading ? (
+                            <div className={styles["loading-container"]}>
+                                <Loader2
+                                    className={styles["loading-spinner"]}
+                                    size={20}
+                                />
+                                <span>Processing...</span>
+                            </div>
+                        ) : btnType === "whatsapp" ? (
                             <>
                                 <Image
                                     src="/assets/images/whatsapp-icon.webp"
