@@ -79,6 +79,17 @@
         }
     }
 
+    &__name-row {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        width: 100%;
+
+        .signup__input-group {
+            flex: 1;
+        }
+    }
+
     &__phone-container {
         display: flex;
         flex-direction: column;

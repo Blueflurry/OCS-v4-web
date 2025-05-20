@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Button from "@/app/components/Button";
 import BackButton from "@/app/components/BackButton";
@@ -14,6 +14,8 @@ const Login = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+    const formRef = useRef(null);
+    const submitButtonRef = useRef(null);
 
     // Add this useEffect
     useEffect(() => {
@@ -25,6 +27,24 @@ const Login = () => {
             sessionStorage.setItem("redirectUrl", redirect);
         }
     }, [searchParams]);
+
+    // Auto-submit when valid phone number is entered
+    useEffect(() => {
+        // If phone number has exactly 10 digits and no errors exist, auto-submit
+        if (
+            phoneNumber.length === 10 &&
+            !error &&
+            !isLoading &&
+            submitButtonRef.current
+        ) {
+            // Small delay to let the user see the completed number
+            const timer = setTimeout(() => {
+                submitButtonRef.current.click();
+            }, 300);
+
+            return () => clearTimeout(timer);
+        }
+    }, [phoneNumber, error, isLoading]);
 
     const handlePhoneChange = (e) => {
         // Allow only numbers and limit to 10 digits
@@ -57,6 +77,8 @@ const Login = () => {
 
                 // Navigate to OTP verification page
                 router.push("/otp-verification");
+            } else if (response.error) {
+                setError(response.error);
             }
         } catch (error) {
             console.error("Login error:", error);
@@ -84,7 +106,11 @@ const Login = () => {
                     Enter your phone number to receive a verification code
                 </p>
 
-                <form className={styles["login__form"]}>
+                <form
+                    ref={formRef}
+                    className={styles["login__form"]}
+                    onSubmit={handleSubmit}
+                >
                     <div className={styles["login__input-group"]}>
                         <label htmlFor="phoneNumber">Phone Number</label>
                         <div className={styles["login__phone-input"]}>
@@ -93,11 +119,15 @@ const Login = () => {
                             </div>
                             <input
                                 type="tel"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
                                 id="phoneNumber"
                                 value={phoneNumber}
                                 onChange={handlePhoneChange}
                                 placeholder="Enter your phone number"
                                 disabled={isLoading}
+                                autoComplete="tel"
+                                autoFocus
                                 required
                             />
                         </div>
@@ -107,6 +137,7 @@ const Login = () => {
                     </div>
 
                     <Button
+                        ref={submitButtonRef}
                         type="primary"
                         large
                         disabled={isLoading || phoneNumber.length !== 10}

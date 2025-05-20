@@ -18,6 +18,7 @@ const OtpVerification = () => {
     const [countdown, setCountdown] = useState(0);
     const inputRefs = [useRef(), useRef(), useRef(), useRef()];
     const timerRef = useRef(null);
+    const formRef = useRef(null);
 
     useEffect(() => {
         // Retrieve phone number from session storage
@@ -66,9 +67,16 @@ const OtpVerification = () => {
         };
     }, [countdown]);
 
+    // Check if all OTP inputs are filled and submit automatically
+    useEffect(() => {
+        if (otp.every((digit) => digit !== "") && formRef.current) {
+            handleSubmit();
+        }
+    }, [otp]);
+
     const handleOtpChange = (index, value) => {
-        // Allow only numbers
-        if (!/^\d*$/.test(value)) return;
+        // Allow only single digit numbers
+        if (!/^\d?$/.test(value)) return;
 
         // Clear any error when user starts changing the OTP
         if (error) setError("");
@@ -96,6 +104,33 @@ const OtpVerification = () => {
         }
     };
 
+    // Handle pasting the entire OTP
+    const handlePaste = (e, index) => {
+        e.preventDefault();
+        const pastedData = e.clipboardData.getData("text");
+
+        // Check if pasted content is numeric and of valid length
+        if (!/^\d+$/.test(pastedData)) return;
+
+        // Fill the OTP inputs with the pasted digits
+        const digits = pastedData.slice(0, 4).split("");
+        const newOtp = [...otp];
+
+        digits.forEach((digit, i) => {
+            if (index + i < 4) {
+                newOtp[index + i] = digit;
+            }
+        });
+
+        setOtp(newOtp);
+
+        // Focus the appropriate input after pasting
+        const nextIndex = Math.min(index + digits.length, 3);
+        if (nextIndex < 4 && inputRefs[nextIndex].current) {
+            inputRefs[nextIndex].current.focus();
+        }
+    };
+
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
 
@@ -111,9 +146,6 @@ const OtpVerification = () => {
 
         // Call API to verify OTP with improved error handling
         const response = await verifyOtp(phoneNumber, otpValue);
-
-        // In page.js (OTP Verification page - document 14)
-        // Inside the handleSubmit function, update the redirect logic:
 
         if (response.success) {
             try {
@@ -144,6 +176,9 @@ const OtpVerification = () => {
             setError(
                 response.error || "Invalid verification code. Please try again."
             );
+
+            // Clear OTP fields on error
+            setOtp(["", "", "", ""]);
 
             // Focus back on the first input
             if (inputRefs[0].current) {
@@ -226,6 +261,7 @@ const OtpVerification = () => {
                 </p>
 
                 <form
+                    ref={formRef}
                     onSubmit={handleSubmit}
                     className={styles["otp-verification__form"]}
                 >
@@ -234,13 +270,17 @@ const OtpVerification = () => {
                             <input
                                 key={index}
                                 ref={inputRefs[index]}
-                                type="text"
+                                type="tel"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
                                 maxLength={1}
+                                autoComplete="one-time-code"
                                 value={digit}
                                 onChange={(e) =>
                                     handleOtpChange(index, e.target.value)
                                 }
                                 onKeyDown={(e) => handleKeyDown(index, e)}
+                                onPaste={(e) => handlePaste(e, index)}
                                 disabled={isLoading || isResending}
                                 className={error ? styles["input-error"] : ""}
                                 required

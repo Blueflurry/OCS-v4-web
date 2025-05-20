@@ -11,7 +11,8 @@ import { CheckCircle } from "lucide-react";
 const Signup = () => {
     const router = useRouter();
     const [formData, setFormData] = useState({
-        fullName: "",
+        firstName: "",
+        lastName: "",
         email: "",
         phoneNumber: "",
     });
@@ -44,8 +45,12 @@ const Signup = () => {
     const validateForm = () => {
         const newErrors = {};
 
-        if (!formData.fullName.trim()) {
-            newErrors.fullName = "Full name is required";
+        if (!formData.firstName.trim()) {
+            newErrors.firstName = "First name is required";
+        }
+
+        if (!formData.lastName.trim()) {
+            newErrors.lastName = "Last name is required";
         }
 
         if (!formData.email.trim()) {
@@ -68,8 +73,8 @@ const Signup = () => {
         try {
             // Call API to create user
             const response = await createUser({
-                firstName: formData.fullName.split(" ")[0],
-                lastName: formData.fullName.split(" ")[1] || " ",
+                firstName: formData.firstName,
+                lastName: formData.lastName,
                 email: formData.email,
                 phone: formData.phoneNumber,
             });
@@ -133,23 +138,44 @@ const Signup = () => {
                 </p>
 
                 <form className={styles["signup__form"]}>
-                    <div className={styles["signup__input-group"]}>
-                        <label htmlFor="fullName">Full Name</label>
-                        <input
-                            type="text"
-                            id="fullName"
-                            name="fullName"
-                            value={formData.fullName}
-                            onChange={handleInputChange}
-                            placeholder="Enter your full name"
-                            disabled={isLoading}
-                            required
-                        />
-                        {errors.fullName && (
-                            <p className={styles["signup__error"]}>
-                                {errors.fullName}
-                            </p>
-                        )}
+                    <div className={styles["signup__name-row"]}>
+                        <div className={styles["signup__input-group"]}>
+                            <label htmlFor="firstName">First Name</label>
+                            <input
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                value={formData.firstName}
+                                onChange={handleInputChange}
+                                placeholder="First name"
+                                disabled={isLoading}
+                                required
+                            />
+                            {errors.firstName && (
+                                <p className={styles["signup__error"]}>
+                                    {errors.firstName}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className={styles["signup__input-group"]}>
+                            <label htmlFor="lastName">Last Name</label>
+                            <input
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                value={formData.lastName}
+                                onChange={handleInputChange}
+                                placeholder="Last name"
+                                disabled={isLoading}
+                                required
+                            />
+                            {errors.lastName && (
+                                <p className={styles["signup__error"]}>
+                                    {errors.lastName}
+                                </p>
+                            )}
+                        </div>
                     </div>
 
                     <div className={styles["signup__input-group"]}>
