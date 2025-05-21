@@ -80,6 +80,7 @@ const Reviews = ({ stayId, rating, ratingsByCategory, partner }) => {
                                 width={200}
                                 height={350}
                                 alt="photo"
+                                unoptimized
                             />
                             <div
                                 className={
