@@ -59,7 +59,7 @@ const Locations = () => {
                             <React.Fragment key={i}>
                                 <Link href="/stays">
                                     <Image
-                                        src={baliImage}
+                                        src="/assets/images/locations/bali.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Bali"
@@ -68,7 +68,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/stays?location=Lonavala, Maharashtra">
                                     <Image
-                                        src={lonavalaImage}
+                                        src="/assets/images/locations/lonavala.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Lonavala"
@@ -77,7 +77,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/stays">
                                     <Image
-                                        src={kashmirImage}
+                                        src="/assets/images/locations/kashmir.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Kashmir"
@@ -86,7 +86,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/stays?location=Himachal Pradesh, India">
                                     <Image
-                                        src={himachalImage}
+                                        src="/assets/images/locations/himachal-pradesh.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Himachal Pradesh"
@@ -95,7 +95,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/stays?location=Uttarakhand, India">
                                     <Image
-                                        src={uttarakhandImage}
+                                        src="/assets/images/locations/uttarakhand.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Uttarakhand"
@@ -104,7 +104,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/stays?location=Rajasthan, India">
                                     <Image
-                                        src={rajasthanImage}
+                                        src="/assets/images/locations/rajasthan.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Rajasthan"
@@ -113,7 +113,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/stays?location=Alibaug, Maharashtra">
                                     <Image
-                                        src={alibaugImage}
+                                        src="/assets/images/locations/alibaug.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Alibaug"
@@ -122,7 +122,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/stays?location=Delhi, India">
                                     <Image
-                                        src={delhiImage}
+                                        src="/assets/images/locations/delhi.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Delhi"
@@ -131,7 +131,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/stays?location=Goa, India">
                                     <Image
-                                        src={goaImage}
+                                        src="/assets/images/locations/goa.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Goa"
@@ -140,7 +140,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/stays">
                                     <Image
-                                        src={maldivesImage}
+                                        src="/assets/images/locations/maldives.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Maldives"
@@ -149,7 +149,7 @@ const Locations = () => {
                                 </Link>
                                 <Link href="/stays">
                                     <Image
-                                        src={thailandImage}
+                                        src="/assets/images/locations/thailand.jpeg"
                                         width={120}
                                         height={120}
                                         alt="Thailand"
