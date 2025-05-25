@@ -31,6 +31,9 @@ const nextConfig = {
             // Add other patterns as needed
         ],
     },
+    experimental: {
+        viewTransition: true,
+    },
 };
 
 export default nextConfig;

@@ -10,11 +10,7 @@ import FooterWithoutTabs from "@/app/modules/Footer/FooterWithoutTabs";
 import StaysFilter from "@/app/components/StaysFilter";
 
 // Client-side component that handles search parameters and saving to localStorage
-export default function StaysClient({
-    searchParams,
-    initialStays,
-    totalCount,
-}) {
+export default function StaysClient({ searchParams, initialStays, totalCount }) {
     // State for filter drawer and stays data
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [stays, setStays] = useState(initialStays);
@@ -64,9 +60,7 @@ export default function StaysClient({
             if (checkin && checkout) {
                 const checkinDate = new Date(checkin);
                 const checkoutDate = new Date(checkout);
-                nights = Math.ceil(
-                    (checkoutDate - checkinDate) / (1000 * 60 * 60 * 24)
-                );
+                nights = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
             }
 
             // Create search parameters object
@@ -85,10 +79,7 @@ export default function StaysClient({
             };
 
             // Save to localStorage
-            localStorage.setItem(
-                "searchParams",
-                JSON.stringify(searchParamsObj)
-            );
+            localStorage.setItem("searchParams", JSON.stringify(searchParamsObj));
             // console.log("Saved search parameters from URL:", searchParamsObj);
         }
     }, [searchParams]);
@@ -99,9 +90,7 @@ export default function StaysClient({
 
         try {
             // Prepare amenities array
-            const selectedAmenities = Object.keys(
-                filterValues.amenities || {}
-            ).filter((key) => filterValues.amenities[key]);
+            const selectedAmenities = Object.keys(filterValues.amenities || {}).filter((key) => filterValues.amenities[key]);
 
             // Combine search params with new filters
             const apiFilters = {
@@ -125,22 +114,15 @@ export default function StaysClient({
                 priceMax: filterValues.priceRange?.max || 500000,
 
                 // Room configuration
-                bedrooms:
-                    filterValues?.rooms?.bedrooms !== "Any"
-                        ? filterValues?.rooms?.bedrooms
-                        : "",
+                bedrooms: filterValues?.rooms?.bedrooms !== "Any" ? filterValues?.rooms?.bedrooms : "",
                 // beds:
                 //     filterValues.rooms?.beds !== "Any"
                 //         ? filterValues.rooms.beds
                 //         : "",
-                bathrooms:
-                    filterValues?.rooms?.bathrooms !== "Any"
-                        ? filterValues?.rooms?.bathrooms
-                        : "",
+                bathrooms: filterValues?.rooms?.bathrooms !== "Any" ? filterValues?.rooms?.bathrooms : "",
 
                 // Amenities array
-                amenities:
-                    selectedAmenities.length > 0 ? selectedAmenities : [],
+                amenities: selectedAmenities.length > 0 ? selectedAmenities : [],
 
                 // Pagination parameters
                 page: 1,
@@ -148,9 +130,7 @@ export default function StaysClient({
             };
 
             // Remove undefined values
-            Object.keys(apiFilters).forEach(
-                (key) => apiFilters[key] === undefined && delete apiFilters[key]
-            );
+            Object.keys(apiFilters).forEach((key) => apiFilters[key] === undefined && delete apiFilters[key]);
 
             // console.log("Applying filters to API:", apiFilters);
 
@@ -187,15 +167,11 @@ export default function StaysClient({
     if (searchParams?.checkin && searchParams?.checkout) {
         const checkInDate = new Date(searchParams.checkin);
         const checkOutDate = new Date(searchParams.checkout);
-        description += `${checkInDate.toLocaleDateString(
-            "en-US"
-        )} - ${checkOutDate.toLocaleDateString("en-US")}`;
+        description += `${checkInDate.toLocaleDateString("en-US")} - ${checkOutDate.toLocaleDateString("en-US")}`;
     }
 
     const totalGuests =
-        parseInt(searchParams?.men || "0", 10) +
-        parseInt(searchParams?.women || "0", 10) +
-        parseInt(searchParams?.children || "0", 10);
+        parseInt(searchParams?.men || "0", 10) + parseInt(searchParams?.women || "0", 10) + parseInt(searchParams?.children || "0", 10);
 
     if (totalGuests > 0) {
         description += description ? " • " : "";
@@ -204,9 +180,7 @@ export default function StaysClient({
 
     if (parseInt(searchParams?.pets || "0", 10) > 0) {
         description += description ? " • " : "";
-        description += `${searchParams.pets} pet${
-            searchParams.pets !== 1 ? "s" : ""
-        }`;
+        description += `${searchParams.pets} pet${searchParams.pets !== 1 ? "s" : ""}`;
     }
 
     return (
@@ -218,26 +192,14 @@ export default function StaysClient({
                 {/* Filter button */}
                 <div className={styles["filter-button-container"]}>
                     <h4>Showing {resultsCount} results</h4>
-                    <button
-                        className={styles["filter-button"]}
-                        onClick={() => setIsFilterOpen(true)}
-                    >
+                    <button className={styles["filter-button"]} onClick={() => setIsFilterOpen(true)}>
                         <SlidersHorizontal size={18} />
                         <span>Filters</span>
-                        {Object.keys(activeFilters).length > 0 && (
-                            <span className={styles["filter-count"]}>
-                                {countActiveFilters(activeFilters)}
-                            </span>
-                        )}
+                        {Object.keys(activeFilters).length > 0 && <span className={styles["filter-count"]}>{countActiveFilters(activeFilters)}</span>}
                     </button>
                 </div>
-
-                <StayListings
-                    initialStays={stays}
-                    noHeader
-                    filters={searchParams}
-                    loading={loading}
-                />
+                {loading && <p>Loading...</p>}
+                {!loading && <StayListings initialStays={stays} noHeader filters={searchParams} loading={loading} />}
             </div>
 
             {/* Stays Filter */}
@@ -270,11 +232,7 @@ function countActiveFilters(filters) {
     if (filters.addOnService) count++;
 
     // Price range (if different from default)
-    if (
-        filters.priceRange?.min > 3000 ||
-        (filters.priceRange?.max && filters.priceRange.max < 500000)
-    )
-        count++;
+    if (filters.priceRange?.min > 3000 || (filters.priceRange?.max && filters.priceRange.max < 500000)) count++;
 
     // Rooms
     if (filters.rooms?.bedrooms && filters.rooms.bedrooms !== "Any") count++;
@@ -282,9 +240,7 @@ function countActiveFilters(filters) {
     if (filters.rooms?.bathrooms && filters.rooms.bathrooms !== "Any") count++;
 
     // Amenities
-    const amenityCount = Object.values(filters.amenities || {}).filter(
-        Boolean
-    ).length;
+    const amenityCount = Object.values(filters.amenities || {}).filter(Boolean).length;
     if (amenityCount > 0) count++;
 
     return count;
